@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('container')
-ini dashboard
+ini dashboard admin
 @endsection
