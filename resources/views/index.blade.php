@@ -9,5 +9,6 @@
   <h1 class="text-3xl font-bold ">
    INDEX
   </h1>
+  <a href="{{ url('/login') }}">Login</a>
 </body>
 </html>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class IsUser
+class IsAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,9 @@ class IsUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role->nama == "user") {
-            ## redirect to home page
-            // return redirect("/welcome");
+        if (Auth::user()->role->nama != "user") {
             return abort(403);
         } else {
-            ## redirect to admin page
-            // abort(403);
             return $next($request);
         }
     }

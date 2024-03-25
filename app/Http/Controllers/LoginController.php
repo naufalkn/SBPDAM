@@ -28,10 +28,15 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials))
-        {
-           return redirect('/dashboard');
-        }else {
+
+        if (Auth::attempt($credentials)) {
+            if (Auth::user()->role->nama == "user") {
+                return redirect('/beranda');
+                //    return redirect('/dashboard');
+            } else {
+                return redirect('/dashboard');
+            }
+        } else {
             return back()->with('Login gagal, silahkan coba lagi!');
         }
     }

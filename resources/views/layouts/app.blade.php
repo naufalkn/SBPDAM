@@ -9,7 +9,7 @@
     <title>{{ $title ?? 'Tanpa Judul' }} | SBPDAM</title>
 </head>
 
-<body class="antialiased">
+<body class="antialiased bg-gray-200">
     @yield('container')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
