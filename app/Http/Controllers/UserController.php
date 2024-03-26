@@ -6,21 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ViewController extends Controller
+class UserController extends Controller
 {
-    // USER
     public function index()
     {
         return view('user.beranda',[
             'nama'=> auth::user()->username,
         ]);
     }
+
     public function riwayat()
     {
         return view('user.riwayat',[
             'nama'=> auth::user()->username,
         ]);
     }
+
     public function bantuan()
     {
         return view('user.bantuan',[
@@ -28,8 +29,11 @@ class ViewController extends Controller
         ]);
     }
 
-    public function dashboard()
+    public function sambungan()
     {
-        return view('dashboard');
+        return view('user.form-sambungan',[
+            'nama'=> auth::user()->username,
+        ]);
     }
+
 }
