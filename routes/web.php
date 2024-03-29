@@ -35,9 +35,15 @@ Route::middleware(['isAuth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/daftar-sambungan', [UserController::class, 'sambungan']);
     });
+    Route::middleware(['admin'])->group(function () {
+        Route::post('/prosesDaftar' , [UserController::class, 'prosesDaftar']);
+    }); 
 
     // Admin
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
     });
 });
+
+// Route::get('/coba', [UserController::class, 'coba']);
+// Route::post('/prosesDaftar', [UserController::class, 'prosesDaftar']);

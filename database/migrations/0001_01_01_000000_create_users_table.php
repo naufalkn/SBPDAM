@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            // coba
             $table->unsignedBigInteger('role_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
 
