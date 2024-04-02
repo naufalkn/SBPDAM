@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Desa;
+use App\Models\Dukuh;
 use App\Models\Kecamatan;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
@@ -38,12 +39,13 @@ class UserController extends Controller
 
     public function sambungan()
     {
-        
+        $dukuhList = Dukuh::all();
         $desaList = Desa::all();
         $kecamatanList = Kecamatan::all();
         // dd($desaList->first()->nmdesa);
         return view('user.form-sambungan',[
             'nama'=> auth::user()->username,
+            'dukuhList' => $dukuhList,
             'desaList' => $desaList,
             'kecamatanList' => $kecamatanList,
         ]);

@@ -87,7 +87,12 @@
                                         </div>
                                     </div>
                                     <label class="fieldlabels">Dukuh / Kampung*</label>
-                                    <input type="text" placeholder="Masukkan Dukuh / Kampung Anda" name="dukuh" class="form-control" />
+                                    {{-- <input type="text" placeholder="Masukkan Dukuh / Kampung Anda" name="dukuh" class="form-control" /> --}}
+                                    <select name="dukuh" id="dukuh">
+                                        @foreach($dukuhList as $item)
+                                            <option value="{{ $item->nmdukuh }}">{{ $item->nmdukuh }}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
