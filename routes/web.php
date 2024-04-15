@@ -43,6 +43,16 @@ Route::middleware(['isAuth'])->group(function () {
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
     });
+    Route::middleware(['user'])->group(function () {
+        Route::get('/daftar-manual', [AdminController::class, 'daftarManual']);
+    });
+
+    Route::middleware(['user'])->group(function () {
+        Route::get('/hapus-pelanggan/{id}', [AdminController::class, 'hapusPelanggan']);
+    });
+    Route::middleware(['user'])->group(function () {
+        Route::POST('/prosesManual', [AdminController::class, 'prosesManual']);
+    });
 });
 
 // Route::get('/coba', [UserController::class, 'coba']);

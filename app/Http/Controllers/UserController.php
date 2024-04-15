@@ -12,28 +12,28 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function coba()
-    {
-        return view('user.form-coba');
-    }
+    // public function coba()
+    // {
+    //     return view('user.form-coba');
+    // }
     public function index()
     {
-        return view('user.beranda',[
-            'nama'=> auth::user()->username,
+        return view('user.beranda', [
+            'nama' => auth::user()->username,
         ]);
     }
 
     public function riwayat()
     {
-        return view('user.riwayat',[
-            'nama'=> auth::user()->username,
+        return view('user.riwayat', [
+            'nama' => auth::user()->username,
         ]);
     }
 
     public function bantuan()
     {
-        return view('user.bantuan',[
-            'nama'=> auth::user()->username,
+        return view('user.bantuan', [
+            'nama' => auth::user()->username,
         ]);
     }
 
@@ -43,8 +43,8 @@ class UserController extends Controller
         $desaList = Desa::all();
         $kecamatanList = Kecamatan::all();
         // dd($desaList->first()->nmdesa);
-        return view('user.form-sambungan',[
-            'nama'=> auth::user()->username,
+        return view('user.form-sambungan', [
+            'nama' => auth::user()->username,
             'dukuhList' => $dukuhList,
             'desaList' => $desaList,
             'kecamatanList' => $kecamatanList,
@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function prosesDaftar(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'nama' => 'required',
             'pekerjaan' => 'required',
@@ -70,34 +70,36 @@ class UserController extends Controller
             'nama_jalan' => 'required',
             'jmlh_penghuni' => 'required',
             'foto_rumah' => 'required',
-        ]); 
+            // 'unit' => 'nullable'
+        ]);
 
         if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
             // $fotoPath = $request->file('foto_rumah')->store('public/foto');
-            $file =$request->file('foto_rumah');
+            $file = $request->file('foto_rumah');
             $name = $file->getClientOriginalName();
             $file->move('foto/', $name);
 
-        Pelanggan::create([
-            'nama' => $validatedData['nama'],
-            'pekerjaan' => $validatedData['pekerjaan'],
-            'no_identitas' => $validatedData['no_identitas'],
-            'no_telepon' => $validatedData['no_telepon'],
-            'dukuh' => $validatedData['dukuh'],
-            'rt' => $validatedData['rt'],
-            'rw' => $validatedData['rw'],
-            'kelurahan' => $validatedData['kelurahan'],
-            'kecamatan' => $validatedData['kecamatan'],
-            'kode_pos' => $validatedData['kode_pos'],
-            'nama_jalan' => $validatedData['nama_jalan'],
-            'jmlh_penghuni' => $validatedData['jmlh_penghuni'],
-            'foto_rumah' => $name,
-        ]);
+            Pelanggan::create([
+                'nama' => $validatedData['nama'],
+                'pekerjaan' => $validatedData['pekerjaan'],
+                'no_identitas' => $validatedData['no_identitas'],
+                'no_telepon' => $validatedData['no_telepon'],
+                'dukuh' => $validatedData['dukuh'],
+                'rt' => $validatedData['rt'],
+                'rw' => $validatedData['rw'],
+                'kelurahan' => $validatedData['kelurahan'],
+                'kecamatan' => $validatedData['kecamatan'],
+                'kode_pos' => $validatedData['kode_pos'],
+                'nama_jalan' => $validatedData['nama_jalan'],
+                'jmlh_penghuni' => $validatedData['jmlh_penghuni'],
+                // 'unit' => $validatedData['unit'],
+                'foto_rumah' => $name,
+            ]);
 
-        // dd($request->all());
+            // dd($request->all());
 
-        return redirect()->back()->with('succes', 'Data berhasil disimpan');
-    }
+            return redirect()->back()->with('succes', 'Data berhasil disimpan');
+        }
     }
 
 }
