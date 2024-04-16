@@ -99,6 +99,16 @@ class AdminController extends Controller
         return redirect()->back()->with('succes', 'Data berhasil disimpan');
     }
 
+    public function detailUser($id)
+    {
+        $nama = User::all()->first()->username;
+        $pelanggan = Pelanggan::all()->where('id', $id);
+        return view('admin.detail-user', [
+            'nama' => $nama,
+            'pelanggan' => $pelanggan,
+        ]);
+    }
+
 
     public function logout()
     {

@@ -55,5 +55,5 @@ Route::middleware(['isAuth'])->group(function () {
     });
 });
 
-// Route::get('/coba', [UserController::class, 'coba']);
+Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
 // Route::post('/prosesDaftar', [UserController::class, 'prosesDaftar']);
