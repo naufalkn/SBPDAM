@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -51,6 +52,8 @@ class AdminController extends Controller
 
     public function prosesManual(Request $request)
     {
+        $user = auth::user();
+
         $validatedData = ([
             'nama' => 'required',
             'pekerjaan' => 'required',
@@ -78,7 +81,9 @@ class AdminController extends Controller
         // dd($validatedData);
 
         Pelanggan::create([
-            'nama' => $request->nama,
+        'user_id' => $user->id,
+        'nama' => $request->nama,
+        'email' => $request->email,
         'pekerjaan' => $request->pekerjaan,
         'no_identitas' => $request->no_identitas,
         'no_telepon' => $request->no_telepon,
@@ -101,10 +106,10 @@ class AdminController extends Controller
 
     public function detailUser($id)
     {
-        $nama = User::all()->first()->username;
         $pelanggan = Pelanggan::all()->where('id', $id);
+        dd($pelanggan);
         return view('admin.detail-user', [
-            'nama' => $nama,
+            // 'user' => $user,
             'pelanggan' => $pelanggan,
         ]);
     }

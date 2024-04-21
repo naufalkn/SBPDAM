@@ -15,13 +15,21 @@
     {{-- TAILWIND CSS --}}
     @vite(['resources/css/app.css','resources/js/app.js'])
 
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+    {{-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css"> --}}
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+
 
 
     <title>{{ $title ?? 'Tanpa Judul' }} | SBPDAM</title>
 </head>
 
-<body class="antialiased bg-white font-sans">
+<body class="antialiased bg-white overflow-auto">
+    <style>
+        /* Untuk browser berbasis WebKit seperti Chrome, Safari, dan Opera */
+        ::-webkit-scrollbar {
+            display: none; /* Menyembunyikan scrollbar */
+        }
+    </style>
     @yield('container')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>

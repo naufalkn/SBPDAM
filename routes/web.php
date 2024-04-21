@@ -29,9 +29,9 @@ Route::middleware(['isAuth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/bantuan', [UserController::class, 'bantuan']);
     });
-    // Route::middleware(['admin'])->group(function () {
-    //     Route::get('/profil', [UserControllertroller::class, 'profil']);
-    // });
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/profil/{id}', [UserController::class, 'profil']);
+    });
     Route::middleware(['admin'])->group(function () {
         Route::get('/daftar-sambungan', [UserController::class, 'sambungan']);
     });
@@ -53,7 +53,10 @@ Route::middleware(['isAuth'])->group(function () {
     Route::middleware(['user'])->group(function () {
         Route::POST('/prosesManual', [AdminController::class, 'prosesManual']);
     });
+    Route::middleware(['user'])->group(function () {
+        Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
+    });
 });
 
-Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
+// Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
 // Route::post('/prosesDaftar', [UserController::class, 'prosesDaftar']);

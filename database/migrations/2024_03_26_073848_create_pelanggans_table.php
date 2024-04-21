@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             // Data Diri
             $table->string('nama')->required();
+            $table->foreignId('user_id')->constrained('users')->required();
+            $table->string('email')->required();
             $table->text('pekerjaan')->required();
             $table->bigInteger('no_identitas')->required();
             $table->bigInteger('no_telepon')->required();

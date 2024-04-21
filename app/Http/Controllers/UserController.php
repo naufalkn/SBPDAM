@@ -37,13 +37,25 @@ class UserController extends Controller
         ]);
     }
 
+    public function profil($id)
+    {
+        $user = auth()->user();
+        dd($user);
+        return view('user.profil', [
+            'nama' => auth::user()->username,
+            // 'user' => $user,
+        ]);
+    }
+
     public function sambungan()
     {
+        $user = Auth::user();
         $dukuhList = Dukuh::all();
         $desaList = Desa::all();
         $kecamatanList = Kecamatan::all();
         // dd($desaList->first()->nmdesa);
         return view('user.form-sambungan', [
+            'user' => $user,
             'nama' => auth::user()->username,
             'dukuhList' => $dukuhList,
             'desaList' => $desaList,
@@ -54,9 +66,11 @@ class UserController extends Controller
 
     public function prosesDaftar(Request $request)
     {
+        $user = Auth::user();
 
         $validatedData = $request->validate([
             'nama' => 'required',
+            'email'=> 'required',
             'pekerjaan' => 'required',
             'no_identitas' => 'required',
             'no_telepon' => 'required',
@@ -80,7 +94,9 @@ class UserController extends Controller
             $file->move('foto/', $name);
 
             Pelanggan::create([
+                'user_id' => $user->id,
                 'nama' => $validatedData['nama'],
+                'email' => $validatedData['email'],
                 'pekerjaan' => $validatedData['pekerjaan'],
                 'no_identitas' => $validatedData['no_identitas'],
                 'no_telepon' => $validatedData['no_telepon'],

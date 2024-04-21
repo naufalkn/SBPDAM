@@ -64,6 +64,9 @@
                                     <label class="fieldlabels">Nama Lengkap*</label>
                                     <input type="text" placeholder="Masukkan Nama Lengkap Anda" name="nama" />
 
+                                    <label class="fieldlabels">Email Anda*</label>
+                                    <input type="email" placeholder="Masukkan Email Anda" name="email" value="{{ auth()->user()->email }}" />
+
                                     <label class="fieldlabels">Pekerjaan*</label>
                                     <input type="text" name="pekerjaan" placeholder="Masukkan Pekerjaan Anda" />
 
