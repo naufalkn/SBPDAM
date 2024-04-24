@@ -80,34 +80,18 @@ class AdminController extends Controller
 
         // dd($validatedData);
 
-        Pelanggan::create([
-        'user_id' => $user->id,
-        'nama' => $request->nama,
-        'email' => $request->email,
-        'pekerjaan' => $request->pekerjaan,
-        'no_identitas' => $request->no_identitas,
-        'no_telepon' => $request->no_telepon,
-        'dukuh' => $request->dukuh,
-        'rt' => $request->rt,
-        'rw' => $request->rw,
-        'kelurahan' => $request->kelurahan,
-        'kecamatan' => $request->kecamatan,
-        'kode_pos' => $request->kode_pos,
-        'nama_jalan' => $request->nama_jalan,
-        'jmlh_penghuni' => $request->jmlh_penghuni,
-        'unit' => $request->unit,
-        // 'foto_rumah' => $name,
-            // 'foto_rumah' => $name,
-        ]);
+        $validatedData['user_id'] = $user->id;
+
+        Pelanggan::create($validatedData);
         // dd($request->all());
 
-        return redirect()->back()->with('succes', 'Data berhasil disimpan');
+        return back()->with('succes', 'Data berhasil disimpan');
     }
 
     public function detailUser($id)
     {
         $pelanggan = Pelanggan::all()->where('id', $id);
-        dd($pelanggan);
+        // dd($pelanggan);
         return view('admin.detail-user', [
             // 'user' => $user,
             'pelanggan' => $pelanggan,

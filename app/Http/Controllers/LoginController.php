@@ -30,7 +30,7 @@ class LoginController extends Controller
 
 
         if (Auth::attempt($credentials)) {
-            if (Auth::user()->role->nama == "user") {
+            if (Auth::user()->role->nama == "user" || Auth::user()->role->nama == "pelanggan"){
                 return redirect('/beranda');
                 //    return redirect('/dashboard');
             } else {

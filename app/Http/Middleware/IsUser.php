@@ -16,7 +16,7 @@ class IsUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role->nama == "user") {
+        if (Auth::user()->role->nama == "user" || Auth::user()->role->nama == "pelanggan"){
             ## redirect to home page
             // return redirect("/welcome");
             return abort(403);

@@ -14,22 +14,22 @@ return new class extends Migration
         Schema::create('pelanggans', function (Blueprint $table) {
             $table->id();
             // Data Diri
-            $table->string('nama')->required();
-            $table->foreignId('user_id')->constrained('users')->required();
-            $table->string('email')->required();
-            $table->text('pekerjaan')->required();
-            $table->bigInteger('no_identitas')->required();
-            $table->bigInteger('no_telepon')->required();
+            $table->string('nama');
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('email');
+            $table->text('pekerjaan');
+            $table->bigInteger('no_identitas');
+            $table->bigInteger('no_telepon');
 
             // Detail Alamat
-            $table->text('dukuh')->required();
-            $table->integer('rt')->required();
-            $table->integer('rw')->required();
-            $table->text('kelurahan')->required();
-            $table->text('kecamatan')->required();
-            $table->integer('kode_pos')->required();
-            $table->text('nama_jalan')->required();
-            $table->integer('jmlh_penghuni')->required();
+            $table->text('dukuh');
+            $table->integer('rt');
+            $table->integer('rw');
+            $table->text('kelurahan');
+            $table->text('kecamatan');
+            $table->integer('kode_pos');
+            $table->text('nama_jalan');
+            $table->integer('jmlh_penghuni');
             $table->string('unit')->nullable();
             $table->string('foto_rumah')->nullable();
             $table->timestamps();

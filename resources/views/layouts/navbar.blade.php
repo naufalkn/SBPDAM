@@ -83,7 +83,7 @@
                     <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
                         class="flex items-center justify-between w-full py-2 px-3 rounded hover:bg-gray-300 md:hover:bg-transparent md:border-0  md:p-0 md:w-auto dark:text-white">
                         <img class="h-8 w-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                src="{{ asset('img/' . auth()->user()->foto) }}"
                                 alt="">
                     </button>
                     <!-- Dropdown menu -->
@@ -91,7 +91,7 @@
                         class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                             <li>
-                                <a href="{{ url('/profil/{id} ') }}"
+                                <a href="/profil/{{ auth()->user()->id }}"
                                     class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                             </li>
                             <li>

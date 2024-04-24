@@ -46,7 +46,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected $with = ['role:id,nama', 'unit'];
+    protected $with = ['role:id,nama', 'unit', 'pelanggan'];
 
     public function role()
     {

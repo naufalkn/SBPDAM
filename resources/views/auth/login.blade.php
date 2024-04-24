@@ -29,6 +29,7 @@
         </div>
         <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
         <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
+        <a href="/daftar" class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Daftar</a>
       </form>
     </div>
   </div>

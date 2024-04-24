@@ -3,7 +3,6 @@
     @include('layouts.navbar')
     <div class="w-full h-svh  absolute bg-blue-700">
         {{-- Card --}}
-        @if (App\Models\Pelanggan::where('email', auth()->user()->email)->exists())
         <div class=" w-full p-14">
             <div
                 class="w-[450px] p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 space-y-3 shadow-md">
@@ -14,30 +13,16 @@
                                 class="w-10 rounded-full" alt="Profile">
                             <div class="">
                                 <h1 class="text-gray-500 font-bold">Halo, Selamat datang </h1>
-                                <h1 class="text-black font-semibold text-xl">{{ $nama }}</h1>
+                                <h1 class="text-black font-semibold text-xl">{{ auth()->user()->nama }}</h1>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="p-2 w-full font-bold text-2xl text-black dark:text-gray-400">Anda sudah Berlangganan Air Bersih di PDAM Sragen</p>
-            </div>
-        </div>
-        @else
-            <div class=" w-full p-14">
-                <div
-                    class="w-[450px] p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 space-y-3 shadow-md">
-                    <div class="">
-                        <div href=" type="" class="w-full h-12 border-gray-800 rounded flex items-center">
-                            <div class="flex items-center space-x-6 w-full">
-                                <img src="https://ui-avatars.com/api/?name=Habib+Mhamadi&size=128&background=ff4433&color=fff"
-                                    class="w-10 rounded-full" alt="Profile">
-                                <div class="">
-                                    <h1 class="text-gray-500 font-bold">Halo, Selamat datang </h1>
-                                    <h1 class="text-black font-semibold text-xl">{{ $nama }}</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                @if (App\Models\Pelanggan::where('email', auth()->user()->email)->exists())
+                    <p class="p-2 w-full font-bold text-2xl text-black dark:text-gray-400">Anda sudah Berlangganan Air
+                        Bersih di PDAM Sragen</p>
+                @else
                     <p class="p-2 w-full font-bold text-2xl text-black dark:text-gray-400">Mari Mulai Berlangganan dan
                         Nikmati
                         Layanan Air Bersih</p>
@@ -49,9 +34,9 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                @endif
             </div>
-        @endif
+        </div>
 
         <div class="relative absolut -mt-12 lg:-mt-24 w-full">
             <svg viewBox="0 0 1428 174" version="1.1" xmlns="http://www.w3.org/2000/svg"

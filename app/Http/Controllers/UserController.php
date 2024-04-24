@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Desa;
 use App\Models\Dukuh;
 use App\Models\Kecamatan;
 use App\Models\Pelanggan;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,12 +19,12 @@ class UserController extends Controller
     // {
     //     return view('user.form-coba');
     // }
-    public function index()
-    {
-        return view('user.beranda', [
-            'nama' => auth::user()->username,
-        ]);
-    }
+    // public function index()
+    // {
+    //     return view('user.beranda', [
+    //         'nama' => auth::user()->username,
+    //     ]);
+    // }
 
     public function riwayat()
     {
@@ -37,14 +40,87 @@ class UserController extends Controller
         ]);
     }
 
-    public function profil($id)
-    {
-        $user = auth()->user();
-        dd($user);
-        return view('user.profil', [
-            'nama' => auth::user()->username,
-            // 'user' => $user,
-        ]);
+    // public function profil()
+    // {
+        
+    //     // try {
+    //     //     // Memeriksa apakah ada relasi antara pengguna aktif dan tabel Pelanggan
+    //     //     if (auth()->user()->pelanggan()->exists()) {
+    //     //         // Jika ada, ambil user_id dari relasi Pelanggan
+    //     //         $user_id = auth()->user()->pelanggan->user_id;
+
+    //     //         // Mengambil data Pelanggan berdasarkan user_id
+    //     //         $user = Pelanggan::where('user_id', $user_id)->get();
+
+    //     //         // Menampilkan profil dengan data yang ditemukan
+    //     //         return view('user.profil', [
+    //     //             // dd($user),
+    //     //             'nama' => auth()->user()->username,
+    //     //             'user' => $user,
+    //     //         ]);
+    //     //     } else {
+    //     //         // Jika tidak ada relasi, berikan respons sesuai kebutuhan Anda
+    //     //         return "Tidak ada relasi antara pengguna dan pelanggan";
+    //     //     }
+    //     // } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    //     //     // Tangani jika data tidak ditemukan
+    //     //     return "Data tidak ditemukan";
+    //     // }
+    // }
+
+    public function profil() {
+        // ini lebih mudah dipahami harusnya
+        $pelanggan = Pelanggan::where('user_id', auth()->user()->id)->first();
+
+        if($pelanggan) {
+            return view('user.profil', [
+                'nama' => auth()->user()->username,
+                'pelanggan' => $pelanggan,
+            ]);
+        } elseif(!$pelanggan) {
+            return view('user.profil', [
+                'nama' => auth()->user()->username,
+            ]);
+
+            // return back()->with('error', "Tidak ada relasi antara pengguna dan pelanggan");
+        }
+    }
+
+    public function updateProfil($id, Request $request){
+        try {
+            $request->validate([
+                'username' => 'required|string|max:255|unique:users,username,' . auth()->user()->id,
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        
+            $user = Auth::user();
+            $user->username = $request->username;
+        
+            // Perbarui foto pengguna jika ada
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                // Pastikan file foto telah berhasil diunggah
+                if ($file->isValid()) {
+                    // Pindahkan file ke direktori yang diinginkan
+                    $fileName = $file->getClientOriginalName();
+                    $file->move(public_path('img'), $fileName);
+                    // Simpan nama file foto ke atribut $foto pada model pengguna
+                    $user->foto = $fileName;
+                } else {
+                    // Jika file foto tidak valid, kembalikan dengan pesan error
+                    return redirect()->back()->with('error', 'File foto tidak valid.');
+                }
+            }
+            
+            $user->save();
+        
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
+        }
+        
     }
 
     public function sambungan()
@@ -70,7 +146,7 @@ class UserController extends Controller
 
         $validatedData = $request->validate([
             'nama' => 'required',
-            'email'=> 'required',
+            'email' => 'required',
             'pekerjaan' => 'required',
             'no_identitas' => 'required',
             'no_telepon' => 'required',
@@ -93,29 +169,24 @@ class UserController extends Controller
             $name = $file->getClientOriginalName();
             $file->move('foto/', $name);
 
-            Pelanggan::create([
-                'user_id' => $user->id,
-                'nama' => $validatedData['nama'],
-                'email' => $validatedData['email'],
-                'pekerjaan' => $validatedData['pekerjaan'],
-                'no_identitas' => $validatedData['no_identitas'],
-                'no_telepon' => $validatedData['no_telepon'],
-                'dukuh' => $validatedData['dukuh'],
-                'rt' => $validatedData['rt'],
-                'rw' => $validatedData['rw'],
-                'kelurahan' => $validatedData['kelurahan'],
-                'kecamatan' => $validatedData['kecamatan'],
-                'kode_pos' => $validatedData['kode_pos'],
-                'nama_jalan' => $validatedData['nama_jalan'],
-                'jmlh_penghuni' => $validatedData['jmlh_penghuni'],
-                // 'unit' => $validatedData['unit'],
-                'foto_rumah' => $name,
-            ]);
-
-            // dd($request->all());
-
-            return redirect()->back()->with('succes', 'Data berhasil disimpan');
+            $validatedData['foto_rumah'] = $name;
         }
+
+        $validatedData['user_id'] = $user->id; 
+
+        // Menambahkan data ke tabel Pelanggan
+        $storePelanggan = Pelanggan::create($validatedData);
+
+        if ($storePelanggan) {
+            // Kalau berhasil, update role pengguna menjadi 'pelanggan'
+            $user = User::find($user->id);
+
+            $updateUserRole = $user->update([
+                'role_id' => '4',
+            ]);
+        }
+
+        return redirect()->back()->with('succes', 'Data berhasil disimpan');
     }
 
 }

@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'username' => 'Budi',
             'email' => 'budi@gmail.com',
             'password' => bcrypt('123'),
-            'role_id' => 4,
+            'role_id' => 5,
         ]);
     }
 }

@@ -16,7 +16,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role->nama != "user") {
+        if (Auth::user()->role->nama != "user" && Auth::user()->role->nama != "pelanggan"){
             return abort(403);
         } else {
             return $next($request);
