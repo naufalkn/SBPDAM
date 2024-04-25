@@ -1,4 +1,3 @@
-// Used to show the next and previous fieldset in the form
 $(document).ready(function () {
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity;
@@ -36,6 +35,12 @@ $(document).ready(function () {
             }
         );
         setProgressBar(++current);
+
+        // Memanggil fungsi displayPreviousInputs() saat langkah keempat ditampilkan
+        if (current === 4) {
+            displayPreviousInputs();
+            
+        }
     });
 
     $(".previous").click(function () {
@@ -75,8 +80,42 @@ $(document).ready(function () {
         percent = percent.toFixed();
         $(".progress-bar").css("width", percent + "%");
     }
-
-    $(".submit").click(function () {
-        return false;
+    
+    $("#prosesDaftar").submit(function () {
+        // Panggil fungsi displayPreviousInputs() sebelum submit formulir
+        displayPreviousInputs();
+        // Lanjutkan proses submit formulir
+        return true;
     });
 });
+
+function displayPreviousInputs() {
+    // Menampilkan data inputan dari langkah-langkah sebelumnya di langkah terakhir
+    document.getElementById("namaLengkap").textContent = $("input[name='nama']").val();
+    document.getElementById("emailPelanggan").textContent = $("input[name='email']").val();
+    document.getElementById("pekerjaanPelanggan").textContent = $("input[name='pekerjaan']").val();
+    document.getElementById("no_identitasPelanggan").textContent = $("input[name='no_identitas']").val();
+    document.getElementById("no_teleponPelanggan").textContent = $("input[name='no_telepon']").val();
+    var selectedDukuh = $("#dukuh option:selected").text();
+    document.getElementById("dukuhPelanggan").textContent = selectedDukuh !== "" ? selectedDukuh : "Belum dipilih";
+    
+    document.getElementById("rtPelanggan").textContent = $("input[name='rt']").val();
+    document.getElementById("rwPelanggan").textContent = $("input[name='rw']").val();
+    var selectedDesa = $("#desa option:selected").text();
+    document.getElementById("desaPelanggan").textContent = selectedDesa !== "" ? selectedDesa : "Belum dipilih";
+    var selectedKecamatan = $("#kecamatan option:selected").text();
+    document.getElementById("kecamatanPelanggan").textContent = selectedKecamatan !== "" ? selectedKecamatan : "Belum dipilih";
+    document.getElementById("jalanPelanggan").textContent = $("input[name='nama_jalan']").val();
+    document.getElementById("jumlahPenghuni").textContent = $("input[name='jmlh_penghuni']").val();
+    document.getElementById("posPelanggan").textContent = $("input[name='kode_pos']").val();
+
+
+    const logoInput = $("input[name='foto_rumah']")[0];
+    if (logoInput.files && logoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#uploadedRumah').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(logoInput.files[0]);
+    }
+}

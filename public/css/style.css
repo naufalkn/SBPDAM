@@ -93,7 +93,7 @@ select {
 
 .msform .action-button {
     width: 100px;
-    background: #673ab7;
+    background: #0073cf  ;
     font-weight: bold;
     color: white;
     border: 0 none;
@@ -106,7 +106,7 @@ select {
 
 .msform .action-button:hover,
 .msform .action-button:focus {
-    background-color: #311b92;
+    background-color: #2c50c7;
 }
 
 .msform .action-button-previous {
@@ -124,7 +124,7 @@ select {
 
 .msform .action-button-previous:hover,
 .msform .action-button-previous:focus {
-    background-color: #000000;
+    background-color: #555555;
 }
 
 .card {
@@ -134,15 +134,46 @@ select {
 }
 
 .fs-title {
-    font-size: 25px;
-    color: #122161;
-    margin-bottom: 15px;
-    font-weight: normal;
+    font-size: 28px;
+    color: black;
+    margin-bottom: 20px;
+    font-weight: bold;
     text-align: left;
 }
 
+.fs-subtitle {
+    font-size: 25px;
+    font-weight: bold;
+    color: #122161 ;
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.label{
+    font-size: 15px;
+    color: gray;
+    font-weight: normal;
+    margin-bottom: 8px;
+    text-align: left;
+
+}
+
+.text{
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: left;
+
+}
+
+.double-detail{
+    display: flex;
+}
+
 .purple-text {
-    color: #673ab7;
+    color: #311b92;
     font-weight: normal;
 }
 
@@ -168,7 +199,7 @@ select {
 }
 
 #progressbar .active {
-    color: #673ab7;
+    color: #1e90ff;
 }
 
 #progressbar li {
@@ -226,7 +257,7 @@ select {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: #673ab7;
+    background: #1e90ff;
 }
 
 .progress {
@@ -234,7 +265,7 @@ select {
 }
 
 .progress-bar {
-    background-color: #673ab7;
+    background-color: #1e90ff;
 }
 
 .fit-image {

@@ -129,7 +129,7 @@ class UserController extends Controller
         $dukuhList = Dukuh::all();
         $desaList = Desa::all();
         $kecamatanList = Kecamatan::all();
-        // dd($desaList->first()->nmdesa);
+        // dd($dukuhList->all());
         return view('user.form-sambungan', [
             'user' => $user,
             'nama' => auth::user()->username,

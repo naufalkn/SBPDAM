@@ -16,7 +16,7 @@ return new class extends Migration
             // Data Diri
             $table->string('nama');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->text('pekerjaan');
             $table->bigInteger('no_identitas');
             $table->bigInteger('no_telepon');

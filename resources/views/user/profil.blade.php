@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('container')
-    <div class="font-sans h-screen bg-gray-200">
+    <div class="font-sans h-full bg-gray-200">
         @include('layouts.navbar')
         <div class="flex ">
             <!-- NAV -->
@@ -146,12 +146,7 @@
                         <div
                             class="h-full w-full  p-6 shadow-xl rounded-xl sm:px-12 bg-white dark:bg-green-50 dark:text-gray-800">
                             <div class="flex w-full justify-end items-end">
-                                <div class="flex bg-white h-12 w-60 space-x-6">
-                                    <a type="button" href="{{ url('/beranda') }}"
-                                        class="flex space-x-3 justify-center items-center rounded-xl w-full bg-green-500 text-white">
-                                        <i class="fa-solid fa-arrow-left"></i>
-                                        <p>Kembali</p>
-                                    </a>
+                                <div class="flex bg-white h-12 w-32 space-x-6">
                                     <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                                         class="flex space-x-3 justify-center items-center rounded-xl w-full bg-yellow-400 text-white"
                                         type="button">
