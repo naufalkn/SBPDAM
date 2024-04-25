@@ -186,7 +186,9 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('succes', 'Data berhasil disimpan');
+        return view('user.succes', [
+            'nama' => auth::user()->username,
+        ]);
     }
 
 }

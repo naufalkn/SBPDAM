@@ -52,6 +52,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
 });
 
+Route::view('/succes', 'user.succes');
+
 // Route::middleware(['isAuth'])->group(function () {
 //     // User
     
