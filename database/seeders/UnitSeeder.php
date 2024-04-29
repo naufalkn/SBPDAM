@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Unit;
+use App\Models\Units;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,20 +13,27 @@ class UnitSeeder extends Seeder
      */
     public function run(): void
     {
-        Unit::create([
-            'kode_unit' => '001', 
-            'nama_unit' => 'Unit 1',
-            'alamat' => 'Jl. Jendral Sudirman No. 1',
-            'nomor_telepon' => '021-1234567',
-            'wilayah' => 'gondang, sambungmacan, tangen'
-        ]);
-
-        Unit::create([
-            'kode_unit' => '002', 
-            'nama_unit' => 'Unit 2',
-            'alamat' => 'Jl. Jendral Aha No. 1',
-            'nomor_telepon' => '021-1234500',
-            'wilayah' => 'Bulak Asri, Plumbungan'
-        ]);
+        Units::insert(['kd_unit' => 00 , 'nm_unit' => 'Sragen']);  
+        Units::insert(['kd_unit' => 01 , 'nm_unit' => 'Sukodono']);  
+        Units::insert(['kd_unit' => 02 , 'nm_unit' => 'Gemolong']); 
+        Units::insert(['kd_unit' => 03 , 'nm_unit' => 'Masaran']); 
+        Units::insert(['kd_unit' => 04 , 'nm_unit' => 'Tanon']);  
+        Units::insert(['kd_unit' => 05 , 'nm_unit' => 'Sidoharjo']);  
+        Units::insert(['kd_unit' => 06 , 'nm_unit' => 'Sumberlawang']); 
+        Units::insert(['kd_unit' => 07 , 'nm_unit' => 'Mojokerto']); 
+        // Units::insert(['kd_unit' => 08 , 'nm_unit' => 'Sambirejo']);
+        Units::insert(['kd_unit' => '08' , 'nm_unit' => 'Sambirejo']);
+ 
+        Units::insert(['kd_unit' => '09' , 'nm_unit' => 'Gondang']);
+        Units::insert(['kd_unit' => 10 , 'nm_unit' => 'Pengkok']);  
+        Units::insert(['kd_unit' => 11 , 'nm_unit' => 'Sambungmacan']);  
+        Units::insert(['kd_unit' => 12 , 'nm_unit' => 'Kalijambe']); 
+        Units::insert(['kd_unit' => 99 , 'nm_unit' => 'Gabungan']); 
+        Units::insert(['kd_unit' => 13 , 'nm_unit' => 'Ngrampal']); 
+        Units::insert(['kd_unit' => 14 , 'nm_unit' => 'Plupuh']); 
+        Units::insert(['kd_unit' => 15 , 'nm_unit' => 'Jirapan']); 
+        Units::insert(['kd_unit' => 88 , 'nm_unit' => 'AirTangki']); 
+        Units::insert(['kd_unit' => 16 , 'nm_unit' => 'Mondokan']); 
+        Units::insert(['kd_unit' => 17 , 'nm_unit' => 'Jenar']);  
     }
 }

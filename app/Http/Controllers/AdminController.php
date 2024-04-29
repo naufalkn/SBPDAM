@@ -17,8 +17,9 @@ class AdminController extends Controller
     public function dashboard()
     {
         $jlmh_pelanggan = Pelanggan::all()->count();
-        $nama = User::all()->first()->username;
+        $nama = Auth::user()->username;
         $pelanggan = Pelanggan::all();
+        
         // dd($nama);
         return view('admin.dashboard', [
             'nama' => $nama,
@@ -33,13 +34,13 @@ class AdminController extends Controller
         $dukuhList = Dukuh::all();
         $desaList = Desa::all();
         $kecamatanList = Kecamatan::all();
-        $unitList = UnitCoba::all();
+        // $unitList = UnitCoba::all();
         return view('admin.form-daftar', [
             'nama' => $nama,
             'dukuhList' => $dukuhList,
             'desaList' => $desaList,
             'kecamatanList' => $kecamatanList,
-            'unitList' => $unitList,
+            // 'unitList' => $unitList,
         ]);
     }
 

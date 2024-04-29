@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PayController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,7 @@ Route::get('/', function () {
     return view('index'); });
 
 // LOGIN
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'prosesLogin']);
 
 // REGISTER
@@ -26,7 +27,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::view('/beranda', 'user.beranda');
 
-    Route::get('/riwayat', [UserController::class, 'riwayat']);
+    Route::get('/tagihan', [PayController::class, 'tagihan'])->name('tagihan');
+
+    Route::get('/bayar' , [PayController::class, 'bayar']);
+
+    Route::get('/berhasil/{id}' , [PayController::class, 'berhasil'])->name('berhasil');
 
     Route::get('/bantuan', [UserController::class, 'bantuan']);
 
@@ -35,6 +40,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/daftar-sambungan', [UserController::class, 'sambungan']);
 
     Route::post('/prosesDaftar' , [UserController::class, 'prosesDaftar']);
+    
+    Route::view('/succes', 'user.succes');
 
     Route::put('/updateProfil/{id}', [UserController::class, 'updateProfil']);
 }); 
@@ -50,9 +57,15 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::POST('/prosesManual', [AdminController::class, 'prosesManual']);
 
     Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
+
+
 });
 
-Route::view('/succes', 'user.succes');
+
+Route::view('/pengaturan', 'user.pengaturan');
+
+Route::view('/unit', 'unit.dashboard');
+
 
 // Route::middleware(['isAuth'])->group(function () {
 //     // User

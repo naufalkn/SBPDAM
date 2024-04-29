@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DesKec;
 use App\Models\User;
 use App\Models\Desa;
 use App\Models\Dukuh;
 use App\Models\Kecamatan;
+use App\Models\Units;
 use App\Models\Pelanggan;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
@@ -42,7 +44,7 @@ class UserController extends Controller
 
     // public function profil()
     // {
-        
+
     //     // try {
     //     //     // Memeriksa apakah ada relasi antara pengguna aktif dan tabel Pelanggan
     //     //     if (auth()->user()->pelanggan()->exists()) {
@@ -68,16 +70,17 @@ class UserController extends Controller
     //     // }
     // }
 
-    public function profil() {
+    public function profil()
+    {
         // ini lebih mudah dipahami harusnya
         $pelanggan = Pelanggan::where('user_id', auth()->user()->id)->first();
 
-        if($pelanggan) {
+        if ($pelanggan) {
             return view('user.profil', [
                 'nama' => auth()->user()->username,
                 'pelanggan' => $pelanggan,
             ]);
-        } elseif(!$pelanggan) {
+        } elseif (!$pelanggan) {
             return view('user.profil', [
                 'nama' => auth()->user()->username,
             ]);
@@ -86,56 +89,88 @@ class UserController extends Controller
         }
     }
 
-    public function updateProfil($id, Request $request){
-        try {
-            $request->validate([
-                'username' => 'required|string|max:255|unique:users,username,' . auth()->user()->id,
-                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-        
-            $user = Auth::user();
-            $user->username = $request->username;
-        
-            // Perbarui foto pengguna jika ada
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-                // Pastikan file foto telah berhasil diunggah
-                if ($file->isValid()) {
-                    // Pindahkan file ke direktori yang diinginkan
-                    $fileName = $file->getClientOriginalName();
-                    $file->move(public_path('img'), $fileName);
-                    // Simpan nama file foto ke atribut $foto pada model pengguna
-                    $user->foto = $fileName;
-                } else {
-                    // Jika file foto tidak valid, kembalikan dengan pesan error
-                    return redirect()->back()->with('error', 'File foto tidak valid.');
-                }
-            }
-            
-            $user->save();
-        
-            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
-        } catch (ValidationException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
+    public function updateProfil($id, Request $request)
+{
+    try {
+        $user = Auth::user();
+
+        $rules = [
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ];
+
+        // Perbarui aturan validasi jika password baru dimasukkan
+        if ($request->filled('new_password')) {
+            $rules['current_password'] = 'required|string';
+            $rules['new_password'] = 'min:8|confirmed';
         }
-        
+
+        $request->validate($rules);
+
+        // Periksa apakah kata sandi saat ini sesuai dengan yang ada di database
+        if ($request->filled('current_password')) {
+            if (!\Hash::check($request->current_password, $user->password)) {
+                return redirect()->back()->with('error', 'Kata sandi saat ini tidak sesuai.');
+            }
+        }
+
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->tanggal_lahir = $request->tanggal_lahir;
+        $user->jenis_kelamin = $request->jenis_kelamin;
+        $user->nama = $request->nama;
+
+        // Perbarui kata sandi jika ada
+        if ($request->filled('new_password')) {
+            $user->password = \Hash::make($request->new_password);
+        }
+
+        // Perbarui foto pengguna jika ada
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            // Pastikan file foto telah berhasil diunggah
+            if ($file->isValid()) {
+                // Pindahkan file ke direktori yang diinginkan
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('img'), $fileName);
+                // Simpan nama file foto ke atribut $foto pada model pengguna
+                $user->foto = $fileName;
+            } else {
+                // Jika file foto tidak valid, kembalikan dengan pesan error
+                return redirect()->back()->with('error', 'File foto tidak valid.');
+            }
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
     }
+}
+
 
     public function sambungan()
     {
         $user = Auth::user();
         $dukuhList = Dukuh::all();
-        $desaList = Desa::all();
-        $kecamatanList = Kecamatan::all();
-        // dd($dukuhList->all());
+        $unitList = Units::all();
+        // $desaList = Desa::all();
+        // $kecamatanList = Kecamatan::all();
+        $deskec = DesKec::all();
+        // dd($deskec->all());
         return view('user.form-sambungan', [
             'user' => $user,
             'nama' => auth::user()->username,
             'dukuhList' => $dukuhList,
-            'desaList' => $desaList,
-            'kecamatanList' => $kecamatanList,
+            'deskec' => $deskec,
+            'unitList' => $unitList,
+            // 'desaList' => $desaList,
+            // 'kecamatanList' => $kecamatanList,
         ]);
 
     }
@@ -160,7 +195,8 @@ class UserController extends Controller
             'nama_jalan' => 'required',
             'jmlh_penghuni' => 'required',
             'foto_rumah' => 'required',
-            // 'unit' => 'nullable'
+            'keterangan' => 'required',
+            'unit' => 'nullable'
         ]);
 
         if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
@@ -172,7 +208,7 @@ class UserController extends Controller
             $validatedData['foto_rumah'] = $name;
         }
 
-        $validatedData['user_id'] = $user->id; 
+        $validatedData['user_id'] = $user->id;
 
         // Menambahkan data ke tabel Pelanggan
         $storePelanggan = Pelanggan::create($validatedData);

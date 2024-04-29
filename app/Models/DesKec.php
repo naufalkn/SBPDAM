@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UnitCoba extends Model
+class DesKec extends Model
 {
     use HasFactory;
-    protected $table = 'munit';
+    protected $table = 'deskec';
 
     public function users()
     {

@@ -16,29 +16,33 @@ class UserSeeder extends Seeder
         // super Admin
         User::create([
             'username' => 'superadmin',
+            'nama' => 'Super Admin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 1,
         ]);
         // Admin Unit
         User::create([
-            'username' => 'unit1',
-            'email' => 'unit1@gmail.com',
+            'username' => 'sragen',
+            'nama' => 'sragen',
+            'email' => 'sragen@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 2,
-            'unit_id' => 1,
+            'kd_unit' => 00,
         ]);
         // Pegawai Unit
         User::create([
             'username' => 'Asep',
+            'nama' => 'Asep Sutisna',
             'email' => 'asep@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 3,
-            'unit_id' => 1,
+            'kd_unit' => 00,
         ]);
         // Pelanggan
         User::create([
             'username' => 'Budi',
+            'nama' => 'Budi Santoso',
             'email' => 'budi@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 5,

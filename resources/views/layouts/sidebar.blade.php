@@ -230,12 +230,14 @@
                                 :isActive="Request::is('dashboard*')" />
                         </div>
                     </li>
+                    @can('unit')
                     <li>
                         <div href="/daftar-manual" class="flex items-center p-2">
                             <x-sidebar-menu text="Daftar" icon="fa-solid fa-user-plus" href="/daftar-manual"
                                 :isActive="Request::is('daftar-manual*')" />
                         </div>
                     </li>
+                    @endcan 
                 </ul>
             </div>
             <div class=" h-1/6 items-end flex">

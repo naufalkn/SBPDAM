@@ -4,7 +4,7 @@
     <!-- SIDE -->
     @include('layouts.sidebar')
     <div class="px-5 py-8 lg:py-12 lg:px-8 lg:ml-60 mt-16 text-neutral-300 relative">
-        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Halo, Selamat Datang</p>
+        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Halo, Selamat Datang {{ $nama }}</p>
         <p class="">Website Sambungan Baru PDAM Kabupaten Sragen</p>
 
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">

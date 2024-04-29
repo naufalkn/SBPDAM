@@ -105,9 +105,12 @@ function displayPreviousInputs() {
     document.getElementById("desaPelanggan").textContent = selectedDesa !== "" ? selectedDesa : "Belum dipilih";
     var selectedKecamatan = $("#kecamatan option:selected").text();
     document.getElementById("kecamatanPelanggan").textContent = selectedKecamatan !== "" ? selectedKecamatan : "Belum dipilih";
+    var selectedUnit = $("#unit option:selected").text();
+    document.getElementById("unitPelanggan").textContent = selectedUnit !== "" ? selectedUnit : "Belum dipilih";
     document.getElementById("jalanPelanggan").textContent = $("input[name='nama_jalan']").val();
     document.getElementById("jumlahPenghuni").textContent = $("input[name='jmlh_penghuni']").val();
     document.getElementById("posPelanggan").textContent = $("input[name='kode_pos']").val();
+    document.getElementById("keteranganPelanggan").textContent = $("input[name='keterangan']").val();
 
 
     const logoInput = $("input[name='foto_rumah']")[0];
@@ -119,3 +122,12 @@ function displayPreviousInputs() {
         reader.readAsDataURL(logoInput.files[0]);
     }
 }
+
+document.getElementById('checkbox').addEventListener('change', function() {
+    var formFields = document.getElementById('formFields');
+    if (this.checked) {
+        formFields.style.display = 'block';
+    } else {
+        formFields.style.display = 'none';
+    }
+});

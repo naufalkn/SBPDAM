@@ -23,18 +23,25 @@ class LoginController extends Controller
 
     public function prosesLogin(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $loginField = $request->input('login_field'); // Input field yang mungkin berisi email atau username
+        $password = $request->input('password');
+    
+        // Anda dapat memeriksa apakah input adalah email atau username
+        $fieldType = filter_var($loginField, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $credentials = [
+            $fieldType => $loginField,
+            'password' => $password,
+        ];
 
 
         if (Auth::attempt($credentials)) {
             if (Auth::user()->role->nama == "user" || Auth::user()->role->nama == "pelanggan"){
                 return redirect('/beranda');
-                //    return redirect('/dashboard');
-            } else {
+            } else if (Auth::user()->role->nama == "superadmin"){
                 return redirect('/dashboard');
+            } elseif (Auth::user()->role->nama == "adminunit"){
+                return redirect('/unit');
             }
         } else {
             return back()->with('Login gagal, silahkan coba lagi!');
@@ -52,12 +59,14 @@ class LoginController extends Controller
     {
         $request->validate([
             'username' => 'required',
+            'nama' => 'required',
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
         $user = new User;
         $user->username = $request->username;
+        $user->nama = $request->nama;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();

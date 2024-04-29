@@ -14,26 +14,23 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username');
+            $table->string('nama');
+            $table->enum('jenis_kelamin', ['L', 'P'])->default('L');
+            $table->date('tanggal_lahir')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('foto')->default('default.png');
 
             $table->unsignedBigInteger('role_id')->default(5);
-            $table->unsignedBigInteger('unit_id')->nullable();
-
+            $table->unsignedBigInteger('kd_unit')->nullable();
+            
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('unit_id')->references('id')->on('units');
+            $table->foreign('kd_unit')->references('kd_unit')->on('munit');
 
             $table->rememberToken();
             $table->timestamps();
         });
-
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -51,7 +48,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

@@ -11,9 +11,9 @@
             <h5 class="mb-2 text-xl text-center  tracking-tight text-gray-900 dark:text-white">Calon Pelanggan dikenakan biaya sebesar <span class="font-semibold">Rp. 23.000</span>
                 </h5>
                 <div class="flex w-full items-center justify-center">
-                    <a type="button" href="#"
+                    <a type="button" href="{{ url('/profil/{id}') }}"
                     class="flex h-12 space-x-3 justify-center items-center rounded-xl w-56 bg-green-500 text-white">
-                    <p>Bayar Sekarang</p>
+                    <p>Profil Saya</p>
                 </a>
                 </div>
         </div>

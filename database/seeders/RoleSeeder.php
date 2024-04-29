@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
             'nama' => 'superadmin',
         ]);
         Role::create([
-            'nama' => 'adminunit',
+            'nama' => 'unit',
         ]);
         Role::create([
             'nama' => 'pegawai',

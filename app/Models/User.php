@@ -54,10 +54,11 @@ class User extends Authenticatable
     }
     public function unit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Units::class);
     }
     public function pelanggan()
     {
         return $this->hasOne(Pelanggan::class);
     }
+    
 }

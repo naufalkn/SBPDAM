@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Unit extends Model
+class Units extends Model
 {
     use HasFactory;
-    protected $table = 'units';
-    protected $guarded = ['id'];
+    protected $table = 'munit';
 
+    protected $fillable = [
+        'kd_unit',
+        'nm_unit',
+    ];
+    
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 }

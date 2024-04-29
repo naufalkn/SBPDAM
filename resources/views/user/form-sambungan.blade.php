@@ -15,7 +15,7 @@
                 <div class="card p-4 mt-3 mb-3">
                     <div class="img">
                         <img src="{{ url('img/pdam.png') }}" alt="Logo" width="75px" height="100px" />
-                        <h2 id="heading">Sambungan Baru PDAM Sragen</h2>
+                        <h2 id="heading" class="title">Sambungan Baru PDAM Sragen</h2>
                     </div>
                     <form class="msform" id="prosesDaftar" action="{{ url('/prosesDaftar') }}" method="POST"
                         enctype="multipart/form-data">
@@ -67,7 +67,7 @@
 
                                 <label class="fieldlabels">Email Anda*</label>
                                 <input type="email" placeholder="Masukkan Email Anda" name="email"
-                                    value="{{ auth()->user()->email }}" />
+                                    value="{{ auth()->user()->email }}" readonly/>
 
                                 <label class="fieldlabels">Pekerjaan*</label>
                                 <input type="text" name="pekerjaan" placeholder="Masukkan Pekerjaan Anda" />
@@ -115,18 +115,19 @@
                                     </div>
                                 </div>
                                 <label class="fieldlabels">Desa / Kelurahan*</label>
-                                <select name="kelurahan" id="desa">
-                                    @foreach ($desaList as $item)
+                                <select name="kelurahan" id="desa" onchange="updateKecamatan(this.value)">
+                                    @foreach ($deskec as $item)
                                         <option value="{{ $item->nmdesa }}">{{ $item->nmdesa }}</option>
                                     @endforeach
                                 </select>
+
                                 <label class="fieldlabels">Kecamatan*</label>
-                                {{-- <input type="text" placeholder="Masukkan Kecamatan Anda" name="kecamatan" class="form-control" /> --}}
                                 <select name="kecamatan" id="kecamatan">
-                                    @foreach ($kecamatanList as $item)
+                                    @foreach ($deskec as $item)
                                         <option value="{{ $item->nmkec }}">{{ $item->nmkec }}</option>
                                     @endforeach
                                 </select>
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -143,17 +144,46 @@
                                         </div>
                                     </div>
                                 </div>
-                                <label class="fieldlabels">Nama Perumahan / Jalan*</label>
-                                <input type="text" placeholder="Masukkan Nama Perumahan / Jalan Anda"
-                                    name="nama_jalan" class="form-control" />
-                                <label class="fieldlabels">Foto Rumah</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="fieldlabels">Nama Perumahan / Jalan*</label>
+                                        <input type="text" name="nama_jalan"
+                                            placeholder="Masukkan Nama Perumahan / Jalan Anda" name="nama_jalan"
+                                            class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 d-flex" id="myForm">
+                                        <div class="form-group ">
+                                            <label class="fieldlabels">Unit</label>
+                                            <input type="checkbox" id="checkbox">
+                                        </div>
+                                        <div id="formFields" style="display: none;">
+                                            <!-- Isi dengan input fields atau elemen form lainnya -->
+                                            <div class="form-group">
+                                                <label class="fieldlabels">Unit</label>
+                                                <select name="unit" id="unit">
+                                                        @foreach ($unitList as $item)
+                                                        <option value="{{ $item->nm_unit }}">{{ $item->nm_unit }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+
+                                            </div>
+                                            <!-- tambahkan input fields lainnya sesuai kebutuhan -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="fieldlabels">Keterangan*</label>
+                                <input type="text" name="keterangan"
+                                    placeholder="Apakah ada jaringan PDAM di sekitar rumah Anda?" <label
+                                    class="fieldlabels">Foto Rumah</label>
                                 <input type="file" name="foto_rumah" />
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
-                            {{-- <input type="submit" name="next" class="next action-button" value="submit" /> --}}
                             <input type="button" name="previous" class="previous action-button-previous"
                                 value="Previous" />
                         </fieldset>
+
+                        {{-- Step 4  --}}
                         <fieldset>
                             <div class="form-card">
                                 <div class="row">
@@ -219,6 +249,12 @@
                                                 <p class="text" id="kecamatanPelanggan"></p>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="label">Unit</label>
+                                            <div class="double-detail">
+                                                <p class="text" id="unitPelanggan"></p>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row ">
                                         <div class="col-md-6">
@@ -235,6 +271,12 @@
                                             <label class="label">Kode Pos</label>
                                             <div class="double-detail">
                                                 <p class="text" id="posPelanggan"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="label">Keterangan</label>
+                                            <div class="double-detail">
+                                                <p class="text" id="keteranganPelanggan"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -260,6 +302,21 @@
     </div>
 
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        function updateKecamatan(selectedDesa) {
+            var kecamatanSelect = document.getElementById('kecamatan');
+            var deskec = @json($deskec);
+
+            // Loop through deskec to find the matching kecamatan for the selected desa
+            for (var i = 0; i < deskec.length; i++) {
+                if (deskec[i].nmdesa === selectedDesa) {
+                    // Update the value of kecamatan select with the matching kecamatan
+                    kecamatanSelect.value = deskec[i].nmkec;
+                    break;
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

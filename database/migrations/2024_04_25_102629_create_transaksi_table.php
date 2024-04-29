@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
-            $table->integer('kode_unit');   
-            $table->string('nama_unit');
-            $table->text('alamat')->nullable();
-            $table->string('nomor_telepon')->nullable();
-            $table->text('wilayah');
+            $table->foreignId('pelanggan_id')->constrained('pelanggans');
+            $table->bigInteger('total_bayar');
+            $table->enum('status', ['PENDING', 'SUCCESS', 'FAILED']);
+            $table->string('snap_token')->nullable();
+            // $table->date('tanggal_pembayaran');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('transaksi');
     }
 };

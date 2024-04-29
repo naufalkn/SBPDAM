@@ -32,7 +32,7 @@
                 <div class="flex flex-1 p-4 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="hidden lg:flex space-x-6 w-full h-full justify-end items-center">
                         <x-navbar-menu text="Beranda" href="/beranda" :isActive="Request::is('beranda*')" />
-                        <x-navbar-menu text="Riwayat" href="/riwayat" :isActive="Request::is('riwayat*')" />
+                        <x-navbar-menu text="tagihan" href="/tagihan" :isActive="Request::is('tagihan*')" />
                         <x-navbar-menu text="Bantuan" href="/bantuan" :isActive="Request::is('bantuan*')" />
                     </div>
                 </div>
@@ -92,21 +92,12 @@
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                             <li>
                                 <a href="/profil/{{ auth()->user()->id }}"
-                                    class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                    class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Pengaturan</a>
                             </li>
                         </ul>
                         <div class="py-1">
                             <a href="{{ url('/logout') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
-                                out</a>
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Keluar</a>
                         </div>
                     </div>
                 </div>

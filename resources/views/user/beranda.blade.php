@@ -9,8 +9,8 @@
                 <div class="">
                     <div href=" type="" class="w-full h-12 border-gray-800 rounded flex items-center">
                         <div class="flex items-center space-x-6 w-full">
-                            <img src="https://ui-avatars.com/api/?name=Habib+Mhamadi&size=128&background=ff4433&color=fff"
-                                class="w-10 rounded-full" alt="Profile">
+                            <img src="{{ asset('img/' . auth()->user()->foto) }}" class="w-10 h-10 rounded-full"
+                                alt="Profile">
                             <div class="">
                                 <h1 class="text-gray-500 font-bold">Halo, Selamat datang </h1>
                                 <h1 class="text-black font-semibold text-xl">{{ auth()->user()->nama }}</h1>
@@ -20,15 +20,15 @@
                 </div>
 
                 @if (App\Models\Pelanggan::where('email', auth()->user()->email)->exists())
-                    <p class="p-2 w-full font-bold text-2xl text-black dark:text-gray-400">Anda sudah Berlangganan Air
+                    <p class="p-2 w-full text-2xl dark:text-gray-400">Anda sudah Berlangganan Air
                         Bersih di PDAM Sragen</p>
                 @else
-                    <p class="p-2 w-full font-bold text-2xl text-black dark:text-gray-400">Mari Mulai Berlangganan dan
+                    <p class="p-2 w-full text-2xl dark:text-gray-400">Mari Mulai Berlangganan dan
                         Nikmati
                         Layanan Air Bersih</p>
                     <div class="">
                         <a href="/daftar-sambungan" type="submit"
-                            class="text-white bg-green-600 hover:bg-green-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
+                            class="text-white bg-blue-600 hover:bg-blue-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
                             <div class="flex items-center justify-between space-x-2 w-full">
                                 <p class="text-center w-full">Berlangganan</p>
                             </div>
@@ -79,6 +79,6 @@
             </div>
 
         </div>
-        <a href="/logout" class="text-blue-500">logout</a>
     </div>
-@endsection
+    @endsection
+{{-- @include('layouts.footer') --}}
