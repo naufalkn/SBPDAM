@@ -224,13 +224,21 @@
         <div class="h-screen  p-4 pb-24 overflow-y-auto  dark:bg-gray-800">
             <div class="h-5/6 ">
                 <ul class="space-y-2 font-medium">
+                    @can('superadmin')
                     <li>
                         <div href="/dashboard" class="flex items-center p-1">
                             <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard"
                                 :isActive="Request::is('dashboard*')" />
                         </div>
                     </li>
+                    @endcan
                     @can('unit')
+                    <li>
+                        <div href="/unit" class="flex items-center p-1">
+                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/unit"
+                                :isActive="Request::is('dashboard*')" />
+                        </div>
+                    </li>
                     <li>
                         <div href="/daftar-manual" class="flex items-center p-2">
                             <x-sidebar-menu text="Daftar" icon="fa-solid fa-user-plus" href="/daftar-manual"
@@ -245,8 +253,8 @@
                     <a href="{{ url('/logout') }}" type="submit"
                         class="text-white bg-red-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
                         <div class="flex items-center justify-between space-x-2 w-full">
-                            <img src="https://ui-avatars.com/api/?name=Habib+Mhamadi&size=128&background=ff4433&color=fff"
-                                class="w-7 rounded-full" alt="Profile">
+                            <img src="{{ asset('img/' . auth()->user()->foto) }}"
+                                class="w-6 h-6 rounded-full" alt="Profile">
                             <h1>Keluar</h1>
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>

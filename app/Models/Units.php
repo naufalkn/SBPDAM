@@ -19,4 +19,8 @@ class Units extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class);
+    }
 }

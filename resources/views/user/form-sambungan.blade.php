@@ -159,16 +159,21 @@
                                         <div id="formFields" style="display: none;">
                                             <!-- Isi dengan input fields atau elemen form lainnya -->
                                             <div class="form-group">
-                                                <label class="fieldlabels">Unit</label>
-                                                <select name="unit" id="unit">
-                                                        @foreach ($unitList as $item)
-                                                        <option value="{{ $item->nm_unit }}">{{ $item->nm_unit }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-
+                                                <div class="multi-form">
+                                                    <label class="fieldlabels">Unit</label>
+<select name="nm_unit" id="nm_unit" class="form-control select2">
+    @foreach ($unitList as $item)
+        <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">{{ $item->nm_unit }}</option>
+    @endforeach
+</select>
+<label class="fieldlabels">Kode Unit</label>
+<select name="kd_unit" id="kd_unit" class="form-control select2">
+    @foreach ($unitList as $item)
+        <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}</option>
+    @endforeach
+</select>
+                                                </div>
                                             </div>
-                                            <!-- tambahkan input fields lainnya sesuai kebutuhan -->
                                         </div>
                                     </div>
                                 </div>
@@ -316,6 +321,21 @@
                 }
             }
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Saat pemilihan unit berubah
+            $('#nm_unit').change(function(){
+                var selectedUnit = $(this).find(':selected');
+                var kodeUnit = selectedUnit.data('kd-unit');
+                // Set nilai kode unit sesuai dengan data yang tersimpan pada atribut data-kd-unit
+                $('#kd_unit').val(kodeUnit);
+            });
+    
+            // Inisialisasi plugin Select2
+            $('.select2').select2();
+        });
     </script>
 </body>
 

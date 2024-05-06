@@ -15,4 +15,8 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function unit()
+    {
+        return $this->belongsTo(Pelanggan::class);
+    }
 }

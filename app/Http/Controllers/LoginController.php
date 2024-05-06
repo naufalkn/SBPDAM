@@ -40,7 +40,7 @@ class LoginController extends Controller
                 return redirect('/beranda');
             } else if (Auth::user()->role->nama == "superadmin"){
                 return redirect('/dashboard');
-            } elseif (Auth::user()->role->nama == "adminunit"){
+            } elseif (Auth::user()->role->nama == "unit"){
                 return redirect('/unit');
             }
         } else {

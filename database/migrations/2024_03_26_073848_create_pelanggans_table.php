@@ -30,7 +30,8 @@ return new class extends Migration
             $table->integer('kode_pos');
             $table->text('nama_jalan');
             $table->integer('jmlh_penghuni');
-            $table->string('unit')->nullable();
+            $table->string('nm_unit')->nullable();
+            $table->string('kd_unit')->nullable();
             $table->string('foto_rumah')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();

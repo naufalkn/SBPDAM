@@ -16,14 +16,14 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $jlmh_pelanggan = Pelanggan::all()->count();
+        $jmlh_pelanggan = Pelanggan::all()->count();
         $nama = Auth::user()->username;
         $pelanggan = Pelanggan::all();
         
         // dd($nama);
         return view('admin.dashboard', [
             'nama' => $nama,
-            'jlmh_pelanggan' => $jlmh_pelanggan,
+            'jmlh_pelanggan' => $jmlh_pelanggan,
             'pelanggan' => $pelanggan,
         ]);
     }

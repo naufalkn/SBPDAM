@@ -13,8 +13,8 @@
                 <div
                     class="flex flex-col justify-center h-96 items-center max-w-xs p-6 shadow-xl rounded-xl sm:px-12 bg-white dark:bg-green-50 dark:text-gray-800">
                     <div class="h-2/3">
-                        <img src="" alt=""
-                            class="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square">
+                        <img src="{{ asset('img/'. $item->user->foto) }}" alt=""
+                            class="w-40 h-36 mx-auto rounded-full dark:bg-gray-500 aspect-square">
                     </div>
                     <div class="text-center divide-y dark:divide-gray-300">
                         <div class="my-2 space-y-1">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div
-                    class="h-28 w-full space-y-3  max-w-xs p-5 shadow-xl rounded-xl bg-white dark:bg-green-50 dark:text-gray-800">
+                    class="h-full w-full space-y-3  max-w-xs p-5 shadow-xl rounded-xl bg-white dark:bg-green-50 dark:text-gray-800">
                     <div class="flex items-center space-x-3 w-full">
                         <div class="flex justify-center items-center bg-yellow-400 w-9 h-9 rounded-lg">
                             <i class="fa-solid fa-envelope text-white"></i>
@@ -35,6 +35,18 @@
                             <i class="fa-solid fa-phone text-white"></i>
                         </div>
                         <p> {{ $item->no_telepon }}</p>
+                    </div>
+                    <div class="flex  items-center space-x-3 w-full">
+                        <div class="flex justify-center items-center bg-blue-600 w-9 h-9 rounded-lg">
+                            <i class="fa-solid fa-user-pen text-white"></i>
+                        </div>
+                        <p> {{ $item->created_at->format('d-m-Y') }}</p>
+                    </div>
+                    <div class="flex  items-center space-x-3 w-full">
+                        <div class="flex justify-center items-center bg-red-600 w-9 h-9 rounded-lg">
+                            <i class="fa-solid fa-money-bill-1-wave text-white"></i>
+                        </div>
+                        <p>Pending</p>
                     </div>
                 </div>
             </div>
@@ -107,18 +119,20 @@
                             </div>
                             <div class="flex flex-col pb-3 w-1/2">
                                 <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Unit</p>
-                                <p class="text-lg font-semibold">{{ $item->unit ?? '-'}}</p>
+                                <p class="text-lg font-semibold">{{ $item->nm_unit ?? '-'}}</p>
+                            </div>
+                        </div>
+                        <div class="flex w-full">
+                            <div class="flex flex-col pb-3 w-1/2 ">
+                                <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Foto Rumah</p>
+                                <img src="{{ asset('/foto/' . $item->foto_rumah) }}" class="w-40 h-20" alt="">
+                            </div>
+                            <div class="flex flex-col pb-3 w-1/2">
+                                <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Keterangan Sambungan</p>
+                                <p class="text-lg font-semibold">{{ $item->keterangan ?? '-'}}</p>
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="flex flex-col py-3">
-                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Home address</dt>
-                        <dd class="text-lg font-semibold">92 Miles Drive, Newark, NJ 07103, California, USA</dd>
-                    </div>
-                    <div class="flex flex-col pt-3">
-                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Phone number</dt>
-                        <dd class="text-lg font-semibold">+00 123 456 789 / +12 345 678</dd>
-                    </div> --}}
                 </div>
             </div>
         </div>

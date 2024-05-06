@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
         
         Gate::define('unit', function (User $user) {
-            return auth()->user()->role->nama === 'adminunit';
+            return auth()->user()->role->nama === 'unit';
         });
 
         Gate::define('superadmin', function (User $user) {

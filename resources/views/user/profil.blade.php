@@ -184,46 +184,124 @@
                         {{-- Langganan --}}
                         <div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
                             id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="grid gap-4 mb-4 grid-cols-2">
-                                @if (auth()->user()->pelanggan)
-                                    <div class="col-span-1">
-                                        <label
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                                        <input type="text" name="username" id="username"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                            placeholder="Masukkan Username" value="">
+                            @if (auth()->user()->pelanggan)
+                            <form action="{{ url('/updateLangganan', ['id' => auth()->user()->pelanggan->id]) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="">
+                                    <p class="font-semibold text-xl text-blue-600 mb-6">Data Diri</p>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap</label>
+                                            <input type="text" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}">
+                                        </div>
+                                        <div class="col-span-2 sm:col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pekerjaan</label>
+                                            <input type="text" name="pekerjaan" id="pekerjaan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->pekerjaan }}">
+                                        </div>
                                     </div>
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                            Lengkap</label>
-                                        <input type="text" name="nama" id="nama"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                            placeholder="Masukkan Nama Lengkap" value="">
-                                    </div>
-                            </div>
-                            <div class="w-full justify-end flex">
-                                <button type="submit"
-                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Simpan
-                                </button>
-                            </div>
-                        @else
-                    <div class="col-span-2 bg-gray-100">
-                            <div class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
-                                <div class="flex w-full h-full justify-center items-center ">
-                                    <div class="space-y-4">
-                                        <img src="{{ url('img/ops.svg') }}" class="w-56" alt="">
-                                        <p class="font-bold text-xl w-full text-blue-900">Kamu belum berlangganan nih : (
-                                        </p>
-                                        <div class="">
-                                            <a href="{{ url('/daftar-sambungan') }}"
-                                                class="flex h-10 space-x-3 justify-center items-center rounded-xl w-full bg-blue-900 text-white">Mulai
-                                                Berlangganan</a>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon</label>
+                                            <input type="number" name="no_telepon" id="no_telepon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->no_telepon }}">
+                                        </div>
+                                        <div class="col-span-2 sm:col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No KTP / SIM</label>
+                                            <input type="number" name="no_identitas" id="no_identitas" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->no_identitas }}" readonly>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="">
+                                    <p class="font-semibold text-xl text-blue-600 mb-6">Alamat</p>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dukuh</label>
+                                            <input type="text" name="nama" id="nama" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}" readonly>
+                                        </div>
+                                        <div class="flex space-x-4 col-span-2 sm:col-span-1">
+                                            <div class="">
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RT </label>
+                                                <input type="text" name="rt" id="rt" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->rt }}" readonly>
+                                            </div>
+                                            <div class="">
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RW</label>
+                                                <input type="text" name="rw" id="rw" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->rw }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desa</label>
+                                            <input type="text" name="desa" id="desa" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->kelurahan }}" readonly>
+                                        </div>
+                                        <div class="col-span-2 sm:col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
+                                            <input type="text" name="kecamatan" id="kecamatan" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->kecamatan }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Jalan</label>
+                                            <input type="text" name="nama_jalan" id="nama_jalan" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama_jalan }}" readonly>
+                                        </div>
+                                        <div class="flex space-x-4 col-span-2 sm:col-span-1">
+                                            <div class="">
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Penghuni </label>
+                                                <input type="number" name="jmlh_penghuni" id="jmlh_penghuni" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->jmlh_penghuni }}">
+                                            </div>
+                                            <div class="">
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Pos</label>
+                                                <input type="number" name="kode_pos" id="kode_pos" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->kode_pos }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                                            <input type="text" name="unit" id="unit" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nm_unit }}" readonly>
+                                        </div>
+                                        <div class="col-span-2 sm:col-span-1">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keterangan</label>
+                                            <input type="text" name="keterangan" id="keterangan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->keterangan }}">
+                                        </div>
+                                    </div>
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-1 space-y-2">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto Rumah</label>
+                                            <img src="{{ asset('/foto/' . $pelanggan->foto_rumah) }}" class="w-40 h-20" alt="">
+                                            <input
+                                            class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                            aria-describedby="user_avatar_help" id="foto_rumah" name="foto_rumah"
+                                            type="file">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-full justify-end flex">
+                                    <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Simpan
+                                    </button>
+                                </div>
+                            </form>                            
+                            @else
+                                <div class="col-span-2 bg-gray-100">
+                                    <div
+                                        class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
+                                        <div class="flex w-full h-full justify-center items-center ">
+                                            <div class="space-y-4">
+                                                <img src="{{ url('img/ops.svg') }}" class="w-56" alt="">
+                                                <p class="font-bold text-xl w-full text-blue-900">Kamu belum
+                                                    berlangganan
+                                                    nih : (
+                                                </p>
+                                                <div class="">
+                                                    <a href="{{ url('/daftar-sambungan') }}"
+                                                        class="flex h-10 space-x-3 justify-center items-center rounded-xl w-full bg-blue-900 text-white">Mulai
+                                                        Berlangganan</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     </div>

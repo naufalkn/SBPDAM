@@ -3,7 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PayController;
-use App\Http\Controllers\ViewController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +44,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::view('/succes', 'user.succes');
 
     Route::put('/updateProfil/{id}', [UserController::class, 'updateProfil']);
+
+    Route::put('/updateLangganan/{id}', [UserController::class, 'updateLangganan']);
 }); 
 
 // Admin
@@ -61,10 +63,16 @@ Route::middleware(['auth', 'user'])->group(function () {
 
 });
 
+// Unit
+
+Route::get('/unit', [UnitController::class, 'index']);
+
+
+
 
 Route::view('/pengaturan', 'user.pengaturan');
 
-Route::view('/unit', 'unit.dashboard');
+// Route::view('/unit', 'unit.dashboard');
 
 
 // Route::middleware(['isAuth'])->group(function () {

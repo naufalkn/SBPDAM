@@ -4,8 +4,8 @@
     <!-- SIDE -->
     @include('layouts.sidebar')
     <div class="px-5 py-8 lg:py-12 lg:px-8 lg:ml-60 mt-16 text-neutral-300 relative">
-        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Halo, Selamat Datang {{ $nama }}</p>
-        <p class="">Website Sambungan Baru PDAM Kabupaten Sragen</p>
+        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Halo, Selamat Datang </p>
+        <p class="">Website Sambungan Baru PDAM Kabupaten Sragen Unit {{ $nama }}</p>
 
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">
             
@@ -15,14 +15,14 @@
             <div class="w-1/3">
                 <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
-                        <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-blue-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">Jumlah
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-blue-700 dark:text-white">Jumlah
                                 Pelanggan
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan }}</p>
+                            <p class="mb-3 text-2xl text-blue-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan }}</p>
                         </div>
                     </div>
                 </div>
@@ -74,10 +74,13 @@
                             No Telp
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Kecamatan
+                            Unit
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Kelurahan
+                            Tanggal
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Pembayaran
                         </th>
                         <th scope="col" class="px-6 py-3 ">
                             Detail
@@ -101,14 +104,17 @@
                                 {{ $item->no_telepon }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->kecamatan }}
+                                {{ $item->nm_unit }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->kelurahan }}
+                                {{ $item->created_at->format('d-m-Y') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                Pending
                             </td>
                             <td class="px-6 py-4 ">
                                 <a href="{{ url('/detail-user/  ' . $item->id) }}" type="button"
-                                    class="text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-green-900">
+                                    class="text-white bg-yellow-400 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-green-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
                             </td>
@@ -127,5 +133,44 @@
                 </tbody>
             </table>
         </div>
+        <div class="w-full h-full">
+            {!! $chart->container() !!}
+        </div>
     </div>
+
+    <script src="{{ $chart->cdn() }}"></script>
+
+{{ $chart->script() }}
+    {{-- <script>
+        var ctx = document.getElementById('grafik-pelanggan').getContext('2d');
+        var data = @json($jumlah_pelanggan_per_bulan);
+        var bulanLabels = data.map(function(item) {
+            return item.bulan;
+        });
+        var jumlahPelanggan = data.map(function(item) {
+            return item.total;
+        });
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: bulanLabels,
+                datasets: [{
+                    label: 'Jumlah Pelanggan per Bulan',
+                    data: jumlahPelanggan,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(255, 255, 0, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script> --}}
 @endsection

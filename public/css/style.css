@@ -43,6 +43,13 @@ p {
     position: relative;
 }
 
+.multi-form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 25px;
+}
+
 select {
     padding: 8px 15px 8px 15px;
     border: 1px solid #ccc;
