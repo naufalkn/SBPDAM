@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('superadmin', function (User $user) {
             return auth()->user()->role->nama === 'superadmin';
         });
+
+        if(config('app.env') === 'local') {
+            URL::forceScheme('http');
+        }
 
     }
 }

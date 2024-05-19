@@ -15,7 +15,8 @@
                 <div class="card p-4 mt-3 mb-3">
                     <div class="img">
                         <img src="{{ url('img/pdam.png') }}" alt="Logo" width="75px" height="100px" />
-                        <h2 id="heading" class="title">Sambungan Baru PDAM Sragen</h2>
+                        <h2 id="heading" class="title">Sambungan Baru PERUMDA AIR MINUM TIRTO NEGORO</h2>
+                        <h2 id="heading" class="title">Kabupaten Sragen </h2>
                     </div>
                     <form class="msform" id="prosesDaftar" action="{{ url('/prosesDaftar') }}" method="POST"
                         enctype="multipart/form-data">
@@ -67,7 +68,7 @@
 
                                 <label class="fieldlabels">Email Anda*</label>
                                 <input type="email" placeholder="Masukkan Email Anda" name="email"
-                                    value="{{ auth()->user()->email }}" readonly/>
+                                    value="{{ auth()->user()->email }}" readonly />
 
                                 <label class="fieldlabels">Pekerjaan*</label>
                                 <input type="text" name="pekerjaan" placeholder="Masukkan Pekerjaan Anda" />
@@ -124,7 +125,7 @@
                                 <label class="fieldlabels">Kecamatan*</label>
                                 <select name="kecamatan" id="kecamatan">
                                     @foreach ($deskec as $item)
-                                        <option value="{{ $item->nmkec }}">{{ $item->nmkec }}</option>
+                                        <option value="{{ $item->nmkec }}" >{{ $item->nmkec }}</option>
                                     @endforeach
                                 </select>
 
@@ -151,30 +152,36 @@
                                             placeholder="Masukkan Nama Perumahan / Jalan Anda" name="nama_jalan"
                                             class="form-control" />
                                     </div>
-                                    <div class="col-md-6 d-flex" id="myForm">
-                                        <div class="form-group ">
+                                    <div class="col-md-6 d-flex">
+                                        {{-- <div class="form-group ">
                                             <label class="fieldlabels">Unit</label>
                                             <input type="checkbox" id="checkbox">
-                                        </div>
-                                        <div id="formFields" style="display: none;">
+                                        </div> --}}
+                                        <div>
                                             <!-- Isi dengan input fields atau elemen form lainnya -->
                                             <div class="form-group">
                                                 <div class="multi-form">
                                                     <label class="fieldlabels">Unit</label>
-<select name="nm_unit" id="nm_unit" class="form-control select2">
-    @foreach ($unitList as $item)
-        <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">{{ $item->nm_unit }}</option>
-    @endforeach
-</select>
-<label class="fieldlabels">Kode Unit</label>
-<select name="kd_unit" id="kd_unit" class="form-control select2">
-    @foreach ($unitList as $item)
-        <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}</option>
-    @endforeach
-</select>
+                                                    <select name="nm_unit" id="nm_unit"
+                                                        class="form-control select2">
+                                                        @foreach ($unitList as $item)
+                                                            <option value="{{ $item->nm_unit }}"
+                                                                data-kd-unit="{{ $item->kd_unit }}">
+                                                                {{ $item->nm_unit }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <label class="fieldlabels">Kode Unit</label>
+                                                    <select name="kd_unit" id="kd_unit"
+                                                        class="form-control select2">
+                                                        @foreach ($unitList as $item)
+                                                            <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 <label class="fieldlabels">Keterangan*</label>
@@ -324,15 +331,15 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             // Saat pemilihan unit berubah
-            $('#nm_unit').change(function(){
+            $('#nm_unit').change(function() {
                 var selectedUnit = $(this).find(':selected');
                 var kodeUnit = selectedUnit.data('kd-unit');
                 // Set nilai kode unit sesuai dengan data yang tersimpan pada atribut data-kd-unit
                 $('#kd_unit').val(kodeUnit);
             });
-    
+
             // Inisialisasi plugin Select2
             $('.select2').select2();
         });

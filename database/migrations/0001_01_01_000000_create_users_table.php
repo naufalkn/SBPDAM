@@ -23,10 +23,10 @@ return new class extends Migration
             $table->string('foto')->default('default.png');
 
             $table->unsignedBigInteger('role_id')->default(5);
-            $table->string('kd_unit')->nullable();
+            // $table->string('kd_unit')->nullable();
             
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('kd_unit')->references('kd_unit')->on('munit');
+            // $table->foreign('kd_unit')->references('kd_unit')->on('munit');
 
             $table->rememberToken();
             $table->timestamps();

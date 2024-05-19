@@ -9,7 +9,7 @@ class Units extends Model
 {
     use HasFactory;
     protected $table = 'munit';
-
+    // protected $primaryKey = 'kd_unit';
     protected $fillable = [
         'kd_unit',
         'nm_unit',
@@ -22,5 +22,9 @@ class Units extends Model
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
+    }
+    public function adminunit()
+    {
+        return $this->belongsTo(AdminUnit::class);
     }
 }

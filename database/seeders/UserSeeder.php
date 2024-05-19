@@ -28,17 +28,8 @@ class UserSeeder extends Seeder
             'email' => 'sragen@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 2,
-            'kd_unit' => "00",
         ]);
 
-        User::create([
-            'username' => 'sukodono',
-            'nama' => 'sukodono',
-            'email' => 'sukodono@gmail.com',
-            'password' => bcrypt('123'),
-            'role_id' => 2,
-            'kd_unit' => "01",
-        ]);
         // Pegawai Unit
         User::create([
             'username' => 'Asep',
@@ -46,7 +37,6 @@ class UserSeeder extends Seeder
             'email' => 'asep@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 3,
-            'kd_unit' => "00",
         ]);
         // Pelanggan
         User::create([

@@ -21,12 +21,16 @@
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex flex-shrink-0 items-center">
-                    <div class="hidden lg:flex items-center w-72 gap-4">
+                    <div class="hidden lg:flex items-center w-80 gap-4">
                         <img src="{{ url('img/pdam.png') }}" alt="" class="w-10">
-
-                        <h1 class="font-extrabold text-blue-900">
-                            PERUSAHAAN DAERAH AIR MINUM KABUPATEN SRAGEN
-                        </h1>
+                        <div class="">
+                            <h1 class="font-extrabold text-blue-900">
+                                PERUMDA AIR MINUM TIRTO NEGORO 
+                            </h1>
+                            <h1 class="font-extrabold text-blue-900">
+                                KABUPATEN SRAGEN
+                            </h1>
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-1 p-4 items-center justify-center sm:items-stretch sm:justify-start">

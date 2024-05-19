@@ -8,49 +8,52 @@
         <p class="">Website Sambungan Baru PDAM Kabupaten Sragen</p>
 
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">
-            
+
         </div>
 
         <div class="flex w-full mt-12">
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
-                        <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-blue-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">Jumlah
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-blue-700 dark:text-white">Jumlah
                                 Pelanggan
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan }}</p>
+                            <p class="mb-3 text-2xl text-blue-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
                         <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
-                            <i class="fa-solid fa-users text-white text-2xl"></i>
+                            <i class="fa-solid fa-building text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">Jumlah Unit
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold"></p>
+                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_unit }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
                         <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">Jumlah User
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold"></p>
+                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_user }}</p>
                         </div>
                     </div>
                 </div>
@@ -74,10 +77,10 @@
                             No Telp
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Kecamatan
+                            Kelurahan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Kelurahan
+                            Unit
                         </th>
                         <th scope="col" class="px-6 py-3 ">
                             Detail
@@ -101,10 +104,10 @@
                                 {{ $item->no_telepon }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->kecamatan }}
+                                {{ $item->kelurahan }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->kelurahan }}
+                                {{ $item->nm_unit }}
                             </td>
                             <td class="px-6 py-4 ">
                                 <a href="{{ url('/detail-user/  ' . $item->id) }}" type="button"
@@ -127,5 +130,11 @@
                 </tbody>
             </table>
         </div>
+        <div class="w-full h-full">
+            {!! $chart->container() !!}
+        </div>
     </div>
+    <script src="{{ $chart->cdn() }}"></script>
+
+    {{ $chart->script() }}
 @endsection

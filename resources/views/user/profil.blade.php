@@ -78,7 +78,7 @@
                             </button>
                         </li>
                     </ul>
-                    <div id="myTabContent" class="w-full">
+                    <div id="myTabContent" class="w-full h-full">
                         {{-- Profil --}}
                         <form action="{{ url('/updateProfil', auth()->user()->id) }}" method="POST"
                             enctype="multipart/form-data">
@@ -182,7 +182,7 @@
                         </form>
 
                         {{-- Langganan --}}
-                        <div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
+                        <div class="p-6 h-full bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
                             id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             @if (auth()->user()->pelanggan)
                             <form action="{{ url('/updateLangganan', ['id' => auth()->user()->pelanggan->id]) }}" method="POST" enctype="multipart/form-data">
@@ -283,12 +283,12 @@
                                 </div>
                             </form>                            
                             @else
-                                <div class="col-span-2 bg-gray-100">
+                                <div class="col-span-2 h-full bg-gray-100">
                                     <div
                                         class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
                                         <div class="flex w-full h-full justify-center items-center ">
-                                            <div class="space-y-4">
-                                                <img src="{{ url('img/ops.svg') }}" class="w-56" alt="">
+                                            <div class="space-y-4 h-full p-16">
+                                                <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
                                                 <p class="font-bold text-xl w-full text-blue-900">Kamu belum
                                                     berlangganan
                                                     nih : (

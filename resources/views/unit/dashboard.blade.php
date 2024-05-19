@@ -8,12 +8,13 @@
         <p class="">Website Sambungan Baru PDAM Kabupaten Sragen Unit {{ $nama }}</p>
 
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">
-            
+
         </div>
 
         <div class="flex w-full mt-12">
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
                         <div class="bg-blue-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
@@ -28,7 +29,8 @@
                 </div>
             </div>
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
                         <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
@@ -42,7 +44,8 @@
                 </div>
             </div>
             <div class="w-1/3">
-                <div class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                <div
+                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
                         <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
@@ -110,11 +113,13 @@
                                 {{ $item->created_at->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4">
-                                Pending
+                                @foreach ($item->transaksi as $transaksi)
+                                    {{ $transaksi->status }}<br>
+                                @endforeach
                             </td>
                             <td class="px-6 py-4 ">
                                 <a href="{{ url('/detail-user/  ' . $item->id) }}" type="button"
-                                    class="text-white bg-yellow-400 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-green-900">
+                                    class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
                             </td>
@@ -140,7 +145,7 @@
 
     <script src="{{ $chart->cdn() }}"></script>
 
-{{ $chart->script() }}
+    {{ $chart->script() }}
     {{-- <script>
         var ctx = document.getElementById('grafik-pelanggan').getContext('2d');
         var data = @json($jumlah_pelanggan_per_bulan);

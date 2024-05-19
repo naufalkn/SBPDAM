@@ -3,12 +3,12 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PayController;
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index'); });
+Route::get('/', function () {return view('auth.login'); });
 
 // LOGIN
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -48,7 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/updateLangganan/{id}', [UserController::class, 'updateLangganan']);
 }); 
 
-// Admin
+// Super Admin
 Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
 
@@ -60,6 +60,17 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
 
+    Route::get('/manage-unit', [AdminController::class, 'unit']);
+
+    Route::post('/tambah-unit', [AdminController::class, 'tambahUnit']);
+
+    Route::get('/hapus-unit/{kd_unit}', [AdminController::class, 'hapusUnit']);
+
+    Route::put('/edit-unit/{kd_unit}', [AdminController::class, 'editUnit']);
+
+    Route::get('/admin-unit', [AdminController::class, 'adminUnit']);
+
+    Route::post('/tambah-admin-unit', [AdminController::class, 'tambahAdminUnit']);
 
 });
 
@@ -67,6 +78,9 @@ Route::middleware(['auth', 'user'])->group(function () {
 
 Route::get('/unit', [UnitController::class, 'index']);
 
+// Pegawai
+
+Route::get('/pegawai', [PegawaiController::class, 'index']);
 
 
 

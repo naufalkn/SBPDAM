@@ -18,7 +18,6 @@
                         </div>
                     </div>
                 </div>
-
                 @if (App\Models\Pelanggan::where('email', auth()->user()->email)->exists())
                     <p class="p-2 w-full text-2xl dark:text-gray-400">Anda sudah Berlangganan Air
                         Bersih di PDAM Sragen</p>
@@ -80,5 +79,4 @@
 
         </div>
     </div>
-    @endsection
-{{-- @include('layouts.footer') --}}
+@endsection

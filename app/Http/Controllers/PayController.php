@@ -15,6 +15,7 @@ class PayController extends Controller
 
         $transaksi = Transaksi::create([
             'pelanggan_id' => $pelanggan->id,
+            'email' => $pelanggan->email,
             'total_bayar' => 23000,
             'status' => 'PENDING',
         ]);
@@ -51,12 +52,13 @@ class PayController extends Controller
     public function berhasil($id)
     {
         $bayar = Transaksi::where('id', $id)->first();
-        // dd($bayar);
         return view('user.berhasil', compact('bayar'));
     }
 
     public function tagihan(Transaksi $transaksi)
     {
+        // $transaksi = Transaksi::where('pelanggan_id', auth()->user()->pelanggan->id)->get();
+        // dd($transaksi);
         return view('user.tagihan', compact('transaksi'));
     }
 
@@ -69,7 +71,7 @@ class PayController extends Controller
                 $transaksi = Transaksi::where('id', $request->order_id)->first();
                 $transaksi->status = 'SUCCESS';
                 $transaksi->save();
-            } else if ($request->transaction_status == 'cancel' or $request->transaction_status == 'deny' or $request->transaction_status == 'expire' or $request->transaction_status == 'failure=') {
+            } else if ($request->transaction_status == 'cancel' or $request->transaction_status == 'deny' or $request->transaction_status == 'expire' or $request->transaction_status == 'failure') {
                 $transaksi = Transaksi::where('id', $request->order_id)->first();
                 $transaksi->status = 'FAILED';
                 $transaksi->save();

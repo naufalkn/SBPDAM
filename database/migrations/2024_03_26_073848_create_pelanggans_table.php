@@ -16,13 +16,13 @@ return new class extends Migration
             // Data Diri
             $table->string('nama');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
             $table->text('pekerjaan');
-            $table->bigInteger('no_identitas');
-            $table->bigInteger('no_telepon');
+            $table->bigInteger('no_identitas')->unique();
+            $table->string('no_telepon', 15);
 
             // Detail Alamat
-            $table->text('dukuh');
+            $table->text('dukuh')->requaired();
             $table->integer('rt');
             $table->integer('rw');
             $table->text('kelurahan');
@@ -30,10 +30,12 @@ return new class extends Migration
             $table->integer('kode_pos');
             $table->text('nama_jalan');
             $table->integer('jmlh_penghuni');
-            $table->string('nm_unit')->nullable();
-            $table->string('kd_unit')->nullable();
+            $table->string('nm_unit');
+            $table->string('kd_unit', 2);
+
+            $table->foreign('kd_unit')->references('kd_unit')->on('munit');
             $table->string('foto_rumah')->nullable();
-            $table->text('keterangan')->nullable();
+            $table->text('keterangan');
             $table->timestamps();
         });
     }

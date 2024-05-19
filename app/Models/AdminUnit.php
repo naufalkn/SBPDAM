@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pelanggan extends Model
+class AdminUnit extends Model
 {
     use HasFactory;
 
-    protected $table ='pelanggans';
+    protected $table ='admin_units';
     protected $guarded = ['id'];
-    // protected $with = ['unit'];
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -21,12 +19,8 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(Units::class);
     }
-    // public function adminUnit()
+    // public function pelanggan()
     // {
-    //     return $this->hasOne(AdminUnit::class);
+    //     return $this->belongsTo(Pelanggan::class);
     // }
-    public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class);
-    }
 }

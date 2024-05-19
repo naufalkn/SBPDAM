@@ -90,68 +90,68 @@ class UserController extends Controller
     }
 
     public function updateProfil($id, Request $request)
-    {
-        try {
-            $user = Auth::user();
+{
+    try {
+        $user = Auth::user();
 
-            $rules = [
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-                'nama' => 'required|string|max:255',
-                'tanggal_lahir' => 'nullable|date',
-                'jenis_kelamin' => 'nullable|in:L,P',
-                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ];
+        $rules = [
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ];
 
-            // Perbarui aturan validasi jika password baru dimasukkan
-            if ($request->filled('new_password')) {
-                $rules['current_password'] = 'required|string';
-                $rules['new_password'] = 'min:8|confirmed';
-            }
-
-            $request->validate($rules);
-
-            // Periksa apakah kata sandi saat ini sesuai dengan yang ada di database
-            if ($request->filled('current_password')) {
-                if (!\Hash::check($request->current_password, $user->password)) {
-                    return redirect()->back()->with('error', 'Kata sandi saat ini tidak sesuai.');
-                }
-            }
-
-            $user->email = $request->email;
-            $user->username = $request->username;
-            $user->tanggal_lahir = $request->tanggal_lahir;
-            $user->jenis_kelamin = $request->jenis_kelamin;
-            $user->nama = $request->nama;
-
-            // Perbarui kata sandi jika ada
-            if ($request->filled('new_password')) {
-                $user->password = \Hash::make($request->new_password);
-            }
-
-            // Perbarui foto pengguna jika ada
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-                // Pastikan file foto telah berhasil diunggah
-                if ($file->isValid()) {
-                    // Pindahkan file ke direktori yang diinginkan
-                    $fileName = $file->getClientOriginalName();
-                    $file->move(public_path('img'), $fileName);
-                    // Simpan nama file foto ke atribut $foto pada model pengguna
-                    $user->foto = $fileName;
-                } else {
-                    // Jika file foto tidak valid, kembalikan dengan pesan error
-                    return redirect()->back()->with('error', 'File foto tidak valid.');
-                }
-            }
-
-            $user->save();
-
-            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
+        // Perbarui aturan validasi jika password baru dimasukkan
+        if ($request->filled('new_password')) {
+            $rules['current_password'] = 'required|string';
+            $rules['new_password'] = 'min:8|confirmed';
         }
+
+        $request->validate($rules);
+
+        // Periksa apakah kata sandi saat ini sesuai dengan yang ada di database
+        if ($request->filled('current_password')) {
+            if (!\Hash::check($request->current_password, $user->password)) {
+                return redirect()->back()->with('error', 'Kata sandi saat ini tidak sesuai.');
+            }
+        }
+
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->tanggal_lahir = $request->tanggal_lahir;
+        $user->jenis_kelamin = $request->jenis_kelamin;
+        $user->nama = $request->nama;
+
+        // Perbarui kata sandi jika ada
+        if ($request->filled('new_password')) {
+            $user->password = \Hash::make($request->new_password);
+        }
+
+        // Perbarui foto pengguna jika ada
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            // Pastikan file foto telah berhasil diunggah
+            if ($file->isValid()) {
+                // Pindahkan file ke direktori yang diinginkan
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('img'), $fileName);
+                // Simpan nama file foto ke atribut $foto pada model pengguna
+                $user->foto = $fileName;
+            } else {
+                // Jika file foto tidak valid, kembalikan dengan pesan error
+                return redirect()->back()->with('error', 'File foto tidak valid.');
+            }
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
     }
+}
 
 
     public function sambungan()
@@ -181,10 +181,10 @@ class UserController extends Controller
 
         $validatedData = $request->validate([
             'nama' => 'required',
-            'email' => 'required',
+            'email' => 'required|email|unique:pelanggans,email',
             'pekerjaan' => 'required',
-            'no_identitas' => 'required',
-            'no_telepon' => 'required',
+            'no_identitas' => 'required|unique:pelanggans,no_identitas',
+            'no_telepon' => 'required|string|max:15',
 
             'dukuh' => 'required',
             'rt' => 'required',
@@ -196,8 +196,8 @@ class UserController extends Controller
             'jmlh_penghuni' => 'required',
             'foto_rumah' => 'required',
             'keterangan' => 'required',
-            'nm_unit' => 'nullable',
-            'kd_unit' => 'nullable'
+            'nm_unit' => 'required',
+            'kd_unit' => 'required|exists:munit,kd_unit',
         ]);
 
         if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
@@ -221,15 +221,15 @@ class UserController extends Controller
             $updateUserRole = $user->update([
                 'role_id' => '4',
             ]);
-
+            
         }
 
+        // dd($storePelanggan);
         return view('user.succes', [
             'nama' => auth::user()->username,
         ]);
     }
 
-    // Controller
     public function updateLangganan($id, Request $request)
     {
         try {
@@ -247,6 +247,7 @@ class UserController extends Controller
 
             $validatedData = $request->validate($rules);
 
+            // Jika ada file foto yang diunggah
             if ($request->hasFile('foto_rumah')) {
                 $file = $request->file('foto_rumah');
                 // Pastikan file foto telah berhasil diunggah
@@ -261,16 +262,13 @@ class UserController extends Controller
                     return redirect()->back()->with('error', 'File foto tidak valid.');
                 }
             }
-
             // Memperbarui atribut pelanggan dengan data yang valid
-            $pelanggan->update($validatedData);
-            dd($pelanggan->foto_rumah);
+            $pelanggan->save($validatedData);
 
             return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
         }
     }
-
 
 }

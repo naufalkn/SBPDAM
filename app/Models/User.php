@@ -60,5 +60,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pelanggan::class);
     }
+
+    public function adminUnit ()
+    {
+        return $this->hasOne(AdminUnit::class);
+    }
     
 }

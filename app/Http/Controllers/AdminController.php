@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\YearUsersChart;
+use App\Models\AdminUnit;
 use App\Models\Desa;
 use App\Models\Dukuh;
 use App\Models\Kecamatan;
-use App\Models\UnitCoba;
+use App\Models\Units;
 use App\Models\User;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
@@ -14,19 +16,126 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function dashboard(YearUsersChart $yearUsersChart)
     {
+        $jmlh_user = User::where('role_id', 5)->count();
         $jmlh_pelanggan = Pelanggan::all()->count();
+        $jmlh_unit = Units::all()->count();
         $nama = Auth::user()->username;
         $pelanggan = Pelanggan::all();
-        
-        // dd($nama);
+
+        // dd($jmlh_unit);
         return view('admin.dashboard', [
             'nama' => $nama,
             'jmlh_pelanggan' => $jmlh_pelanggan,
             'pelanggan' => $pelanggan,
+            'jmlh_unit' => $jmlh_unit,
+            'jmlh_user' => $jmlh_user,
+            'chart' => $yearUsersChart->build()
+
         ]);
     }
+
+    public function unit()
+    {
+        $unitList = Units::all();
+        return view('admin.unit', [
+            'unitList' => $unitList,
+        ]);
+    }
+
+    public function tambahUnit(Request $request)
+    {
+        $validatedData = $request->validate([
+            'kd_unit' => 'required',
+            'nm_unit' => 'required',
+        ]);
+
+        // Menggunakan metode insert() untuk menghindari pembuatan kolom updated_at
+        Units::insert($validatedData);
+
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+    }
+
+    public function hapusUnit($kd_unit){
+        Units::destroy($kd_unit);
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+    }
+    
+    public function editUnit(Request $request, $kd_unit)
+{
+    // Mencari unit berdasarkan kd_unit
+    $unit = Units::where('kd_unit', $kd_unit)->first();
+    
+    // Jika unit tidak ditemukan, kembalikan dengan pesan error
+    if (!$unit) {
+        return redirect()->back()->with('error', 'Unit tidak ditemukan.');
+    }
+    
+    // Melakukan pengisian data dari request ke model
+    $unit->nama_unit = $request->nm_unit;
+    
+    // Menyimpan perubahan
+    try {
+        $unit->save();
+        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+    } catch (\Exception $e) {
+        return redirect()->back()->withInput()->withErrors('Gagal menyimpan data. Silakan coba lagi.');
+    }
+}
+
+    
+    
+
+    public function adminUnit()
+    {
+        $adminUnit = AdminUnit::all();
+        $unitlist = Units::all();
+        // dd($adminUnit);
+        return view('admin.admin-unit', [
+            'adminUnit' => $adminUnit,
+            'unitlist' => $unitlist,
+        ]);
+    }
+
+    public function tambahAdminUnit(Request $request)
+{
+    $request->validate([
+        'nama' => 'required',
+        'username' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required',
+        'kd_unit' => 'required',
+        'nm_unit' => 'required',
+    ]);
+
+    
+
+    try {
+        // Membuat entri baru dalam tabel users
+        $user = new User;
+        $user->username = $request->username;
+        $user->nama = $request->nama;
+        $user->role_id = 2;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        // Membuat entri baru dalam tabel adminunits
+        AdminUnit::create([
+            'user_id' => $user->id, // Gunakan id pengguna baru yang dibuat
+            'username' => $request->username, // Ini mungkin tidak diperlukan jika Anda sudah memiliki kolom 'username' di tabel 'adminunits'
+            'role_id' => 2,
+            'kd_unit' => $request->kd_unit,
+            'nm_unit' => $request->nm_unit,
+        ]);
+        
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+    } catch (\Exception $exception) {
+        // Tangkap dan tangani kesalahan yang terjadi selama proses
+        return redirect()->back()->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
+    }
+}
 
     public function daftarManual()
     {
@@ -71,7 +180,7 @@ class AdminController extends Controller
             'jmlh_penghuni' => 'required',
             'unit' => 'required',
             // 'foto_rumah' => 'required',
-        ]); 
+        ]);
 
         // if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
         //     // $fotoPath = $request->file('foto_rumah')->store('public/foto');

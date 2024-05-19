@@ -105,7 +105,7 @@ function displayPreviousInputs() {
     document.getElementById("desaPelanggan").textContent = selectedDesa !== "" ? selectedDesa : "Belum dipilih";
     var selectedKecamatan = $("#kecamatan option:selected").text();
     document.getElementById("kecamatanPelanggan").textContent = selectedKecamatan !== "" ? selectedKecamatan : "Belum dipilih";
-    var selectedUnit = $("#unit option:selected").text();
+    var selectedUnit = $("#nm_unit option:selected").text();
     document.getElementById("unitPelanggan").textContent = selectedUnit !== "" ? selectedUnit : "Belum dipilih";
     document.getElementById("jalanPelanggan").textContent = $("input[name='nama_jalan']").val();
     document.getElementById("jumlahPenghuni").textContent = $("input[name='jmlh_penghuni']").val();
@@ -131,3 +131,4 @@ document.getElementById('checkbox').addEventListener('change', function() {
         formFields.style.display = 'none';
     }
 });
+

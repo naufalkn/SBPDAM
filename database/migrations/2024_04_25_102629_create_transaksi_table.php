@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pelanggan_id')->constrained('pelanggans');
+            // $table->string('email')->constrained('pelanggans');
             $table->bigInteger('total_bayar');
             $table->enum('status', ['PENDING', 'SUCCESS', 'FAILED']);
             $table->string('snap_token')->nullable();

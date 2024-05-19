@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('munit', function (Blueprint $table) {
-            $table->string('kd_unit')->primary();
+            $table->string('kd_unit', 2)->primary();
             $table->string('nm_unit');
         });
     }

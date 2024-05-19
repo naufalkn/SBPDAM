@@ -217,26 +217,38 @@
      
 </div> --}}
 
-<div class="w-60">
-    <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-60 h-screen pt-8 mt-8 transition-transform border-r-2 border-gray-200 lg:translate-x-0 bg-white "
-        aria-label="Sidebar">
-        <div class="h-screen  p-4 pb-24 overflow-y-auto  dark:bg-gray-800">
-            <div class="h-5/6 ">
-                <ul class="space-y-2 font-medium">
-                    @can('superadmin')
+<aside id="logo-sidebar"
+    class="fixed top-0 left-0 z-40 w-60 h-screen pt-8 mt-8 transition-transform border-r-2 border-gray-200 lg:translate-x-0 bg-white "
+    aria-label="Sidebar">
+    <div class="h-screen w-full p-4 pb-24 overflow-y-auto  dark:bg-gray-800">
+        <div class="h-5/6 ">
+            <ul class="space-y-2 font-medium">
+                @can('superadmin')
+                <div class="">
                     <li>
                         <div href="/dashboard" class="flex items-center p-1">
-                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard"
-                                :isActive="Request::is('dashboard*')" />
+                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard" :isActive="Request::is('dashboard*')" />
                         </div>
                     </li>
-                    @endcan
-                    @can('unit')
+                </div>
+                <p class="font-medium tracking-wide text-gray-400">Manajemen Unit</p>
+                <div class="pl-2">
+                    <li>
+                        <div href="/manage-unit" class="flex items-center p-1">
+                            <x-sidebar-menu text="Unit" icon="fa-brands fa-slack" href="/manage-unit" :isActive="Request::is('manage-unit*')" />
+                        </div>
+                    </li>
+                    <li>
+                        <div href="/admin-unit" class="flex items-center p-1">
+                            <x-sidebar-menu text="Admin Unit" icon="fa-brands fa-slack" href="/admin-unit" :isActive="Request::is('admin-unit*')" />
+                        </div>
+                    </li>
+                </div>
+                @endcan
+                @can('unit')
                     <li>
                         <div href="/unit" class="flex items-center p-1">
-                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/unit"
-                                :isActive="Request::is('dashboard*')" />
+                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/unit" :isActive="Request::is('dashboard*')" />
                         </div>
                     </li>
                     <li>
@@ -245,26 +257,26 @@
                                 :isActive="Request::is('daftar-manual*')" />
                         </div>
                     </li>
-                    @endcan 
-                </ul>
-            </div>
-            <div class=" h-1/6 items-end flex">
-                <div class="flex w-full justify-center items-end p-3 h-1/6 ">
-                    <a href="{{ url('/logout') }}" type="submit"
-                        class="text-white bg-red-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
-                        <div class="flex items-center justify-between space-x-2 w-full">
-                            <img src="{{ asset('img/' . auth()->user()->foto) }}"
-                                class="w-6 h-6 rounded-full" alt="Profile">
-                            <h1>Keluar</h1>
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        </div>
-                    </a>
-                </div>
+                @endcan
+            </ul>
+        </div>
+        <div class=" h-1/6 items-end flex">
+            <div class="flex w-full justify-center items-end p-3 h-1/6 ">
+                <a href="{{ url('/logout') }}" type="submit"
+                    class="text-white bg-red-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
+                    <div class="flex items-center justify-between space-x-2 w-full">
+                        <img src="{{ asset('img/' . auth()->user()->foto) }}" class="w-6 h-6 rounded-full"
+                            alt="Profile">
+                        <h1>Keluar</h1>
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </div>
+                </a>
             </div>
         </div>
-    </aside>
+    </div>
+</aside>
 
-    <div id="shadow-sidebar"
-        class="hidden fixed justify-center items-center top-0 left-0 right-0 z-10 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen max-h-full"
-        style="background-color: rgba(0, 0, 0, 0.6);"></div>
+<div id="shadow-sidebar"
+    class="hidden fixed justify-center items-center top-0 left-0 right-0 z-10 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen max-h-full"
+    style="background-color: rgba(0, 0, 0, 0.6);">
 </div>
