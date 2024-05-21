@@ -9,12 +9,12 @@ class Units extends Model
 {
     use HasFactory;
     protected $table = 'munit';
-    // protected $primaryKey = 'kd_unit';
+    protected $primaryKey = 'kd_unit';
+    protected $keyType = 'string';
     protected $fillable = [
-        'kd_unit',
         'nm_unit',
     ];
-    
+
     public function users()
     {
         return $this->belongsTo(User::class);

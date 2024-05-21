@@ -13,6 +13,7 @@ use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -57,35 +58,28 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
     }
 
-    public function hapusUnit($kd_unit){
+    public function hapusUnit($kd_unit)
+    {
         Units::destroy($kd_unit);
         return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
-    
-    public function editUnit(Request $request, $kd_unit)
-{
-    // Mencari unit berdasarkan kd_unit
-    $unit = Units::where('kd_unit', $kd_unit)->first();
-    
-    // Jika unit tidak ditemukan, kembalikan dengan pesan error
-    if (!$unit) {
-        return redirect()->back()->with('error', 'Unit tidak ditemukan.');
-    }
-    
-    // Melakukan pengisian data dari request ke model
-    $unit->nama_unit = $request->nm_unit;
-    
-    // Menyimpan perubahan
-    try {
-        $unit->save();
-        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
-    } catch (\Exception $e) {
-        return redirect()->back()->withInput()->withErrors('Gagal menyimpan data. Silakan coba lagi.');
-    }
-}
 
-    
-    
+    public function editUnit(Request $request, $kd_unit)
+    {
+        $request->validate([
+            'nm_unit' => 'required|string|max:255',
+        ]);
+
+        // Lakukan update data
+        DB::table('munit')->where('kd_unit', $kd_unit)->update([
+            'nm_unit' => $request->nm_unit,
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+    }
+
+
+
 
     public function adminUnit()
     {
@@ -99,43 +93,43 @@ class AdminController extends Controller
     }
 
     public function tambahAdminUnit(Request $request)
-{
-    $request->validate([
-        'nama' => 'required',
-        'username' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required',
-        'kd_unit' => 'required',
-        'nm_unit' => 'required',
-    ]);
-
-    
-
-    try {
-        // Membuat entri baru dalam tabel users
-        $user = new User;
-        $user->username = $request->username;
-        $user->nama = $request->nama;
-        $user->role_id = 2;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-
-        // Membuat entri baru dalam tabel adminunits
-        AdminUnit::create([
-            'user_id' => $user->id, // Gunakan id pengguna baru yang dibuat
-            'username' => $request->username, // Ini mungkin tidak diperlukan jika Anda sudah memiliki kolom 'username' di tabel 'adminunits'
-            'role_id' => 2,
-            'kd_unit' => $request->kd_unit,
-            'nm_unit' => $request->nm_unit,
+    {
+        $request->validate([
+            'nama' => 'required',
+            'username' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'kd_unit' => 'required',
+            'nm_unit' => 'required',
         ]);
-        
-        return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
-    } catch (\Exception $exception) {
-        // Tangkap dan tangani kesalahan yang terjadi selama proses
-        return redirect()->back()->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
+
+
+
+        try {
+            // Membuat entri baru dalam tabel users
+            $user = new User;
+            $user->username = $request->username;
+            $user->nama = $request->nama;
+            $user->role_id = 2;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            // Membuat entri baru dalam tabel adminunits
+            AdminUnit::create([
+                'user_id' => $user->id, // Gunakan id pengguna baru yang dibuat
+                'username' => $request->username, // Ini mungkin tidak diperlukan jika Anda sudah memiliki kolom 'username' di tabel 'adminunits'
+                'role_id' => 2,
+                'kd_unit' => $request->kd_unit,
+                'nm_unit' => $request->nm_unit,
+            ]);
+
+            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+        } catch (\Exception $exception) {
+            // Tangkap dan tangani kesalahan yang terjadi selama proses
+            return redirect()->back()->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
+        }
     }
-}
 
     public function daftarManual()
     {

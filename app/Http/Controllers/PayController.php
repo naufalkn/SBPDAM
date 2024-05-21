@@ -17,6 +17,7 @@ class PayController extends Controller
             'pelanggan_id' => $pelanggan->id,
             'email' => $pelanggan->email,
             'total_bayar' => 23000,
+            'valid' => '',
             'status' => 'PENDING',
         ]);
 
@@ -29,9 +30,11 @@ class PayController extends Controller
         // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
 
+        $transaksi->valid = $transaksi->id . "-" . time();
+
         $params = [
             'transaction_details' => [
-                'order_id' => $transaksi->id,
+                'order_id' => $transaksi->valid,
                 'gross_amount' => 23000,
             ],
             'customer_details' => [
@@ -68,11 +71,16 @@ class PayController extends Controller
         $our_key = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
         if ($our_key == $request->signature_key) {
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
-                $transaksi = Transaksi::where('id', $request->order_id)->first();
+                $log = fopen("log_sementara.txt", "w");
+
+                fwrite($log, $request);
+
+                fclose($log);
+                $transaksi = Transaksi::where('valid', $request->order_id)->first();
                 $transaksi->status = 'SUCCESS';
                 $transaksi->save();
             } else if ($request->transaction_status == 'cancel' or $request->transaction_status == 'deny' or $request->transaction_status == 'expire' or $request->transaction_status == 'failure') {
-                $transaksi = Transaksi::where('id', $request->order_id)->first();
+                $transaksi = Transaksi::where('valid', $request->order_id)->first();
                 $transaksi->status = 'FAILED';
                 $transaksi->save();
             }
