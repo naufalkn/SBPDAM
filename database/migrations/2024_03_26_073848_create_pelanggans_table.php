@@ -36,6 +36,7 @@ return new class extends Migration
             $table->foreign('kd_unit')->references('kd_unit')->on('munit');
             $table->string('foto_rumah')->nullable();
             $table->text('keterangan');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

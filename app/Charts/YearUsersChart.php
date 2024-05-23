@@ -72,10 +72,10 @@ class YearUsersChart
     $label = $allMonths->toArray();
 
     return $this->chart->barChart()
-        ->setTitle('Statistik Jumlah Pelanggan per Bulan')
+        // ->setTitle('Statistik Jumlah Pelanggan per Bulan')
         ->setSubtitle(date('Y'))
         ->setWidth(700)
-        ->setHeight(400)
+        ->setHeight(350)
         ->addData('Jumlah Pelanggan', $data->values()->toArray())
         ->setXAxis($label);
 }

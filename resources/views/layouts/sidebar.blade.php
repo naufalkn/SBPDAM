@@ -224,43 +224,69 @@
         <div class="h-5/6 ">
             <ul class="space-y-2 font-medium">
                 @can('superadmin')
-                <div class="">
-                    <li>
-                        <div href="/dashboard" class="flex items-center p-1">
-                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard" :isActive="Request::is('dashboard*')" />
-                        </div>
-                    </li>
-                </div>
-                <p class="font-medium tracking-wide text-gray-400">Manajemen Unit</p>
-                <div class="pl-2">
-                    <li>
-                        <div href="/manage-unit" class="flex items-center p-1">
-                            <x-sidebar-menu text="Unit" icon="fa-brands fa-slack" href="/manage-unit" :isActive="Request::is('manage-unit*')" />
-                        </div>
-                    </li>
-                    <li>
-                        <div href="/admin-unit" class="flex items-center p-1">
-                            <x-sidebar-menu text="Admin Unit" icon="fa-brands fa-slack" href="/admin-unit" :isActive="Request::is('admin-unit*')" />
-                        </div>
-                    </li>
-                </div>
+                    <div class="">
+                        <li>
+                            <div href="/dashboard" class="flex items-center p-1">
+                                <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard"
+                                    :isActive="Request::is('dashboard*')" />
+                            </div>
+                        </li>
+                    </div>
+                    <p class="font-medium tracking-wide text-gray-400">Manajemen Unit</p>
+                    <div class="pl-2">
+                        <li>
+                            <div href="/manage-unit" class="flex items-center p-1">
+                                <x-sidebar-menu text="Unit" icon="fa-brands fa-slack" href="/manage-unit"
+                                    :isActive="Request::is('manage-unit*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/admin-unit" class="flex items-center p-1">
+                                <x-sidebar-menu text="Admin Unit" icon="fa-brands fa-slack" href="/admin-unit"
+                                    :isActive="Request::is('admin-unit*')" />
+                            </div>
+                        </li>
+                    </div>
                 @endcan
                 @can('unit')
-                    <li>
-                        <div href="/unit" class="flex items-center p-1">
-                            <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/unit" :isActive="Request::is('dashboard*')" />
-                        </div>
-                    </li>
-                    <li>
-                        <div href="/daftar-manual" class="flex items-center p-2">
-                            <x-sidebar-menu text="Daftar" icon="fa-solid fa-user-plus" href="/daftar-manual"
-                                :isActive="Request::is('daftar-manual*')" />
-                        </div>
-                    </li>
+                        <li>
+                            <div href="/unit" class="flex items-center p-1">
+                                <x-sidebar-menu text="Dashboard" icon="fa-solid fa-chart-line" href="/unit"
+                                    :isActive="Request::is('unit*')" />
+                            </div>
+                        </li>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div href="/pendaftar" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pendaftar" icon="fa-solid fa-user-pen" href="/pendaftar"
+                                    :isActive="Request::is('pendaftar*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/calon-pelanggan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Calon Pelanggan" icon="fa-solid fa-user-clock" href="/calon-pelanggan"
+                                    :isActive="Request::is('calon-pelanggan*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/pelanggan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pelanggan" icon="fa-solid fa-user-check" href="/pelanggan"
+                                    :isActive="Request::is('pelanggan*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div href="" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pegawai" icon="fa-solid fa-user-gear" href=""
+                                    :isActive="Request::is('')" />
+                            </div>
+                        </li>
+                    </ul>
                 @endcan
             </ul>
         </div>
-        <div class=" h-1/6 items-end flex">
+        {{-- <div class=" h-1/6 items-end flex">
             <div class="flex w-full justify-center items-end p-3 h-1/6 ">
                 <a href="{{ url('/logout') }}" type="submit"
                     class="text-white bg-red-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
@@ -272,7 +298,7 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </div> --}}
     </div>
 </aside>
 

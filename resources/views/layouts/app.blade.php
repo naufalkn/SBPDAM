@@ -18,6 +18,7 @@
     {{-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css"> --}}
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
 
 
@@ -34,6 +35,7 @@
     </style>
     @yield('container')
 
+    @yield('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     

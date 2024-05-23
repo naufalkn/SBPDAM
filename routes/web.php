@@ -72,11 +72,16 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     Route::post('/tambah-admin-unit', [AdminController::class, 'tambahAdminUnit']);
 
+    
 });
 
 // Unit
+Route::post('/verif-pelanggan/{id}', [UnitController::class, 'verifPelanggan']);
 
 Route::get('/unit', [UnitController::class, 'index']);
+Route::get('/pendaftar', [UnitController::class, 'pendaftar']);
+Route::get('/calon-pelanggan', [UnitController::class, 'calonPelanggan']);
+Route::get('/pelanggan', [UnitController::class, 'pelanggan']);
 
 // Pegawai
 

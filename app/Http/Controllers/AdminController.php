@@ -217,7 +217,6 @@ class AdminController extends Controller
         ]);
     }
 
-
     public function logout()
     {
         auth()->logout();
