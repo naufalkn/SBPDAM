@@ -16,69 +16,69 @@ class YearUsersChart
     }
 
     public function build(): \ArielMejiaDev\LarapexCharts\barChart
-{
-    // Mendapatkan daftar bulan dalam satu tahun penuh
-    $allMonths = collect([
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-    ]);
+    {
+        // Mendapatkan daftar bulan dalam satu tahun penuh
+        $allMonths = collect([
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ]);
 
-    // Inisialisasi data
-    $data = [];
+        // Inisialisasi data
+        $data = [];
 
-    // Periksa jika peran pengguna adalah 'superadmin'
-    if (auth()->user()->role->nama === 'superadmin') {
-        // Mengumpulkan data jumlah pelanggan tiap bulan untuk semua unit
-        $data = Pelanggan::orderBy('created_at')
-            ->get()
-            ->groupBy(function ($pelanggan) {
-                return $pelanggan->created_at->format('F');
-            })
-            ->map(function ($group) {
-                return $group->count();
-            })
-            ->toArray();
-        // dd($data);
-    } else {
-        // Mengumpulkan data jumlah pelanggan tiap bulan berdasarkan unit pengguna
-        $data = Pelanggan::where("kd_unit", Auth::user()->adminUnit->kd_unit)
-            ->orderBy('created_at')
-            ->get()
-            ->groupBy(function ($pelanggan) {
-                return $pelanggan->created_at->format('F');
-            })
-            ->map(function ($group) {
-                return $group->count();
-            })
-            ->toArray();
+        // Periksa jika peran pengguna adalah 'superadmin'
+        if (auth()->user()->role->nama === 'superadmin') {
+            // Mengumpulkan data jumlah pelanggan tiap bulan untuk semua unit
+            $data = Pelanggan::orderBy('created_at')
+                ->get()
+                ->groupBy(function ($pelanggan) {
+                    return $pelanggan->created_at->format('F');
+                })
+                ->map(function ($group) {
+                    return $group->count();
+                })
+                ->toArray();
+            // dd($data);
+        } else {
+            // Mengumpulkan data jumlah pelanggan tiap bulan berdasarkan unit pengguna
+            $data = Pelanggan::where("kd_unit", Auth::user()->adminUnit->kd_unit)
+                ->orderBy('created_at')
+                ->get()
+                ->groupBy(function ($pelanggan) {
+                    return $pelanggan->created_at->format('F');
+                })
+                ->map(function ($group) {
+                    return $group->count();
+                })
+                ->toArray();
+        }
+
+        // Mengisi data untuk setiap bulan, jika tidak ada data, nilainya menjadi 0
+        $data = $allMonths->map(function ($month) use ($data) {
+            return $data[$month] ?? 0;
+        });
+
+        // Label bulan
+        $label = $allMonths->toArray();
+
+        return $this->chart->barChart()
+            // ->setTitle('Statistik Jumlah Pelanggan per Bulan')
+            ->setSubtitle(date('Y'))
+            ->setWidth(auth()->user()->role->nama == 'superadmin' ? 1200 : 700)
+            ->setHeight(auth()->user()->role->nama == 'superadmin' ? 400 : 350)
+            ->addData('Jumlah Pelanggan', $data->values()->toArray())
+            ->setXAxis($label);
     }
-
-    // Mengisi data untuk setiap bulan, jika tidak ada data, nilainya menjadi 0
-    $data = $allMonths->map(function ($month) use ($data) {
-        return $data[$month] ?? 0;
-    });
-
-    // Label bulan
-    $label = $allMonths->toArray();
-
-    return $this->chart->barChart()
-        // ->setTitle('Statistik Jumlah Pelanggan per Bulan')
-        ->setSubtitle(date('Y'))
-        ->setWidth(700)
-        ->setHeight(350)
-        ->addData('Jumlah Pelanggan', $data->values()->toArray())
-        ->setXAxis($label);
-}
 
 
 

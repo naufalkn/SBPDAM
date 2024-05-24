@@ -72,6 +72,10 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     Route::post('/tambah-admin-unit', [AdminController::class, 'tambahAdminUnit']);
 
+    Route::get('/hapus-admin-unit/{id}', [AdminController::class, 'hapusAdminUnit']);
+
+    Route::get('/semua-pelanggan', [AdminController::class, 'pelanggan']);
+
     
 });
 

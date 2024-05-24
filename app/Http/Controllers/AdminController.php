@@ -103,8 +103,6 @@ class AdminController extends Controller
             'nm_unit' => 'required',
         ]);
 
-
-
         try {
             // Membuat entri baru dalam tabel users
             $user = new User;
@@ -130,6 +128,32 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
         }
     }
+
+    public function hapusAdminUnit($id)
+    {
+        // Temukan AdminUnit berdasarkan ID
+        $adminUnit = AdminUnit::find($id);
+
+        if ($adminUnit) {
+            // Hapus AdminUnit terlebih dahulu
+            $adminUnit->delete();
+
+            // Hapus pengguna terkait jika ada
+            $user = $adminUnit->user;
+            if ($user) {
+                // Hapus pengguna
+                $user->delete();
+            }
+
+            return redirect()->back()->with('success', 'Data Admin Unit dan pengguna terkait berhasil dihapus.');
+        } else {
+            return redirect()->back()->with('error', 'Admin Unit tidak ditemukan.');
+        }
+    }
+
+
+
+
 
     public function daftarManual()
     {
@@ -176,14 +200,6 @@ class AdminController extends Controller
             // 'foto_rumah' => 'required',
         ]);
 
-        // if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
-        //     // $fotoPath = $request->file('foto_rumah')->store('public/foto');
-        //     $file =$request->file('foto_rumah');
-        //     $name = $file->getClientOriginalName();
-        //     $file->move('foto/', $name);
-
-        // dd($validatedData);
-
         $validatedData['user_id'] = $user->id;
 
         Pelanggan::create([
@@ -214,6 +230,16 @@ class AdminController extends Controller
         return view('admin.detail-user', [
             // 'user' => $user,
             'pelanggan' => $pelanggan,
+        ]);
+    }
+
+    public function pelanggan()
+    {
+        $user = auth::user();
+        $pelanggan = Pelanggan::all();
+        return view('admin.pelanggan', [
+            'pelanggan' => $pelanggan,
+            'nama' => $user->username,
         ]);
     }
 

@@ -247,6 +247,14 @@
                             </div>
                         </li>
                     </div>
+                    <div class="">
+                        <li>
+                            <div href="/semua-pelanggan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pelanggan" icon="fa-brands fa-slack" href="/semua-pelanggan"
+                                    :isActive="Request::is('semua-pelanggan*')" />
+                            </div>
+                        </li>
+                    </div>
                 @endcan
                 @can('unit')
                         <li>

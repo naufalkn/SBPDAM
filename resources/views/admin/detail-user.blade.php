@@ -21,6 +21,7 @@
                                     <h2 class="text-lg">{{ $item->nama }}</h2>
                                 </div>
                             </div>
+                            @can('unit')
                             <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}" method="POST">
                                 @csrf
                                 @if ($item->status == 0)
@@ -32,6 +33,7 @@
                                         Aktifakan</button>
                                 @endif
                             </form>
+                            @endcan
                         </div>
                         <div
                             class="h-full w-full space-y-3  max-w-xs p-5 shadow-xl rounded-xl bg-white dark:bg-green-50 dark:text-gray-800">
@@ -173,6 +175,7 @@
                                                 @endif
                                             </p>
                                         </div>
+                                        @can('unit')
                                         <div class="">
                                             <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}"
                                                 method="POST">
@@ -187,6 +190,7 @@
                                                 @endif
                                             </form>
                                         </div>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
