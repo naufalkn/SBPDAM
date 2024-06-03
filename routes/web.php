@@ -80,28 +80,25 @@ Route::middleware(['auth', 'user'])->group(function () {
 });
 
 // Unit
-Route::post('/verif-pelanggan/{id}', [UnitController::class, 'verifPelanggan']);
-
 Route::get('/unit', [UnitController::class, 'index']);
+Route::post('/verif-pelanggan/{id}', [UnitController::class, 'verifPelanggan']);
 Route::get('/pendaftar', [UnitController::class, 'pendaftar']);
 Route::get('/calon-pelanggan', [UnitController::class, 'calonPelanggan']);
 Route::get('/pelanggan', [UnitController::class, 'pelanggan']);
+Route::get('/pegawai', [UnitController::class, 'pegawai']);
 
 // Pegawai
 
-Route::get('/pegawai', [PegawaiController::class, 'index']);
+Route::get('/dashboard-pegawai', [PegawaiController::class, 'index']);
+Route::post('/mulai-pasang/{id}', [PegawaiController::class, 'mulaiPasang']);
+Route::get('/list-pasang', [PegawaiController::class, 'listPasang']);
+Route::get('/proses-pemasangan', [PegawaiController::class, 'prosesPemasangan']);
+Route::get('/selesai-pasang', [PegawaiController::class, 'listSelesai']);
+Route::get('/riwayat-pemasangan', [PegawaiController::class, 'riwayatPemasangan']);
+Route::post('/bukti-pasang/{id}', [PegawaiController::class, 'buktiPemasangan'])->name('bukti.pemasangan');
+
 
 
 
 Route::view('/pengaturan', 'user.pengaturan');
 
-// Route::view('/unit', 'unit.dashboard');
-
-
-// Route::middleware(['isAuth'])->group(function () {
-//     // User
-    
-// });
-
-// Route::get('/detail-user/{id}', [AdminController::class, 'detailUser']);
-// Route::post('/prosesDaftar', [UserController::class, 'prosesDaftar']);

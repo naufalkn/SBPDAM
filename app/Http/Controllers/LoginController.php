@@ -43,7 +43,7 @@ class LoginController extends Controller
             } elseif (Auth::user()->role->nama == "unit"){
                 return redirect('/unit');
             } else if (Auth::user()->role->nama == "pegawai"){
-                return redirect('/pegawai');
+                return redirect('/dashboard-pegawai');
             }
         } else {
             return back()->with('Login gagal, silahkan coba lagi!');

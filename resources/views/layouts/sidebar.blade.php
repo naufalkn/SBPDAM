@@ -285,28 +285,51 @@
                     </ul>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="" class="flex items-center p-1">
-                                <x-sidebar-menu text="Pegawai" icon="fa-solid fa-user-gear" href=""
-                                    :isActive="Request::is('')" />
+                            <div href="/pegawai" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pegawai" icon="fa-solid fa-user-gear" href="/pegawai"
+                                    :isActive="Request::is('pegawai*')" />
                             </div>
                         </li>
                     </ul>
                 @endcan
+                @can('pegawai')
+                        <li>
+                            <div href="/dashboard-pegawai" class="flex items-center p-1">
+                                <x-sidebar-menu text="Dashboard" icon="fa-solid fa-chart-line" href="/dashboard-pegawai"
+                                    :isActive="Request::is('dashboard-pegawai*')" />
+                            </div>
+                        </li>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div href="/list-pasang" class="flex items-center p-1">
+                                <x-sidebar-menu text="List Pemasangan" icon="fa-solid fa-user-pen" href="/list-pasang"
+                                    :isActive="Request::is('list-pasang*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/proses-pemasangan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Proses Pemasangan" icon="fa-solid fa-user-check" href="/proses-pemasangan"
+                                    :isActive="Request::is('proses-pemasangan*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/selesai-pasang" class="flex items-center p-1">
+                                <x-sidebar-menu text="Selesai" icon="fa-solid fa-user-clock" href="/selesai-pasang"
+                                    :isActive="Request::is('selesai-pasang*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/riwayat-pemasangan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Riwayat Pemasangan" icon="fa-solid fa-user-check" href="/riwayat-pemasangan"
+                                    :isActive="Request::is('riwayat-pemasangan*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    
+                @endcan
             </ul>
         </div>
-        {{-- <div class=" h-1/6 items-end flex">
-            <div class="flex w-full justify-center items-end p-3 h-1/6 ">
-                <a href="{{ url('/logout') }}" type="submit"
-                    class="text-white bg-red-800 w-full h-12 border-gray-800 rounded flex items-center justify-between p-2">
-                    <div class="flex items-center justify-between space-x-2 w-full">
-                        <img src="{{ asset('img/' . auth()->user()->foto) }}" class="w-6 h-6 rounded-full"
-                            alt="Profile">
-                        <h1>Keluar</h1>
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    </div>
-                </a>
-            </div>
-        </div> --}}
+        
     </div>
 </aside>
 

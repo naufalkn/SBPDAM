@@ -27,4 +27,8 @@ class Units extends Model
     {
         return $this->belongsTo(AdminUnit::class);
     }
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class);
+    }
 }

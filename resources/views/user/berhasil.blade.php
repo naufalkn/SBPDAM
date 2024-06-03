@@ -12,18 +12,18 @@
         // SnapToken acquired from previous step
         snap.pay('{{ $bayar->snap_token }}', {
           // Optional
-          onSuccess: function(result){
-            alert('success')
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
-          // Optional
-          onPending: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
-          // Optional
-          onError: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          }
+          // onSuccess: function(result){
+          //   alert('success')
+          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          // },
+          // // Optional
+          // onPending: function(result){
+          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          // },
+          // // Optional
+          // onError: function(result){
+          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          // }
         });
       };
     </script>

@@ -46,13 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected $with = ['role:id,nama', 'unit', 'pelanggan'];
+    protected $with = ['role:id,nama', 'unit', 'pelanggan', 'adminUnit', 'pegawai'];
 
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
-    // BelongsTo
     public function unit()
     {
         return $this->belongsTo(Units::class);
@@ -66,5 +65,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(AdminUnit::class);
     }
+
+    public function pegawai()
+    {
+        return $this->hasOne(Pegawai::class);
+    }
+
     
 }

@@ -13,43 +13,48 @@ class PayController extends Controller
     {
         $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
 
-        $transaksi = Transaksi::create([
-            'pelanggan_id' => $pelanggan->id,
-            'email' => $pelanggan->email,
-            'total_bayar' => 23000,
-            'valid' => '',
-            'status' => 'PENDING',
-        ]);
+        if ($pelanggan->transaksi()->exists()) {
+            $transaksi = $pelanggan->transaksi()->first();
+            return redirect()->route('berhasil', $transaksi->id);
+        } else {
+            $transaksi = Transaksi::create([
+                'pelanggan_id' => $pelanggan->id,
+                'email' => $pelanggan->email,
+                'total_bayar' => 23000,
+                'valid' => '',
+                'status' => 'PENDING',
+            ]);
 
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = false;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = false;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
 
-        $transaksi->valid = $transaksi->id . "-" . time();
+            $transaksi->valid = $transaksi->id . "-" . time();
 
-        $params = [
-            'transaction_details' => [
-                'order_id' => $transaksi->valid,
-                'gross_amount' => 23000,
-            ],
-            'customer_details' => [
-                'first_name' => $pelanggan->nama,
-                'email' => $pelanggan->user->email,
-                'phone' => $pelanggan->no_hp,
-            ],
-        ];
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $transaksi->valid,
+                    'gross_amount' => 23000,
+                ],
+                'customer_details' => [
+                    'first_name' => $pelanggan->nama,
+                    'email' => $pelanggan->user->email,
+                    'phone' => $pelanggan->no_hp,
+                ],
+            ];
 
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $transaksi->snap_token = $snapToken;
-        $transaksi->save();
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $transaksi->snap_token = $snapToken;
+            $transaksi->save();
 
-        return redirect()->route('berhasil', $transaksi->id);
+            return redirect()->route('berhasil', $transaksi->id);
 
+        }
     }
 
     public function berhasil($id)
@@ -60,9 +65,11 @@ class PayController extends Controller
 
     public function tagihan(Transaksi $transaksi)
     {
-        // $transaksi = Transaksi::where('pelanggan_id', auth()->user()->pelanggan->id)->get();
-        // dd($transaksi);
-        return view('user.tagihan', compact('transaksi'));
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        return view('user.tagihan', [
+            'transaksi' => $transaksi,
+            'pelanggan' => $pelanggan,
+        ]);
     }
 
     public function callback(Request $request)

@@ -36,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
             return auth()->user()->role->nama === 'superadmin';
         });
 
+        Gate::define('pegawai', function (User $user) {
+            return auth()->user()->role->nama === 'pegawai';
+        });
+
         if(config('app.env') === 'local') {
             URL::forceScheme('http');
         }

@@ -21,12 +21,18 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(Units::class);
     }
-    // public function adminUnit()
-    // {
-    //     return $this->hasOne(AdminUnit::class);
-    // }
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class);
+    }
+
+    public function bukti()
+    {
+        return $this->hasOne(Bukti::class);
+    }
+
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class);
     }
 }

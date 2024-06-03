@@ -99,7 +99,7 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ sprintf("%02d", $item->kd_unit) }}
+                                    {{ sprintf('%02d', $item->kd_unit) }}
                                 </th>
 
                                 <td class="px-6 py-4">
@@ -131,7 +131,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- Edit Modals --}}
     @foreach ($unitList as $item)
         <div id="crud-unit-{{ $loop->index }}-{{ $item->id }}" tabindex="-1" aria-hidden="true"
@@ -161,7 +161,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
                                     Unit</label>
                                 <input type="number" name="kd_unit" id="kd_unit"
-                                    value="{{ sprintf("%02d", $item->kd_unit) }}"
+                                    value="{{ sprintf('%02d', $item->kd_unit) }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" readonly>
                             </div>
@@ -169,8 +169,7 @@
                                 <label for="nm_unit"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                     Unit</label>
-                                <input type="text" name="nm_unit" id="nm_unit"
-                                    value="{{ $item->nm_unit }}"
+                                <input type="text" name="nm_unit" id="nm_unit" value="{{ $item->nm_unit }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Type product name" required>
                             </div>
@@ -190,5 +189,4 @@
             </div>
         </div>
     @endforeach
-    
 @endsection

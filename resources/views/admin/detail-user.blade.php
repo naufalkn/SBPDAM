@@ -22,17 +22,30 @@
                                 </div>
                             </div>
                             @can('unit')
-                            <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}" method="POST">
-                                @csrf
-                                @if ($item->status == 0)
-                                    <button type="submit" name="status" value="1"
-                                        class="px-4 py-2 bg-green-500 text-white rounded-lg">Verifikasi</button>
-                                @elseif($item->status == 1 || $item->status == 2 || $item->status == 3 || $item->status == 4)
-                                    <button type="submit" name="status" value="0"
-                                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Non
-                                        Aktifakan</button>
-                                @endif
-                            </form>
+                                <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}" method="POST">
+                                    @csrf
+                                    @if ($item->status == 0)
+                                        <button type="submit" name="status" value="1"
+                                            class="px-4 py-2 bg-green-500 text-white rounded-lg">Verifikasi</button>
+                                    @elseif($item->status == 1 || $item->status == 2 || $item->status == 3 || $item->status == 4)
+                                        <button type="submit" name="status" value="0"
+                                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Non
+                                            Aktifakan</button>
+                                    @endif
+                                </form>
+                            @endcan
+                            @can('pegawai')
+                                <form action="{{ url('/mulai-pasang', ['id' => $item->id]) }}" method="POST">
+                                    @csrf
+                                    @if ($item->status == 1)
+                                        <button type="submit" name="status" value="2"
+                                            class="px-4 py-2 w-36 bg-green-600 text-white rounded-lg">Mulai</button>
+                                    @elseif($item->status == 2)
+                                        <button type="submit" name="status" value="3"
+                                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                            Selesai</button>
+                                    @endif
+                                </form>
                             @endcan
                         </div>
                         <div
@@ -143,7 +156,8 @@
                                             alt="">
                                     </div>
                                     <div class="flex flex-col pb-3 w-1/2">
-                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Keterangan Sambungan</p>
+                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Keterangan Sambungan
+                                        </p>
                                         <p class="text-lg font-semibold">{{ $item->keterangan ?? '-' }}</p>
                                     </div>
                                 </div>
@@ -156,8 +170,32 @@
                                 <p class="font-bold text-2xl text-blue-800">Pemasangan</p>
                                 <div class="flex w-full">
                                     <div class="flex w-full flex-col pb-3 ">
-                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Foto Rumah</p>
-                                        <img src="" class="w-40 h-20" alt="">
+                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Bukti Pemasangan</p>
+                                        {{-- <img src="" class="w-40 h-20 mb-5" alt=""> --}}
+                                        {{-- @can('pegawai')
+                                            @if (auth()->user()->pelanggan)
+                                                <form action="{{ url('/bukti-pasang/' . auth()->user()->pelanggan->id) }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <label for="bukti_pemasangan"
+                                                        class="block text-sm font-medium text-gray-700">Upload Bukti
+                                                        Pemasangan</label>
+                                                    <input
+                                                        class="mt-1 block w-72 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                        id="bukti_pemasangan" name="bukti" type="file"
+                                                        aria-describedby="bukti_pemasangan_help">
+                                                    <p class="mt-2 text-sm text-gray-500" id="bukti_pemasangan_help">PNG, JPG,
+                                                        atau JPEG (maksimal 2MB).</p>
+                                                    <button type="submit"
+                                                        class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        Upload
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <p>Pelanggan tidak ditemukan atau Anda tidak memiliki akses untuk mengupload
+                                                    bukti pemasangan.</p>
+                                            @endif
+                                        @endcan --}}
                                     </div>
                                     <div class="w-full">
                                         <div class="flex flex-col pb-3 w-1/2">
@@ -176,20 +214,21 @@
                                             </p>
                                         </div>
                                         @can('unit')
-                                        <div class="">
-                                            <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}"
-                                                method="POST">
-                                                @csrf
-                                                @if ($item->status == 3)
-                                                    <button type="submit" name="status" value="4"
-                                                        class="px-4 py-2 bg-green-500 text-white rounded-lg">Aktifkan
-                                                        Pelanggan</button>
-                                                @elseif($item->status == 4)
-                                                    <button type="submit" name="status" value="0"
-                                                        class="px-4 py-2 bg-red-600 text-white rounded-lg">Non Aktifkan</button>
-                                                @endif
-                                            </form>
-                                        </div>
+                                            <div class="">
+                                                <form action="{{ url('/verif-pelanggan', ['id' => $item->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @if ($item->status == 3)
+                                                        <button type="submit" name="status" value="4"
+                                                            class="px-4 py-2 bg-green-500 text-white rounded-lg">Aktifkan
+                                                            Pelanggan</button>
+                                                    @elseif($item->status == 4)
+                                                        <button type="submit" name="status" value="0"
+                                                            class="px-4 py-2 bg-red-600 text-white rounded-lg">Non
+                                                            Aktifkan</button>
+                                                    @endif
+                                                </form>
+                                            </div>
                                         @endcan
                                     </div>
                                 </div>
