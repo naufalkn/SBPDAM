@@ -92,6 +92,11 @@
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                         Selesai
                                     </span>
+                                @elseif($item->status == '4')
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
+                                        Sudah Aktif
+                                    </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4">

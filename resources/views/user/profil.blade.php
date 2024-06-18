@@ -396,6 +396,7 @@
                         <div class="p-6 h-52 bg-gray-100 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
                             id="status" role="tabpanel" aria-labelledby="status-tab">
                             <div class="">
+                            @if (auth()->user()->pelanggan)
                                 <div class="w-full px-24 py-4">
                                     <div class="relative flex items-center justify-between w-full">
                                         <div class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-300">
@@ -550,6 +551,27 @@
                                     </div>
                                 </div>
                             </div>
+                            @else
+                                <div class="col-span-2 h-full bg-gray-100">
+                                    <div
+                                        class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
+                                        <div class="flex w-full h-full justify-center items-center ">
+                                            <div class="space-y-4 h-full p-16">
+                                                <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
+                                                <p class="font-bold text-xl w-full text-blue-900">Kamu belum
+                                                    berlangganan
+                                                    nih : (
+                                                </p>
+                                                <div class="">
+                                                    <a href="{{ url('/daftar-sambungan') }}"
+                                                        class="flex h-10 space-x-3 justify-center items-center rounded-xl w-full bg-blue-900 text-white">Mulai
+                                                        Berlangganan</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

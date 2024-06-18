@@ -51,6 +51,32 @@
                         <div
                             class="h-full w-full space-y-3  max-w-xs p-5 shadow-xl rounded-xl bg-white dark:bg-green-50 dark:text-gray-800">
                             <div class="flex items-center space-x-3 w-full">
+                                @cannot('pegawai')
+                                <div class="flex justify-center items-center bg-gray-400 w-9 h-9 rounded-lg">
+                                    <i class="fa-solid fa-person text-white text-xl"></i>
+                                </div>
+                                <p>
+                                    @if ($item->status == '1')
+                                        <span>
+                                            Sudah diverifikasi
+                                        </span>
+                                    @elseif($item->status == '2')
+                                        <span>
+                                            Proses Pemasangan
+                                        </span>
+                                    @elseif($item->status == '3')
+                                        <span>
+                                            Pemasangan Selesai
+                                        </span>
+                                    @elseif($item->status == '4')
+                                        <span>
+                                            Aktif
+                                        </span>
+                                    @endif
+                                </p>
+                                @endcannot
+                            </div>
+                            <div class="flex items-center space-x-3 w-full">
                                 <div class="flex justify-center items-center bg-yellow-400 w-9 h-9 rounded-lg">
                                     <i class="fa-solid fa-envelope text-white"></i>
                                 </div>
@@ -172,30 +198,21 @@
                                     <div class="flex w-full flex-col pb-3 ">
                                         <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Bukti Pemasangan</p>
                                         {{-- <img src="" class="w-40 h-20 mb-5" alt=""> --}}
-                                        {{-- @can('pegawai')
-                                            @if (auth()->user()->pelanggan)
-                                                <form action="{{ url('/bukti-pasang/' . auth()->user()->pelanggan->id) }}"
-                                                    method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <label for="bukti_pemasangan"
-                                                        class="block text-sm font-medium text-gray-700">Upload Bukti
-                                                        Pemasangan</label>
-                                                    <input
-                                                        class="mt-1 block w-72 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                        id="bukti_pemasangan" name="bukti" type="file"
-                                                        aria-describedby="bukti_pemasangan_help">
-                                                    <p class="mt-2 text-sm text-gray-500" id="bukti_pemasangan_help">PNG, JPG,
-                                                        atau JPEG (maksimal 2MB).</p>
-                                                    <button type="submit"
-                                                        class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                        Upload
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <p>Pelanggan tidak ditemukan atau Anda tidak memiliki akses untuk mengupload
-                                                    bukti pemasangan.</p>
-                                            @endif
-                                        @endcan --}}
+                                        @if($item->bukti == null)
+                                        @can('pegawai')
+                                            <form action="{{ route('bukti.pemasangan', $item->id) }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="file" name="bukti_pemasangan" required>
+                                                <button type="submit">Upload</button>
+                                            </form>
+                                        @endcan
+                                        @elseif($item->bukti != null)
+                                        <p>
+                                            <img src="{{ asset('buktiPasang/' . $item->bukti->bukti_pemasangan) }}"
+                                            alt="" class="w-40 h-20 mt-5">
+                                        </p>
+                                        @endif
                                     </div>
                                     <div class="w-full">
                                         <div class="flex flex-col pb-3 w-1/2">
@@ -203,11 +220,17 @@
                                             </p>
                                             <p class="text-lg font-semibold">
                                                 @if ($item->status == 2)
-                                                    <span class="text-red-500">Proses Pemasangan</span>
+                                                    <span
+                                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Proses
+                                                        Pemasangan</span>
                                                 @elseif($item->status == 3)
-                                                    <span class="text-green-500">Selesai Pemasangan</span>
+                                                    <span
+                                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">Pemasangan
+                                                        Selesai</span>
                                                 @elseif($item->status == 4)
-                                                    <span class="text-blue-500">Aktif</span>
+                                                    <span
+                                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">Sudah
+                                                        Aktif</span>
                                                 @else
                                                     <span class="text-gray-500">Status Tidak Diketahui</span>
                                                 @endif
@@ -222,10 +245,6 @@
                                                         <button type="submit" name="status" value="4"
                                                             class="px-4 py-2 bg-green-500 text-white rounded-lg">Aktifkan
                                                             Pelanggan</button>
-                                                    @elseif($item->status == 4)
-                                                        <button type="submit" name="status" value="0"
-                                                            class="px-4 py-2 bg-red-600 text-white rounded-lg">Non
-                                                            Aktifkan</button>
                                                     @endif
                                                 </form>
                                             </div>

@@ -297,3 +297,37 @@ select {
 .img img{
     margin-bottom: 10px;
 }
+
+.checkbox-team {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input[type="radio"]
+{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 100%;
+    height: 12px;
+}
+
+.checkbox-group label {
+    width: 100%;
+    height: 100%;
+    margin-top: -10px;
+    margin-left: 5px;
+    margin-right: 20px; /* Adjust this margin as needed for spacing between "Iya" and "Tidak" */
+}
+.form-group {
+    margin-bottom: 20px;
+}

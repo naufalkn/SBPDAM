@@ -3,8 +3,9 @@
     @include('layouts.navbar-admin')
     <!-- SIDE -->
     @include('layouts.sidebar')
-    <div class="h-14 items-center flex px-5 py-8 lg:py-12 lg:px-8 lg:ml-60 mt-16 text-neutral-300 relative">
-        <p class="text-2xl lg:text-4xl font-semibold z-40 ">Unit PERUMDA Kabupaten Sragen</p>
+    <div class="items-center flex-col px-5 py-8 lg:py-12 lg:px-8 lg:ml-60 mt-16 text-neutral-300 relative">
+        <p class="text-xl lg:text-2xl font-semibold z-40 ">Unit PERUMDA Air Minum Tirto Negoro</p>
+        <p>Kabupaten Sragen</p>
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-full absolute top-0 left-0 w-full">
         </div>
     </div>

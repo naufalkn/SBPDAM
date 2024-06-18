@@ -15,10 +15,9 @@ class PegawaiSeeder extends Seeder
     {
         Pegawai::create([
             'user_id' => 3,
-            'username' => 'asep',
-            'nama' => 'Asep Saepudin',
             'alamat' => 'Jl. Raya Sragen - Karanganyar Km. 5 Sragen',
-            'no_telp' => '081234567890',
+            'no_telp' => '081234567891',
+            'no_identitas' => '1234567890',
             'kd_unit' => '00',
             'nm_unit' => 'sragen',
         ]);

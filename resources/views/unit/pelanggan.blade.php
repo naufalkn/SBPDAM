@@ -85,7 +85,10 @@
                                 </td>
                             </td>
                             <td class="px-6 py-4">
-                                Aktif
+                                <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
+                                        Aktif
+                                    </span>
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->created_at->format('d-m-Y') }}

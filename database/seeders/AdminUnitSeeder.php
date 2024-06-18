@@ -18,7 +18,8 @@ class AdminUnitSeeder extends Seeder
             'username' => 'sragen',
             'kd_unit' => '00',
             'nm_unit' => 'sragen',
-            'alamat' => 'Jl. Raya Sragen - Sukoharjo KM 3'
+            'alamat' => 'Jl. Raya Sragen - Sukoharjo KM 3',
+            'no_telp' => '0271123456',
         ]);
     }
 }

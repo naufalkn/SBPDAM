@@ -124,16 +124,19 @@
                                 Nama
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                kd_unit
+                                Email
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Nama Unit
+                                Nama/Kode Unit
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Alamat
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                                Status
+                            </th>
                             <th scope="col" class="px-6 py-3 ">
-                                Edit
+                                Detail
                             </th>
                             <th scope="col" class="px-6 py-3 ">
                                 Delete
@@ -147,18 +150,37 @@
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $loop->index + 1 }}
                                 </th>
-
                                 <td class="px-6 py-4">
-                                    {{ $item->username }}
+                                    {{ $item->user->nama }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <button data-modal-target="crud-unit-{{ $loop->index }}-{{ $item->id }}"
-                                        data-modal-toggle="crud-unit-{{ $loop->index }}-{{ $item->id }}"
-                                        class="block space-x-2 text-white bg-yellow-400 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                        type="button">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                        <span>Edit</span>
-                                    </button>
+                                    {{ $item->user->email }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->nm_unit }} / {{ $item->kd_unit }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->alamat }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="w-full">
+                                        <form action="{{ url('/status-adminUnit', ['id' => $item->id]) }}" method="POST">
+                                            @csrf
+                                            @if ($item->status == "nonaktif")
+                                                <button type="submit" name="status" value="aktif"
+                                                    class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Aktifkan</button>
+                                            @elseif($item->status == "aktif")
+                                                <button type="submit" name="status" value="nonaktif"
+                                                    class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">NonAktif</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="{{ url('/detail-adminUnit/  ' . $item->id) }}" type="button"
+                                        class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </a>
                                 </td>
                                 <td class="px-6 py-4">
                                     <a href="{{ url('/hapus-admin-unit/' . $item->id) }}" type="button"
@@ -169,7 +191,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td>Belum ada Pelanggan</td>
+                                <td>Belum ada Data Admin Unit</td>
                             </tr>
                         @endforelse
                     </tbody>

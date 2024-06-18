@@ -20,14 +20,16 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Jumlah Pendaftar
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Jumlah
+                                Pendaftar
                             </h5>
-                            <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan_nonVerif }}</p>
+                            <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
+                                {{ $jmlh_pelanggan_nonVerif }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -75,25 +77,30 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
-                                <td class="px-6 py-4">@if($item->transaksi->isNotEmpty())
+                            <td class="px-6 py-4">
+                                @if ($item->transaksi->isNotEmpty())
                                     @foreach ($item->transaksi as $transaksi)
-                                        {{ $transaksi->status ?? 'Belum bayar' }}<br>
+                                        {{ $transaksi->status ?? 'Belum bayar' }}
+                                        <br>
                                     @endforeach
                                 @else
                                     Belum Membayar
                                 @endif
-                                
-                                </td>
+
+                            </td>
                             </td>
                             <td class="px-6 py-4">
-                                Belum Verifikasi
+                                <span
+                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-gray-600 bg-gray-200  last:mr-0 mr-1">
+                                    Belum diverifikasi
+                                </span>
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->created_at->format('d-m-Y') }}
                             </td>
-                            
+
                             <td class="px-6 py-4 ">
-                                <a href="{{ url('/detail-user/'.$item->id) }}" type="button"
+                                <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
@@ -115,5 +122,5 @@
         </div>
     </div>
 
-   
+
 @endsection

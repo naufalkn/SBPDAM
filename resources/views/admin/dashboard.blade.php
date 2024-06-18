@@ -15,7 +15,7 @@
                     class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
                         <div class="bg-blue-800 w-16 h-16 rounded-lg flex justify-center items-center">
-                            <i class="fa-solid fa-user-check text-2xl"></i>
+                            <i class="fa-solid fa-user-check text-2xl text-white"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
                             <h5 class="mb-2 text-base font-bold tracking-tight text-blue-700 dark:text-white">Jumlah
@@ -31,7 +31,7 @@
                     class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
                         <div class="bg-yellow-400 w-16 h-16 rounded-lg flex justify-center items-center">
-                            <i class="fa-solid fa-gears text-2xl"></i>
+                            <i class="fa-solid fa-gears text-2xl text-white"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
                             <h5 class="mb-2 text-base font-bold tracking-tight text-yellow-400 dark:text-white">Jumlah Unit

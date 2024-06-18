@@ -38,7 +38,7 @@
         <!-- Main modal -->
         <div id="crud-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative p-4 w-full max-w-3xl max-h-md">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <!-- Modal header -->
@@ -58,41 +58,97 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form class="p-4 md:p-5">
+                    <form class="p-4 md:p-5" action="{{ url('/tambah-pegawai') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div class="col-span-2">
-                                <label for="name"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                <input type="text" name="name" id="name"
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="username"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                                <input type="text" name="username" id="username" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type product name" required="">
+                                    placeholder="Masukkan Username Pegawai">
+                            </div>
+
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="email"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <input type="email" name="email" id="email" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Masukkan Email Pegawai">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
-                                <label for="price"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                <input type="number" name="price" id="price"
+                                <label for="nama"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                    Pegawai</label>
+                                <input type="text" name="nama" id="nama" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="$2999" required="">
+                                    placeholder="Masukkan Nama Pegawai">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
-                                <label for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                <select id="category"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Select category</option>
-                                    <option value="TV">TV/Monitors</option>
-                                    <option value="PC">PC</option>
-                                    <option value="GA">Gaming/Console</option>
-                                    <option value="PH">Phones</option>
+                                <label for="nama"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
+                                    Identitas</label>
+                                <input type="number" name="no_identitas" id="no_identitas" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Masukkan Nama Pegawai">
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="password"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                <input type="password" name="password" id="password" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Masukkan Password Pegawai">
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="password"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                                    Kelamin</label>
+                                <select
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-3/4 p-2.5"
+                                    name="jenis_kelamin" id="jenis_kelamin">
+                                    <option value="L" {{ auth()->user()->jenis_kelamin == 'L' ? 'selected' : '' }}>
+                                        Laki-Laki
+                                    </option>
+                                    <option value="P" {{ auth()->user()->jenis_kelamin == 'P' ? 'selected' : '' }}>
+                                        Perempuan
+                                    </option>
                                 </select>
                             </div>
-                            <div class="col-span-2">
-                                <label for="description"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-                                    Description</label>
-                                <textarea id="description" rows="4"
-                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Write product description here"></textarea>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="nm_unit"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Unit</label>
+                                <select id="nm_unit" name="nm_unit" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    @foreach ($unitlist as $item)
+                                        <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">
+                                            {{ $item->nm_unit }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="kd_unit"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Unit</label>
+                                <select id="kd_unit" name="kd_unit" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    @foreach ($unitlist as $item)
+                                        <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="password"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Lahir</label>
+                                    <input type="date" name="tenggal_lahir" id="tenggal_lahir"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                    >
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for=""
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto KTP</label>
+                                <input
+                                    class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                    aria-describedby="user_avatar_help" id="foto_ktp" name="foto_ktp" type="file">
                             </div>
                         </div>
                         <button type="submit"
@@ -103,7 +159,7 @@
                                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            Add new product
+                            Tambah Pegawai
                         </button>
                     </form>
                 </div>
@@ -135,6 +191,9 @@
                         <th scope="col" class="px-6 py-3">
                             Alamat
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Status
+                        </th>
                         <th scope="col" class="px-6 py-3 ">
                             Detail
                         </th>
@@ -155,7 +214,7 @@
                                     class="w-11 h-10 rounded-full">
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->nama }}
+                                {{ $item->user->nama }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->user->email }}
@@ -166,14 +225,28 @@
                             <td class="px-6 py-4">
                                 {{ $item->alamat }}
                             </td>
-                            <td class="px-6 py-4 ">
-                                <a href="{{ url('/detail-user/  ' . $item->id) }}" type="button"
+                            <td class="px-6 py-4">
+                                <div class="w-full">
+                                    <form action="{{ url('/status-pegawai', ['id' => $item->id]) }}" method="POST">
+                                        @csrf
+                                        @if ($item->status == 'nonaktif')
+                                            <button type="submit" name="status" value="aktif"
+                                                class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Enable</button>
+                                        @elseif($item->status == 'aktif')
+                                            <button type="submit" name="status" value="nonaktif"
+                                                class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Disable</button>
+                                        @endif
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ url('/detail-pegawai/  ' . $item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ url('/hapus-pelanggan/' . $item->id) }}" type="button"
+                                <a href="{{ url('/hapus-pegawai/' . $item->id) }}" type="button"
                                     class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-red-900">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>

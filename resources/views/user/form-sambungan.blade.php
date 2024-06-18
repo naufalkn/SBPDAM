@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 </head>
 
 <body class="container">
@@ -78,6 +79,8 @@
 
                                 <label class="fieldlabels">Nomor Telepon *</label>
                                 <input type="number" name="no_telepon" placeholder="Masukkan Nomor Telepon Anda" />
+                                <label class="fieldlabels">Foto KTP / KK</label>
+                                <input type="file" name="foto_identitas" />
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
                             <input type="button" name="previous" class="previous action-button-previous"
@@ -110,8 +113,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fieldlabels">RW</label>
-                                            <input type="number" class="form-control" placeholder="Masukkan No RW Anda"
-                                                name="rw">
+                                            <input type="number" class="form-control"
+                                                placeholder="Masukkan No RW Anda" name="rw">
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +128,7 @@
                                 <label class="fieldlabels">Kecamatan*</label>
                                 <select name="kecamatan" id="kecamatan">
                                     @foreach ($deskec as $item)
-                                        <option value="{{ $item->nmkec }}" >{{ $item->nmkec }}</option>
+                                        <option value="{{ $item->nmkec }}">{{ $item->nmkec }}</option>
                                     @endforeach
                                 </select>
 
@@ -181,13 +184,44 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
-                                <label class="fieldlabels">Keterangan*</label>
-                                <input type="text" name="keterangan"
-                                    placeholder="Apakah ada jaringan PDAM di sekitar rumah Anda?" <label
-                                    class="fieldlabels">Foto Rumah</label>
+                                <label class="fieldlabels">Apakah Di dekat Anda ada yang sudah berlangganan ?</label>
+                                <div class="checkbox-team">
+                                    <div class="checkbox-group">
+                                        <input type="radio" id="iya" name="choice" value="true"
+                                            onchange="toggleFormFields()">
+                                        <label for="iya">Iya</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="radio" id="tidak" name="choice" value="false"
+                                            onchange="toggleFormFields()">
+                                        <label for="tidak">Tidak</label>
+                                    </div>
+                                </div>
+                                <div id="additional-fields" style="display: none; margin-bottom:0%;">
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <div class="">
+                                                <label class="fieldlabels" for="nomor_sambungan">Nomor Sambungan</label>
+                                                <input type="number" id="no_sambungan" name="no_sambungan" placeholder="Masukkan Nomor Sambungan Terdekat">
+                                                @error('no_sambungan')
+                                                    <div>{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="">
+                                                <label class="fieldlabels"  for="nama">Nama</label>
+                                                <input type="text" id="nm_sambungan" name="nm_sambungan" placeholder="Masukkkan Nama Sambungan">
+                                                @error('nm_sambungan')
+                                                    <div>{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="fieldlabels">Foto Rumah</label>
                                 <input type="file" name="foto_rumah" />
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
@@ -343,6 +377,23 @@
             // Inisialisasi plugin Select2
             $('.select2').select2();
         });
+    </script>
+
+    <script>
+        function toggleFormFields() {
+            var iyaChecked = document.getElementById('iya').checked;
+            var additionalFields = document.getElementById('additional-fields');
+
+            if (iyaChecked) {
+                additionalFields.style.display = 'block';
+            } else {
+                additionalFields.style.display = 'none';
+            }
+        }
+
+        window.onload = function() {
+            toggleFormFields(); // Initialize the form fields visibility on page load
+        }
     </script>
 </body>
 

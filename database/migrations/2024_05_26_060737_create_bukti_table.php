@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('bukti', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pegawai_id')->constrained('pegawai');
             $table->foreignId('pelanggan_id')->constrained('pelanggans');
-            $table->string('kd_unit', 2);
-            $table->foreign('kd_unit')->references('kd_unit')->on('munit');
-            $table->string('bukti_pemasangan');
-            $table->string('bukti_pencabutan');
+            $table->string('bukti_pemasangan')->nullable();
+            $table->string('bukti_pencabutan')->nullable();
             $table->timestamps();
         });
     }

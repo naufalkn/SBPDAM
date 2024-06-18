@@ -13,6 +13,7 @@ class Bukti extends Model
 
     protected $fillable = [
         'pelanggan_id',
+        'pegawai_id',
         'bukti_pemasangan',
         'bukti_pencabutan',
     ];
@@ -20,5 +21,10 @@ class Bukti extends Model
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
+    }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class);
     }
 }

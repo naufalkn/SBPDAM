@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreign('kd_unit')->references('kd_unit')->on('munit');
             $table->string('nm_unit')->references('nm_unit')->on('munit');
             $table->text('alamat')->nullable();
+            $table->string('no_telp')->nullable();
+            $table->enum('status', ['aktif', 'nonaktif'])->default('nonaktif');
             $table->timestamps();
         });        
     }

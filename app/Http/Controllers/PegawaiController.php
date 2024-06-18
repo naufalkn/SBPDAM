@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bukti;
+use App\Models\Pegawai;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -36,6 +37,92 @@ class PegawaiController extends Controller
             'listSelesai' => $listSelesai
         ]);
     }
+
+    public function profil()
+    {
+        $pegawai = Pegawai::where('user_id', auth()->user()->id)->first();
+
+        return view('pegawai.profil', [
+            'pegawai' => $pegawai
+        ]);
+    }
+
+    public function updateProfil($id, Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            // Pastikan user terkait dengan model Pegawai
+            $pegawai = $user->pegawai;
+
+            $rules = [
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+                'nama' => 'required|string|max:255',
+                'tanggal_lahir' => 'nullable|date',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'alamat' => 'nullable|string|max:255', // Ubah menjadi nullable
+                'no_telp' => 'nullable|string|max:13', // Ubah menjadi nullable
+            ];
+
+            // Perbarui aturan validasi jika password baru dimasukkan
+            if ($request->filled('new_password')) {
+                $rules['current_password'] = 'required|string';
+                $rules['new_password'] = 'required|confirmed';
+            }
+
+            $validatedData = $request->validate($rules);
+
+            // Periksa apakah kata sandi saat ini sesuai dengan yang ada di database
+            if ($request->filled('current_password')) {
+                if (!\Hash::check($request->current_password, $user->password)) {
+                    return redirect()->back()->with('error', 'Kata sandi saat ini tidak sesuai.');
+                }
+            }
+
+            $user->email = $request->email;
+            $user->username = $request->username;
+            $user->tanggal_lahir = $request->tanggal_lahir;
+
+            // Perbarui kata sandi jika ada
+            if ($request->filled('new_password')) {
+                $user->password = \Hash::make($request->new_password);
+            }
+
+            // Perbarui foto pengguna jika ada
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                // Pastikan file foto telah berhasil diunggah
+                if ($file->isValid()) {
+                    // Pindahkan file ke direktori yang diinginkan
+                    $fileName = $file->getClientOriginalName();
+                    $file->move(public_path('img'), $fileName);
+                    // Simpan nama file foto ke atribut $foto pada model pengguna
+                    $user->foto = $fileName;
+                } else {
+                    // Jika file foto tidak valid, kembalikan dengan pesan error
+                    return redirect()->back()->with('error', 'File foto tidak valid.');
+                }
+            }
+
+            $user->save();
+
+            // Update alamat dan no_telp di tabel pegawai jika ada dalam validatedData
+            if (isset($validatedData['alamat'])) {
+                $pegawai->alamat = $validatedData['alamat'];
+            }
+            if (isset($validatedData['no_telp'])) {
+                $pegawai->no_telp = $validatedData['no_telp'];
+            }
+            $pegawai->save();
+
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
+        }
+    }
+
+
 
     public function mulaiPasang(Request $request, $id)
     {
@@ -112,30 +199,37 @@ class PegawaiController extends Controller
     }
 
     public function buktiPemasangan(Request $request, $id)
-{
-    // Validasi file yang diupload
-    $request->validate([
-        'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
+    {
+        $user = Auth::user()->pegawai;
+        // dd($user); 
+        $pelanggan = Pelanggan::find($id);
+        // Validasi file yang diupload
+        $validatedData = $request->validate([
+            // 'pelanggan_id' => 'required|exists:pelanggans,id', // Validasi pelanggan_id
+            // 'kd_unit' => 'required|exists:munit,kd_unit', // Validasi kd_unit
+            'bukti_pemasangan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-    // Menggunakan nama unik untuk file yang diupload
-    $imageName = time() . '_' . $request->bukti->getClientOriginalName();
-    $request->bukti->move(public_path('bukti'), $imageName);
+        if ($request->hasFile('bukti_pemasangan')) {
+            $file = $request->file('bukti_pemasangan');
+            $name = $file->getClientOriginalName();
+            $file->move('buktiPasang/', $name);
+            $validatedData['bukti_pemasangan'] = $name;
+        }
 
-    // Temukan pelanggan berdasarkan ID
-    $pelanggan = Pelanggan::find($id);
-    if ($pelanggan) {
-        // Simpan nama file bukti ke model Bukti
-        $bukti = new Bukti();
-        $bukti->pelanggan_id = $pelanggan->id;
-        $bukti->foto_pemasangan = $imageName;
-        $bukti->save();
+        $validatedData['pegawai_id'] = $user->id;
+        $validatedData['pelanggan_id'] = $pelanggan->id;
 
-        return redirect()->back()->with('success', 'Bukti berhasil diupload.');
-    } else {
-        return redirect()->back()->with('error', 'Pelanggan tidak ditemukan.');
+
+        $storeBukti = Bukti::create($validatedData);
+
+        if ($storeBukti) {
+            return redirect()->back()->with('success', 'Bukti pemasangan berhasil diunggah.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal mengunggah bukti pemasangan.');
     }
-}
+
 
 
 

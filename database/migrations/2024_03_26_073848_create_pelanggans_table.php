@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('pekerjaan');
             $table->bigInteger('no_identitas')->unique();
             $table->string('no_telepon', 15);
+            $table->string('foto_identitas')->required();
 
             // Detail Alamat
             $table->text('dukuh')->requaired();
@@ -35,7 +36,8 @@ return new class extends Migration
 
             $table->foreign('kd_unit')->references('kd_unit')->on('munit');
             $table->string('foto_rumah')->nullable();
-            $table->text('keterangan');
+            $table->string('nm_sambungan')->nullable();
+            $table->bigInteger('no_sambungan')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

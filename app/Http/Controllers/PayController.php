@@ -86,7 +86,8 @@ class PayController extends Controller
                 $transaksi = Transaksi::where('valid', $request->order_id)->first();
                 $transaksi->status = 'SUCCESS';
                 $transaksi->save();
-            } else if ($request->transaction_status == 'cancel' or $request->transaction_status == 'deny' or $request->transaction_status == 'expire' or $request->transaction_status == 'failure') {
+            } else if ($request->transaction_status == 'cancel' or $request->transaction_status == 'deny' or $request->transaction_status == 'expire' or $request->transaction_status == 'failure') 
+            {
                 $transaksi = Transaksi::where('valid', $request->order_id)->first();
                 $transaksi->status = 'FAILED';
                 $transaksi->save();

@@ -37,6 +37,92 @@ class AdminController extends Controller
         ]);
     }
 
+    public function profil()
+    {
+        $admin = Auth::user();
+        return view('admin.profil', [
+            'admin' => $admin,
+        ]);
+        
+    }
+
+    public function updateProfil(Request $request, $id)
+    {
+        try {
+            $user = Auth::user();
+
+            $rules = [
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+                'nama' => 'required|string|max:255',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ];
+
+            if ($request->filled('new_password')) {
+                $rules['current_password'] = 'required|string';
+                $rules['new_password'] = 'required|confirmed';
+            }
+
+            $request->validate($rules);
+
+            if ($request->filled('current_password')) {
+                if (!\Hash::check($request->current_password, $user->password)) {
+                    return redirect()->back()->with('error', 'Kata sandi saat ini tidak sesuai.');
+                }
+            }
+
+            $user->email = $request->email;
+            $user->username = $request->username;
+            $user->nama = $request->nama;
+
+            if ($request->filled('new_password')) {
+                $user->password = \Hash::make($request->new_password);
+            }
+
+           // Perbarui foto pengguna jika ada
+           if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            // Pastikan file foto telah berhasil diunggah
+            if ($file->isValid()) {
+                // Pindahkan file ke direktori yang diinginkan
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('img'), $fileName);
+                // Simpan nama file foto ke atribut $foto pada model pengguna
+                $user->foto = $fileName;
+            } else {
+                // Jika file foto tidak valid, kembalikan dengan pesan error
+                return redirect()->back()->with('error', 'File foto tidak valid.');
+            }
+        }
+
+        $user->save();
+
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
+        
+
+    }
+}
+
+    public function detailAdminUnit($id)
+    {
+        $adminUnit = AdminUnit::find($id);
+        // dd($adminUnit);
+        return view('admin.detail-admin-unit', [
+            'adminUnit' => $adminUnit,
+        ]);
+    }
+
+    public function statusAdminUnit (Request $request)
+    {
+        $adminUnit = AdminUnit::find($request->id);
+        $adminUnit->status = $request->status;
+        $adminUnit->save();
+        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+    }
+    
+
     public function unit()
     {
         $unitList = Units::all();
@@ -77,9 +163,6 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui.');
     }
-
-
-
 
     public function adminUnit()
     {
@@ -150,10 +233,6 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Admin Unit tidak ditemukan.');
         }
     }
-
-
-
-
 
     public function daftarManual()
     {

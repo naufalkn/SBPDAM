@@ -85,15 +85,23 @@
                                 </td>
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == 1)
-                                    Sudah Verifikasi
-                                @elseif ($item->status == 2)
+                            @if($item->status == '1')
+                                <span
+                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
+                                    Sudah diverifikasi
+                                </span>
+                            @elseif($item->status == '2')
+                                <span
+                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
                                     Proses Pemasangan
-                                @elseif ($item->status == 3)
+                                </span>
+                            @elseif($item->status == '3')
+                                <span
+                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                     Pemasangan Selesai
-                                @else
-                                    Status Tidak Diketahui
-                                @endif
+                                </span>
+                            @endif
+                                
                             </td>
                             
                             <td class="px-6 py-4">
