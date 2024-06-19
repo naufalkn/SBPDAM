@@ -19,10 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>{{ $title ?? 'Tanpa Judul' }} | SBPDAM</title>
 </head>
 
