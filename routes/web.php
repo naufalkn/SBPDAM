@@ -46,6 +46,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/updateProfil/{id}', [UserController::class, 'updateProfil']);
 
     Route::put('/updateLangganan/{id}', [UserController::class, 'updateLangganan']);
+
+    Route::get('/bukti-pembayaran', [PayController::class, 'cetakPembayaran']);
+
 }); 
 
 // Super Admin

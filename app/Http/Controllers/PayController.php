@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
 use App\Models\Transaksi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -66,6 +67,7 @@ class PayController extends Controller
     public function tagihan(Transaksi $transaksi)
     {
         $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        $transaksi = $pelanggan->transaksi()->first();
         return view('user.tagihan', [
             'transaksi' => $transaksi,
             'pelanggan' => $pelanggan,
@@ -95,6 +97,16 @@ class PayController extends Controller
         }
 
     }
+
+    public function cetakPembayaran(Request $request)
+    {
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        $transaksi = $pelanggan->transaksi()->first();
+        // dd($transaksi);
+        $pdf = Pdf::loadview('user.cetak',['pelanggan'=>$pelanggan, 'transaksi'=>$transaksi]);
+        return $pdf->stream();
+    }
+    
 
 
 }

@@ -218,8 +218,8 @@
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                                     Lengkap</label>
                                                 <input type="text" name="nama" id="nama"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                                    placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}">
+                                                    class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                                    placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}" readonly>
                                             </div>
                                             <div class="col-span-2 sm:col-span-1">
                                                 <label
@@ -339,14 +339,7 @@
                                                     placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nm_unit }}"
                                                     readonly>
                                             </div>
-                                            <div class="col-span-2 sm:col-span-1">
-                                                <label
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keterangan</label>
-                                                <input type="text" name="keterangan" id="keterangan"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                                    placeholder="Masukkan Pekerjaan"
-                                                    value="{{ $pelanggan->keterangan }}">
-                                            </div>
+                                            
                                         </div>
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-1 space-y-2">
@@ -355,10 +348,14 @@
                                                     Rumah</label>
                                                 <img src="{{ asset('/foto/' . $pelanggan->foto_rumah) }}"
                                                     class="w-40 h-20" alt="">
-                                                <input
-                                                    class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                    aria-describedby="user_avatar_help" id="foto_rumah" name="foto_rumah"
-                                                    type="file">
+                                                
+                                            </div>
+                                            <div class="col-span-1 space-y-2">
+                                                <label
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto KTP</label>
+                                                <img src="{{ asset('/foto_identitas/' . $pelanggan->foto_identitas) }}"
+                                                    class="w-40 h-20" alt="">
+                                               
                                             </div>
                                         </div>
                                     </div>
