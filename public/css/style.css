@@ -46,7 +46,6 @@ p {
 .multi-form {
     display: flex;
     width: 100%;
-    justify-content: center;
     gap: 25px;
 }
 
@@ -330,4 +329,5 @@ select {
 }
 .form-group {
     margin-bottom: 20px;
+    width: 100%;
 }

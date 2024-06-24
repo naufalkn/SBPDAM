@@ -315,9 +315,20 @@ class AdminController extends Controller
     public function pelanggan()
     {
         $user = auth::user();
-        $pelanggan = Pelanggan::all();
+        $pelanggan = Pelanggan::where('status', 4)->get();
         return view('admin.pelanggan', [
             'pelanggan' => $pelanggan,
+            'nama' => $user->username,
+        ]);
+    }
+
+    public function pendaftar()
+    {
+        $user = auth::user();
+        $pendaftar = Pelanggan::whereIn('status', [0, 1, 2, 3])->get();
+        // dd($pendaftar);
+        return view('admin.pendaftar', [
+            'pendaftar' => $pendaftar,
             'nama' => $user->username,
         ]);
     }

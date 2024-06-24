@@ -81,6 +81,7 @@
                                 <input type="number" name="no_telepon" placeholder="Masukkan Nomor Telepon Anda" />
                                 <label class="fieldlabels">Foto KTP / KK</label>
                                 <input type="file" name="foto_identitas" />
+
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
                             <input type="button" name="previous" class="previous action-button-previous"
@@ -126,7 +127,7 @@
                                 </select>
 
                                 <label class="fieldlabels">Kecamatan*</label>
-                                <select name="kecamatan" id="kecamatan">
+                                <select name="kecamatan" id="kecamatan" readonly>
                                     @foreach ($deskec as $item)
                                         <option value="{{ $item->nmkec }}">{{ $item->nmkec }}</option>
                                     @endforeach
@@ -156,14 +157,10 @@
                                             class="form-control" />
                                     </div>
                                     <div class="col-md-6 d-flex">
-                                        {{-- <div class="form-group ">
-                                            <label class="fieldlabels">Unit</label>
-                                            <input type="checkbox" id="checkbox">
-                                        </div> --}}
-                                        <div>
-                                            <!-- Isi dengan input fields atau elemen form lainnya -->
-                                            <div class="form-group">
-                                                <div class="multi-form">
+                                        <!-- Isi dengan input fields atau elemen form lainnya -->
+                                        <div class="form-group">
+                                            <div class="multi-form">
+                                                <div class="w-50">
                                                     <label class="fieldlabels">Unit</label>
                                                     <select name="nm_unit" id="nm_unit"
                                                         class="form-control select2">
@@ -173,9 +170,11 @@
                                                                 {{ $item->nm_unit }}</option>
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                                <div class="w-50">
                                                     <label class="fieldlabels">Kode Unit</label>
                                                     <select name="kd_unit" id="kd_unit"
-                                                        class="form-control select2">
+                                                        class="form-control select2" readonly>
                                                         @foreach ($unitList as $item)
                                                             <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}
                                                             </option>
@@ -203,8 +202,10 @@
                                     <div class="row">
                                         <div class="col-md">
                                             <div class="">
-                                                <label class="fieldlabels" for="nomor_sambungan">Nomor Sambungan</label>
-                                                <input type="number" id="no_sambungan" name="no_sambungan" placeholder="Masukkan Nomor Sambungan Terdekat">
+                                                <label class="fieldlabels" for="nomor_sambungan">Nomor
+                                                    Sambungan</label>
+                                                <input type="number" id="no_sambungan" name="no_sambungan"
+                                                    placeholder="Masukkan Nomor Sambungan Terdekat">
                                                 @error('no_sambungan')
                                                     <div>{{ $message }}</div>
                                                 @enderror
@@ -212,8 +213,9 @@
                                         </div>
                                         <div class="col-md">
                                             <div class="">
-                                                <label class="fieldlabels"  for="nama">Nama</label>
-                                                <input type="text" id="nm_sambungan" name="nm_sambungan" placeholder="Masukkkan Nama Sambungan">
+                                                <label class="fieldlabels" for="nama">Nama</label>
+                                                <input type="text" id="nm_sambungan" name="nm_sambungan"
+                                                    placeholder="Masukkkan Nama Sambungan">
                                                 @error('nm_sambungan')
                                                     <div>{{ $message }}</div>
                                                 @enderror
@@ -320,13 +322,20 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="label">Keterangan</label>
+                                            <label class="label">Nomor Sambungan / Nama Sambungan sekitar</label>
                                             <div class="double-detail">
                                                 <p class="text" id="keteranganPelanggan"></p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label">Foto Identitas</label>
+                                            <div class="double-detail">
+                                                <img id="uploadedIdentitas" src="" alt="Uploaded Logo"
+                                                    width="200px">
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <label class="label">Foto Rumah</label>
                                             <div class="double-detail">

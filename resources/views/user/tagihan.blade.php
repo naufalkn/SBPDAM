@@ -36,7 +36,20 @@
             <div class="p-6 mb-9 bg-gray-100 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full h-full hidden"
                 id="riwayat" role="tabpanel" aria-labelledby="riwayat-tab">
                 <div class="space-y-4">
-                    @if (App\Models\Transaksi::where('pelanggan_id', auth()->user()->pelanggan->id)->where('status', 'SUCCESS')->exists())
+                    @if (!auth()->user()->pelanggan || !auth()->user()->pelanggan->id)
+                        <div class="col-span-2 h-full bg-gray-100">
+                            <div
+                                class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
+                                <div class="flex w-full h-full justify-center items-center ">
+                                    <div class="space-y-4 h-full p-16">
+                                        <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
+                                        <p class="font-bold text-xl w-full text-blue-900 text-center">Belum ada riwayat tagihan
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif(App\Models\Transaksi::where('pelanggan_id', auth()->user()->pelanggan->id)->where('status', 'SUCCESS')->exists())
                     <div class="">
                         <p class="font-semibold text-xl text-blue-600 mb-6">Tagihan</p>
                         <div class="grid gap-4 mb-4 grid-cols-2">
@@ -73,7 +86,7 @@
                             <div class="col-span-1">
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Pembayaran
                                     :</label>
-                                <p class="text-blue-600 font-bold"> {{ $transaksi->status }}</p>
+                                <p class="text-blue-600 font-bold"> {{ $pelanggan->transaksi->first()->status }}</p>
                             </div>
                         </div>
                     </div>
@@ -90,12 +103,12 @@
                             <div class="flex w-full h-full justify-center items-center ">
                                 <div class="space-y-4 h-full p-16">
                                     <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
-                                    <p class="font-bold text-xl w-full text-blue-900 text-center">Belum ada riwayat
-                                        transaksi</p>
+                                    <p class="font-bold text-xl w-full text-blue-900 text-center">Belum ada riwayat tagihan
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                     @endif
                 </div>
             </div>
@@ -194,13 +207,6 @@
                                     <input type="text" name="desa" id="desa"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                         placeholder="Rp. 23,000" readonly>
-                                </div>
-                            </div>
-                            <div class="grid gap-4 mb-4 grid-cols-2">
-                                <div class="col-span-1">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                        :</label>
-                                    <p class="text-yellow-400 font-bold"> {{ $transaksi->status }}</p>
                                 </div>
                             </div>
                         </div>

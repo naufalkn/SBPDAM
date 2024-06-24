@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Mail\SendEmail;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Routing\Controller ;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
 
 
 class LoginController extends Controller
@@ -74,13 +79,27 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = new User;
-        $user->username = $request->username;
-        $user->nama = $request->nama;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        return redirect('/login');
+        // $user = new User;
+        // $user->username = $request->username;
+        // $user->nama = $request->nama;
+        // $user->email = $request->email;
+        // $user->password = bcrypt($request->password);
+        // $user->save();
+        // $token = str::random(32);
+        User::create([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            // 'token' => $token
+        ]);
+        
+        Mail::to($request->email)->send(new SendEmail([
+            'nama' => $request->nama,
+            // 'token' => $token
+        ]));
+        
+        return redirect('/login')->with('success', 'Registrasi Berhasil, Silahkan Login');
     }
 
     public function logout()

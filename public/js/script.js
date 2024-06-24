@@ -80,7 +80,10 @@ $(document).ready(function () {
         percent = percent.toFixed();
         $(".progress-bar").css("width", percent + "%");
     }
-    
+
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('').disabled = false;
+
     $("#prosesDaftar").submit(function () {
         // Panggil fungsi displayPreviousInputs() sebelum submit formulir
         displayPreviousInputs();
@@ -110,9 +113,17 @@ function displayPreviousInputs() {
     document.getElementById("jalanPelanggan").textContent = $("input[name='nama_jalan']").val();
     document.getElementById("jumlahPenghuni").textContent = $("input[name='jmlh_penghuni']").val();
     document.getElementById("posPelanggan").textContent = $("input[name='kode_pos']").val();
-    document.getElementById("keteranganPelanggan").textContent = $("input[name='keterangan']").val();
+    document.getElementById("keteranganPelanggan").textContent = $("input[name='no_sambungan']").val() + " / " + $("input[name='nm_sambungan']").val();
 
 
+    const IdentitasInput = $("input[name='foto_identitas']")[0];
+    if (IdentitasInput.files && IdentitasInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#uploadedIdentitas').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(IdentitasInput.files[0]);
+    }
     const logoInput = $("input[name='foto_rumah']")[0];
     if (logoInput.files && logoInput.files[0]) {
         const reader = new FileReader();
@@ -132,3 +143,4 @@ document.getElementById('checkbox').addEventListener('change', function() {
     }
 });
 
+});

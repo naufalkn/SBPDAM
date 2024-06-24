@@ -177,14 +177,14 @@
                                 </div>
                                 <div class="flex w-full">
                                     <div class="flex flex-col pb-3 w-1/2 ">
+                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Foto Identitas</p>
+                                        <img src="{{ asset('/foto_Identitas/' . $item->foto_identitas) }}" class="w-40 h-20"
+                                            alt="">
+                                    </div>
+                                    <div class="flex flex-col pb-3 w-1/2 ">
                                         <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Foto Rumah</p>
                                         <img src="{{ asset('/foto/' . $item->foto_rumah) }}" class="w-40 h-20"
                                             alt="">
-                                    </div>
-                                    <div class="flex flex-col pb-3 w-1/2">
-                                        <p class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Keterangan Sambungan
-                                        </p>
-                                        <p class="text-lg font-semibold">{{ $item->keterangan ?? '-' }}</p>
                                     </div>
                                 </div>
                             </div>

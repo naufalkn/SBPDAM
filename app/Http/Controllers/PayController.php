@@ -60,16 +60,23 @@ class PayController extends Controller
 
     public function berhasil($id)
     {
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        $transaksi = $pelanggan->transaksi()->first();
         $bayar = Transaksi::where('id', $id)->first();
-        return view('user.berhasil', compact('bayar'));
+        return view('user.berhasil', compact([
+            'pelanggan',
+            'transaksi',
+            'bayar',
+        ]));
     }
 
     public function tagihan(Transaksi $transaksi)
     {
-        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
-        $transaksi = $pelanggan->transaksi()->first();
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->with('transaksi')->first();
+        // dd($pelanggan);
+        // $transaksi = $pelanggan->transaksi()->first();
         return view('user.tagihan', [
-            'transaksi' => $transaksi,
+            // 'transaksi' => $transaksi,
             'pelanggan' => $pelanggan,
         ]);
     }

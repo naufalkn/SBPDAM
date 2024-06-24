@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PayController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,12 @@ Route::post('/login', [LoginController::class, 'prosesLogin']);
 // REGISTER
 Route::get('/daftar', [LoginController::class, 'daftar']);
 Route::post('/daftar', [LoginController::class, 'prosesDaftar']);
+
+// Email
+
+// Route::get('send-email',[PHPMailerController::class, 'index'])->name('send.email');
+// Route::post('send-email',[PHPMailerController::class, 'store'])->name('send.email.post');
+// Route::post('/send-email', [PHPMailerController::class, 'sendEmail']);
 
 // LOGOUT
 Route::get('/logout', [LoginController::class, 'logout']);
@@ -79,6 +86,8 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     Route::get('/semua-pelanggan', [AdminController::class, 'pelanggan']);
 
+    Route::get('/semua-pendaftar', [AdminController::class, 'pendaftar']);
+
     Route::get('/profil-admin/{id}', [AdminController::class, 'profil']);
 
     Route::get('/detail-adminUnit/{id}', [AdminController::class, 'detailAdminUnit']);
@@ -102,6 +111,7 @@ Route::get('/detail-pegawai/{id}', [UnitController::class, 'detailPegawai']);
 Route::get('/hapus-pegawai/{id}', [UnitController::class, 'hapusPegawai']);
 Route::get('/profil-unit/{id}', [UnitController::class, 'profil']);
 Route::put('/updateProfilUnit/{id}', [UnitController::class, 'updateProfil']);
+Route::get('/riwayat-pendaftar', [UnitController::class, 'riwayatPendaftar']);
 
 // Pegawai
 

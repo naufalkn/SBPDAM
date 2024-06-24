@@ -219,7 +219,8 @@
                                                     Lengkap</label>
                                                 <input type="text" name="nama" id="nama"
                                                     class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                                    placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}" readonly>
+                                                    placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }}"
+                                                    readonly>
                                             </div>
                                             <div class="col-span-2 sm:col-span-1">
                                                 <label
@@ -339,7 +340,27 @@
                                                     placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nm_unit }}"
                                                     readonly>
                                             </div>
-                                            
+                                            <div class="col-span-1">
+                                                <label
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                                                @if (auth()->user()->pelanggan)
+                                                    <div class="w-full p-2.5">
+                                                        @if (auth()->user()->pelanggan->status == 0 ||
+                                                                auth()->user()->pelanggan->status == 2 ||
+                                                                auth()->user()->pelanggan->status == 3)
+                                                            <span
+                                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">Belum
+                                                                Berlangganan</span>
+                                                        @elseif (auth()->user()->pelanggan->status == 4)
+                                                            <span
+                                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">Berlangganan</span>
+                                                        @endif
+                                                    </div>
+                                                @else
+                                                    <p class="text-sm">Belum Berlangganan</p>
+                                                @endif
+                                            </div>
+
                                         </div>
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-1 space-y-2">
@@ -348,14 +369,15 @@
                                                     Rumah</label>
                                                 <img src="{{ asset('/foto/' . $pelanggan->foto_rumah) }}"
                                                     class="w-40 h-20" alt="">
-                                                
+
                                             </div>
                                             <div class="col-span-1 space-y-2">
                                                 <label
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto KTP</label>
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto
+                                                    KTP</label>
                                                 <img src="{{ asset('/foto_identitas/' . $pelanggan->foto_identitas) }}"
                                                     class="w-40 h-20" alt="">
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -393,181 +415,180 @@
                         <div class="p-6 h-52 bg-gray-100 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
                             id="status" role="tabpanel" aria-labelledby="status-tab">
                             <div class="">
-                            @if (auth()->user()->pelanggan)
-                                <div class="w-full px-24 py-4">
-                                    <div class="relative flex items-center justify-between w-full">
-                                        <div class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-300">
-                                        </div>
-                                        @if ($pelanggan->status == 1)
-                                            <div
-                                                class="absolute left-0 top-2/4 h-0.5 w-1/3 -translate-y-2/4 bg-blue-600 transition-all duration-500">
+                                @if (auth()->user()->pelanggan)
+                                    <div class="w-full px-24 py-4">
+                                        <div class="relative flex items-center justify-between w-full">
+                                            <div class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-300">
                                             </div>
-                                        @elseif($pelanggan->status == 2)
-                                            <div
-                                                class="absolute left-0 top-2/4 h-0.5 w-2/3 -translate-y-2/4 bg-blue-600 transition-all duration-500">
-                                            </div>
-                                        @elseif($pelanggan->status == 3 || $pelanggan->status == 4)
-                                            <div
-                                                class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-blue-600 transition-all duration-500">
-                                            </div>
-                                        @else
-                                            <div
-                                                class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-400 transition-all duration-500">
-                                            </div>
-                                        @endif
-
-
-                                        @if ($pelanggan->status == 1 || $pelanggan->status == 2 || $pelanggan->status == 3 || $pelanggan->status == 4)
-                                            <div
-                                                class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
-                                                <i class="fa-solid fa-check"></i>
-                                                <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                    <h6
-                                                        class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
-                                                        Verifikasi
-                                                    </h6>
-                                                    <p
-                                                        class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                        Pendaftaran anda telah diverifikasi.
-                                                    </p>
+                                            @if ($pelanggan->status == 1)
+                                                <div
+                                                    class="absolute left-0 top-2/4 h-0.5 w-1/3 -translate-y-2/4 bg-blue-600 transition-all duration-500">
                                                 </div>
-                                            </div>
-                                        @else
-                                            <div
-                                                class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
-                                                <i class="fa-solid fa-hourglass-end"></i>
-                                                <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                    <h6
-                                                        class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
-                                                        Verifikasi
-                                                    </h6>
-                                                    <p
-                                                        class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                        Menunggu Verifikasi
-                                                    </p>
+                                            @elseif($pelanggan->status == 2)
+                                                <div
+                                                    class="absolute left-0 top-2/4 h-0.5 w-2/3 -translate-y-2/4 bg-blue-600 transition-all duration-500">
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @elseif($pelanggan->status == 3 || $pelanggan->status == 4)
+                                                <div
+                                                    class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-blue-600 transition-all duration-500">
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-400 transition-all duration-500">
+                                                </div>
+                                            @endif
 
-                                        @if($pelanggan->status == 2 || $pelanggan->status == 3 || $pelanggan->status == 4)
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
-                                            <i class="fa-solid fa-users-gear"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
-                                                    Proses Pemasangan
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    Pegawai akan melalukan pemasangan.
-                                                </p>
-                                            </div>
-                                        </div>
 
-                                        @else
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
-                                            <i class="fa-solid fa-hourglass-end"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
-                                                    Proses Pemasangan
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    -
-                                                </p>
-                                            </div>
-                                        </div>
-                                        @endif
+                                            @if ($pelanggan->status == 1 || $pelanggan->status == 2 || $pelanggan->status == 3 || $pelanggan->status == 4)
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
+                                                            Verifikasi
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            Pendaftaran anda telah diverifikasi.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-hourglass-end"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+                                                            Verifikasi
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            Menunggu Verifikasi
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endif
 
-                                        @if($pelanggan->status == 3 || $pelanggan->status == 4)
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
-                                            <i class="fa-solid fa-user-clock"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
-                                                    Aktifasi
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    Menunggu Aktifasi
-                                                </p>
-                                            </div>
-                                        </div>
-                                        @else
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
-                                            <i class="fa-solid fa-hourglass-end"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
-                                                    Aktifasi
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    -
-                                                </p>
-                                            </div>
-                                        </div>
-                                        @endif
+                                            @if ($pelanggan->status == 2 || $pelanggan->status == 3 || $pelanggan->status == 4)
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-users-gear"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
+                                                            Proses Pemasangan
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            Pegawai akan melalukan pemasangan.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-hourglass-end"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+                                                            Proses Pemasangan
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            -
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endif
 
-                                        @if($pelanggan->status == 4)
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
-                                            <i class="fa-solid fa-user-check"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
-                                                    Berlangganan
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    Selamat menikmati layanan kami
-                                                </p>
+                                            @if ($pelanggan->status == 3 || $pelanggan->status == 4)
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-user-clock"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
+                                                            Aktifasi
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            Menunggu Aktifasi
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-hourglass-end"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+                                                            Aktifasi
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            -
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if ($pelanggan->status == 4)
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-blue-600 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-user-check"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-600">
+                                                            Berlangganan
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            Selamat menikmati layanan kami
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
+                                                    <i class="fa-solid fa-hourglass-end"></i>
+                                                    <div class="absolute -bottom-[4.5rem] w-max text-center">
+                                                        <h6
+                                                            class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+                                                            Berlangganan
+                                                        </h6>
+                                                        <p
+                                                            class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                            -
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                            </div>
+                        @else
+                            <div class="col-span-2 h-full bg-gray-100">
+                                <div
+                                    class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
+                                    <div class="flex w-full h-full justify-center items-center ">
+                                        <div class="space-y-4 h-full p-16">
+                                            <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
+                                            <p class="font-bold text-xl w-full text-blue-900">Kamu belum
+                                                berlangganan
+                                                nih : (
+                                            </p>
+                                            <div class="">
+                                                <a href="{{ url('/daftar-sambungan') }}"
+                                                    class="flex h-10 space-x-3 justify-center items-center rounded-xl w-full bg-blue-900 text-white">Mulai
+                                                    Berlangganan</a>
                                             </div>
                                         </div>
-                                        @else
-                                        <div
-                                            class="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
-                                            <i class="fa-solid fa-hourglass-end"></i>
-                                            <div class="absolute -bottom-[4.5rem] w-max text-center">
-                                                <h6
-                                                    class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
-                                                    Berlangganan
-                                                </h6>
-                                                <p
-                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                                                    -
-                                                </p>
-                                            </div>
-                                        </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            @else
-                                <div class="col-span-2 h-full bg-gray-100">
-                                    <div
-                                        class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
-                                        <div class="flex w-full h-full justify-center items-center ">
-                                            <div class="space-y-4 h-full p-16">
-                                                <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
-                                                <p class="font-bold text-xl w-full text-blue-900">Kamu belum
-                                                    berlangganan
-                                                    nih : (
-                                                </p>
-                                                <div class="">
-                                                    <a href="{{ url('/daftar-sambungan') }}"
-                                                        class="flex h-10 space-x-3 justify-center items-center rounded-xl w-full bg-blue-900 text-white">Mulai
-                                                        Berlangganan</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endif
                         </div>
                     </div>

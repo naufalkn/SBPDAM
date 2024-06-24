@@ -193,6 +193,22 @@ class UnitController extends Controller
         ]);
     }
 
+    public function riwayatPendaftar()
+    {
+        $nama = Auth::user()->username;
+        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 4) // Menambahkan kondisi untuk status 0
+            ->with('transaksi') // Eager loading transaksi
+            ->orderBy('id', 'desc') // Mengurutkan berdasarkan ID terbesar
+            ->get();
+        // dd($pelanggan);
+        return view('unit.riwayatPendaftar', [
+            'nama' => $nama,
+            'pelanggan' => $pelanggan
+        ]);
+
+    }
+
     public function pegawai()
     {
         $jmlh_pegawai = Pegawai::where('kd_unit', Auth::user()->adminUnit->kd_unit)->count();
