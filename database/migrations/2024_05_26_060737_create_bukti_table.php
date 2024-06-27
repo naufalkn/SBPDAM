@@ -16,7 +16,10 @@ return new class extends Migration
             $table->foreignId('pegawai_id')->constrained('pegawai');
             $table->foreignId('pelanggan_id')->constrained('pelanggans');
             $table->string('bukti_pemasangan')->nullable();
+            $table->date('tgl_pemasangan')->nullable();
             $table->string('bukti_pencabutan')->nullable();
+            $table->date('tgl_pencabutan')->nullable();
+            $table->text('alasan')->nullable();
             $table->timestamps();
         });
     }

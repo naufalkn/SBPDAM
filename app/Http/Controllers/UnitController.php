@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Charts\YearUsersChart;
 use App\Models\AdminUnit;
+use App\Models\Bukti;
 use App\Models\Pegawai;
 use App\Models\Pelanggan;
 use App\Models\Transaksi;
@@ -21,29 +22,31 @@ class UnitController extends Controller
     {
         // Mendapatkan id dari user yang sedang login
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+        $pendaftar = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 0) // Menambahkan kondisi untuk status 0
-            ->with('transaksi') // Eager loading transaksi
             ->get();
-
+        $pengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 5) // Menambahkan kondisi untuk status 0
+            ->get();
         $jmlh_pelanggan_aktif = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 4)
             ->count();
-        $jmlh_pelanggan_nonVerif = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+        $jmlh_pendaftar = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 0)
             ->count();
-        $jmlh_pelanggan_proses = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->whereIn('status', [1, 2, 3])
+        $jmlh_pengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status',5)
             ->count();
 
         // dd($pelanggan);
 
         // Mengembalikan view dengan data pelanggan dan chart
         return view('unit.dashboard', [
-            'pelanggan' => $pelanggan,
+            'pelanggan' => $pendaftar,
+            'pengajuan' => $pengajuan,
             'jmlh_pelanggan_aktif' => $jmlh_pelanggan_aktif,
-            'jmlh_pelanggan_nonVerif' => $jmlh_pelanggan_nonVerif,
-            'jmlh_pelanggan_proses' => $jmlh_pelanggan_proses,
+            'jmlh_pengajuan' => $jmlh_pengajuan,
+            'jmlh_pendaftar' => $jmlh_pendaftar,
             'nama' => $nama,
             'chart' => $yearUsersChart->build()
         ]);
@@ -132,11 +135,25 @@ class UnitController extends Controller
 
     public function verifPelanggan(Request $request, $id)
     {
+        // Cari pelanggan berdasarkan ID
         $pelanggan = Pelanggan::find($id);
+
+        // Perbarui status pelanggan
         $pelanggan->status = $request->status;
+
+        // Jika status = 4 (aktif), tambahkan tanggal aktif
+        if ($request->status == 4) {
+            $pelanggan->tgl_aktif = now(); // Tambahkan tanggal aktif (sekarang)
+        } elseif($request->status == 9) {
+            $pelanggan->tgl_nonaktif = now(); // Tambahkan tanggal nonaktif (sekarang)
+        }
+        // Simpan perubahan pada pelanggan
         $pelanggan->save();
+
+        // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Data berhasil diverifikasi.');
     }
+
 
     public function pendaftar()
     {
@@ -221,6 +238,76 @@ class UnitController extends Controller
             'nama' => $nama,
             'pegawai' => $pegawai,
             'unitlist' => $unitlist
+        ]);
+    }
+
+    public function pengajuan()
+    {
+        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 5) // Menambahkan kondisi untuk status 0
+            ->with('transaksi') // Eager loading transaksi
+            ->get();
+        $nama = Auth::user()->username;
+        $jmlh_pengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 5)
+            ->count();
+
+
+        return view('unit.pengajuan', [
+            'pelanggan' => $pelanggan,
+            'nama' => $nama,
+            'jmlh_pengajuan' => $jmlh_pengajuan
+        ]);
+    }
+    public function prosesPengajuan()
+    {
+        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->whereIn('status', [6, 7, 8]) // Menambahkan kondisi untuk status 0
+            ->with('transaksi') // Eager loading transaksi
+            ->get();
+        $nama = Auth::user()->username;
+        $jmlh_prosesPengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->whereIn('status', [6, 7, 8])
+            ->count();
+
+
+        return view('unit.prosesPengajuan', [
+            'pelanggan' => $pelanggan,
+            'nama' => $nama,
+            'jmlh_prosesPengajuan' => $jmlh_prosesPengajuan
+        ]);
+    }
+
+    public function selesaiSegel()
+    {
+        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 9) // Menambahkan kondisi untuk status 0
+            ->get();
+
+        $nama = Auth::user()->username;
+        $jmlh_selesaiSegel = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 9)
+            ->count();
+        
+        return view('unit.segelPelanggan', [
+            'pelanggan' => $pelanggan,
+            'nama' => $nama,
+            'jmlh_selesaiSegel' => $jmlh_selesaiSegel
+        ]);
+    }
+
+    public function riwayatPengajuan()
+    {
+        $nama = Auth::user()->username;
+        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 9) // Menambahkan kondisi untuk status 0
+            ->with('transaksi') // Eager loading transaksi
+            ->orderBy('id', 'desc') // Mengurutkan berdasarkan ID terbesar
+            ->get();
+        // dd($pelanggan);
+        return view('unit.riwayatPengajuan', [
+            'nama' => $nama,
+            'pelanggan' => $pelanggan
         ]);
     }
 

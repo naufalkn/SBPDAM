@@ -34,7 +34,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::view('/beranda', 'user.beranda');
 
-    Route::get('/tagihan', [PayController::class, 'tagihan'])->name('tagihan');
+    Route::get('/langganan', [UserController::class, 'langganan'])->name('langganan');
 
     Route::get('/bayar' , [PayController::class, 'bayar']);
 
@@ -42,7 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/bantuan', [UserController::class, 'bantuan']);
 
-    Route::get('/profil/{id}', [UserController::class, 'profil']);
+    Route::get('/profil/{id}', [UserController::class, 'profil'])->name('profil');
 
     Route::get('/daftar-sambungan', [UserController::class, 'sambungan']);
 
@@ -55,6 +55,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/updateLangganan/{id}', [UserController::class, 'updateLangganan']);
 
     Route::get('/bukti-pembayaran', [PayController::class, 'cetakPembayaran']);
+
+    Route::get('/pengajuan', [UserController::class, 'pengajuan']);
+
+    Route::post('/mulai-pengajuan/{id}', [UserController::class, 'mulaiPengajuan']);
 
 }); 
 
@@ -112,6 +116,10 @@ Route::get('/hapus-pegawai/{id}', [UnitController::class, 'hapusPegawai']);
 Route::get('/profil-unit/{id}', [UnitController::class, 'profil']);
 Route::put('/updateProfilUnit/{id}', [UnitController::class, 'updateProfil']);
 Route::get('/riwayat-pendaftar', [UnitController::class, 'riwayatPendaftar']);
+Route::get('/list-pengajuan', [UnitController::class, 'pengajuan']);
+Route::get('/proses', [UnitController::class, 'prosesPengajuan']);
+Route::get('/segel', [UnitController::class, 'selesaiSegel']);
+Route::get('/riwayat-pengajuan', [UnitController::class, 'riwayatPengajuan']);
 
 // Pegawai
 
@@ -119,11 +127,18 @@ Route::get('/dashboard-pegawai', [PegawaiController::class, 'index']);
 Route::post('/mulai-pasang/{id}', [PegawaiController::class, 'mulaiPasang']);
 Route::get('/list-pasang', [PegawaiController::class, 'listPasang']);
 Route::get('/proses-pemasangan', [PegawaiController::class, 'prosesPemasangan']);
-Route::get('/selesai-pasang', [PegawaiController::class, 'listSelesai']);
+Route::get('/selesai-pasang', [PegawaiController::class, 'listSelesaiPemasangan']);
 Route::get('/riwayat-pemasangan', [PegawaiController::class, 'riwayatPemasangan']);
 Route::post('/bukti-pemasangan/{id}', [PegawaiController::class, 'buktiPemasangan'])->name('bukti.pemasangan');
 Route::get('/profil-pegawai/{id}', [PegawaiController::class, 'profil']);
 Route::put('/updateProfilPegawai/{id}', [PegawaiController::class, 'updateProfil']);
+Route::get('/list-copot', [PegawaiController::class, 'listCopot']);
+Route::post('/bukti-pencopotan/{id}', [PegawaiController::class, 'buktiPencopotan'])->name('bukti.pencopotan');
+Route::get('/proses-pencopotan', [PegawaiController::class, 'prosesPencopotan']);
+Route::post('/mulai-copot/{id}', [PegawaiController::class, 'mulaiCopot']);
+Route::get('/selesai-copot', [PegawaiController::class, 'listSelesaiPencopotan']);
+Route::get('/riwayat-pencopotan', [PegawaiController::class, 'riwayatPencopotan']);
+
 
 
 

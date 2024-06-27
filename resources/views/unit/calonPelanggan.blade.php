@@ -20,9 +20,11 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white"> Jumlah Calon Pelanggan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white"> Jumlah Calon
+                                Pelanggan
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan_proses }}</p>
+                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">
+                                {{ $jmlh_pelanggan_proses }}</p>
                         </div>
                     </div>
                 </div>
@@ -74,42 +76,48 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
-                                <td class="px-6 py-4">@if($item->transaksi->isNotEmpty())
+                            <td class="px-6 py-4">
+                                @if ($item->transaksi->isNotEmpty())
                                     @foreach ($item->transaksi as $transaksi)
-                                        {{ $transaksi->status ?? 'Belum bayar' }}<br>
+                                        {{ $transaksi->status ?? 'Belum bayar' }}
+                                        <br>
                                     @endforeach
                                 @else
                                     Belum Membayar
                                 @endif
-                                
-                                </td>
+
+                            </td>
                             </td>
                             <td class="px-6 py-4">
-                            @if($item->status == '1')
-                                <span
-                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
-                                    Sudah diverifikasi
-                                </span>
-                            @elseif($item->status == '2')
-                                <span
-                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
-                                    Proses Pemasangan
-                                </span>
-                            @elseif($item->status == '3')
-                                <span
-                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
-                                    Pemasangan Selesai
-                                </span>
-                            @endif
-                                
+                                @if ($item->status == '1')
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
+                                        Sudah diverifikasi
+                                    </span>
+                                @elseif($item->status == '2')
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
+                                        Proses Pemasangan
+                                    </span>
+                                @elseif($item->status == '3')
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
+                                        Pemasangan Selesai
+                                    </span>
+                                @endif
+
                             </td>
-                            
+
                             <td class="px-6 py-4">
-                                {{ $item->created_at->format('d-m-Y') }}
+                                @if ($item->tgl_pemasangan)
+                                    {{ \Carbon\Carbon::parse($item->bukti->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
+                                @else
+                                    Belum Dipasang
+                                @endif
                             </td>
-                            
+
                             <td class="px-6 py-4 ">
-                                <a href="{{ url('/detail-user/'.$item->id) }}" type="button"
+                                <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
@@ -129,8 +137,8 @@
                 </tbody>
             </table>
         </div>
-        
+
     </div>
 
-    
+
 @endsection

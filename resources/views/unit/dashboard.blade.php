@@ -21,10 +21,10 @@
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
                             <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Jumlah
-                                Pendaftar
+                                Pengajuan
                             </h5>
                             <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
-                                {{ $jmlh_pelanggan_nonVerif }}</p>
+                                {{ $jmlh_pengajuan }}</p>
                         </div>
                     </div>
                 </div>
@@ -37,11 +37,10 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white"> Jumlah Calon
-                                Pelanggan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white"> Jumlah Pendaftar
                             </h5>
                             <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">
-                                {{ $jmlh_pelanggan_proses }}</p>
+                                {{ $jmlh_pendaftar }}</p>
                         </div>
                     </div>
                 </div>
@@ -67,70 +66,114 @@
     </div>
 
     {{-- Tabel --}}
-    <div class="flex space-x-6 px-5 lg:ml-64 mb-16">
-        <div class="">
-            <p class="font-semibold mb-5 text-gray-600">Daftar Pendaftar Baru</p>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                No.
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Nama
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Pembayran
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Tanggal
-                            </th>
-                            <th scope="col" class="px-6 py-3 ">
-                                Detail
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($pelanggan as $item)
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $item->id }}
-                                </th>
-                                <td class="px-6 py-4">
-                                    {{ $item->nama }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if ($item->transaksi->isNotEmpty())
-                                        @foreach ($item->transaksi as $transaksi)
-                                            {{ $transaksi->status ?? 'Belum bayar' }}
-                                            <br>
-                                        @endforeach
-                                    @else
-                                        Belum Membayar
-                                    @endif
-    
-                                </td>
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $item->created_at->format('d-m-Y') }}
-                                </td>
-    
-                                <td class="px-6 py-4 ">
-                                    <a href="{{ url('/detail-user/'.$item->id) }}" type="button"
-                                        class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
-                                        <i class="fa-regular fa-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
+    <div class="flex space-x-6  justify-between px-5 lg:ml-64 mb-16">
+        <div class="w-full space-y-16">
+            {{-- Pelanggan Baru --}}
+            <div class="">
+                <p class="font-semibold mb-5 text-gray-600">Daftar Pendaftar Baru</p>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
                             <tr>
-                                <td>Belum ada Pelanggan</td>
+                                <th scope="col" class="px-6 py-3">
+                                    No.
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama
+                                </th>
+                                
+                                <th scope="col" class="px-6 py-3">
+                                    Tanggal
+                                </th>
+                                <th scope="col" class="px-6 py-3 ">
+                                    Detail
+                                </th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($pelanggan as $item)
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $item->id }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->nama }}
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        {{ \Carbon\Carbon::parse($item->tgl_daftar)->format('d-m-Y') ?? '-' }}
+                                    </td>
+
+                                    <td class="px-6 py-4 ">
+                                        <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
+                                            class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>Belum ada Pendaftar</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {{-- Pengajuan Baru --}}
+
+            <div class="">
+                <p class="font-semibold mb-5 text-gray-600">Daftar Pengajuan Baru</p>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    No.
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama
+                                </th>
+                                
+                                <th scope="col" class="px-6 py-3">
+                                    Tanggal
+                                </th>
+                                <th scope="col" class="px-6 py-3 ">
+                                    Detail
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($pengajuan as $item)
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $item->id }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->nama }}
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        {{ \Carbon\Carbon::parse($item->tgl_pengajuan)->format('d-m-Y') ?? '-' }}
+                                    </td>
+
+                                    <td class="px-6 py-4 ">
+                                        <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
+                                            class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>Belum ada Pengajuan</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="w-full h-full">
@@ -142,5 +185,5 @@
     <script src="{{ $chart->cdn() }}"></script>
 
     {{ $chart->script() }}
-    
+
 @endsection

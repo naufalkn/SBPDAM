@@ -14,14 +14,14 @@
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
-                        <div class="bg-blue-700 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-red-700 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-blue-600 dark:text-white">Pelanggan Aktif
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Proses Pencopotan
                             </h5>
-                            <p class="mb-3 text-2xl text-blue-600 dark:text-gray-400 font-bold">
-                                {{ $riwayat }}</p>
+                            <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
+                                {{ $listCopot }}</p>
                         </div>
                     </div>
                 </div>
@@ -56,6 +56,9 @@
                         <th scope="col" class="px-6 py-3 ">
                             Detail
                         </th>
+                        <th scope="col" class="px-6 py-3 ">
+                            Delete
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,42 +73,34 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
+                            <td class="px-6 py-4">
+                                {{ $item->dukuh }}, Rt. {{ $item->rt }}, Rw. {{ $item->rw }}, Desa {{ $item->desa }}, Kecamatan {{ $item->kecamatan }}
+                            </td>
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->dukuh }}, {{ $item->rt }} /{{ $item->rt }}, {{ $item->kelurahan }},
-                                {{ $item->kecamatan }}
-                            </td>
-
-                            <td class="px-6 py-4">
-                                @if ($item->status == '1')
+                                @if($item->status == '6' )
                                     <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
-                                        Belum Diproses
-                                    </span>
-                                @elseif($item->status == '2')
+                                        class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">sudah diverifikasi</span>
+                                @elseif($item->status == '7')
                                     <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
-                                        Proses Pemasangan
-                                    </span>
-                                @elseif($item->status == '3')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
-                                        Selesai
-                                    </span>
-                                @elseif($item->status == '4')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
-                                        Sudah Aktif
-                                    </span>
+                                        class="bg-yellow-400 text-white px-2 py-1 rounded-full text-xs font-semibold">Proses Pencopotan</span>
                                 @endif
                             </td>
+                            
                             <td class="px-6 py-4">
-                                {{ $item->created_at->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($item->tgl_pengajuan)->format('d-m-Y') ?? '-' }}
                             </td>
+                            
                             <td class="px-6 py-4 ">
                                 <a href="{{ url('/detail-user/'.$item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
+                                </a>
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ url('/hapus-pelanggan/' . $item->id) }}" type="button"
+                                    class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-red-900">
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
@@ -117,6 +112,8 @@
                 </tbody>
             </table>
         </div>
-
+        
     </div>
+
+    
 @endsection

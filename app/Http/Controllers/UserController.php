@@ -89,6 +89,17 @@ class UserController extends Controller
         }
     }
 
+    public function langganan()
+    {
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->with('transaksi')->first();
+        // dd($pelanggan);
+        // $transaksi = $pelanggan->transaksi()->first();
+        return view('user.langganan', [
+            // 'transaksi' => $transaksi,
+            'pelanggan' => $pelanggan,
+        ]);
+    }
+
     public function updateProfil($id, Request $request)
     {
         try {
@@ -202,6 +213,7 @@ class UserController extends Controller
             'kd_unit' => 'required|exists:munit,kd_unit',
         ]);
 
+        $validatedData['tgl_daftar'] = now();
 
         if ($request->hasFile('foto_identitas')) { // Periksa apakah file telah diunggah
             // $fotoPath = $request->file('foto_rumah')->store('public/foto');
@@ -279,6 +291,28 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
         }
+    }
+
+    public function pengajuan()
+    {
+        $user = Auth::user();
+        return view('user.pengajuan', [
+            'user' => $user,
+        ]);
+    }
+
+    public function mulaiPengajuan(Request $request, $id )
+    {
+        $user = Auth::user();
+        $pelanggan = $user->pelanggan;
+        $bukti = $pelanggan->bukti;
+        $pelanggan->tgl_pengajuan = now(); 
+        $pelanggan->status = '5';
+        $bukti->alasan = $request->alasan;
+        $pelanggan->save();
+        $bukti->save();
+
+        return redirect()->route('profil', $user->id);
     }
 
 }

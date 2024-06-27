@@ -4,32 +4,9 @@
     <!-- SIDE -->
     @include('layouts.sidebar')
     <div class="px-5 py-8 lg:py-12 lg:px-8 lg:ml-60 mt-16 text-neutral-300 relative">
-        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Halo, Selamat Datang </p>
-        <p class="">Website Sambungan Baru PDAM Kabupaten Sragen Unit {{ $nama }}</p>
-
-        <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">
-
-        </div>
-
-        <div class="flex w-full mt-12">
-            <div class="w-1/3">
-                <div
-                    class="flex  flex-col h-28 l w-80 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
-                    <div class="flex w-full gap-10 items-center p-5">
-                        <div class="bg-green-700 w-16 h-16 rounded-lg flex justify-center items-center">
-                            <i class="fa-solid fa-users text-white text-2xl"></i>
-                        </div>
-                        <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-600 dark:text-white">Jumlah
-                                Pendaftar
-                            </h5>
-                            <p class="mb-3 text-2xl text-green-600 dark:text-gray-400 font-bold">
-                                {{ $jmlh_pelanggan_nonVerif }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <p class="text-2xl lg:text-4xl mb-2 font-semibold z-40">Riwayat Pendaftaran </p>
+        <p class="capitalize font-semibold">Unit {{ $nama }}</p>
+        <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-40 absolute top-0 left-0 w-full">
         </div>
     </div>
 
@@ -40,7 +17,7 @@
                 <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            No.
+                            
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Nama
@@ -49,7 +26,7 @@
                             No Telp
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Pembayran
+                            Alamat
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -68,35 +45,27 @@
                 <tbody>
                     @forelse ($pelanggan as $item)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $item->id }}
-                            </th>
+                            <td class="px-6 py-4">
+                                <img src="{{ asset('img/' . $item->user->foto) }}" alt="foto"
+                                    class="w-11 h-10 rounded-full">
+                            </td>
                             <td class="px-6 py-4">
                                 {{ $item->nama }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
                             <td class="px-6 py-4">
-                                @if ($item->transaksi->isNotEmpty())
-                                    @foreach ($item->transaksi as $transaksi)
-                                        {{ $transaksi->status ?? 'Belum bayar' }}
-                                        <br>
-                                    @endforeach
-                                @else
-                                    Belum Membayar
-                                @endif
-
+                                {{ $item->dukuh }} , Rt.{{ $item->rt }}, Rw.{{ $item->rw }}, {{ $item->kelurahan }}, {{ $item->kecamatan }} 
                             </td>
                             </td>
                             <td class="px-6 py-4">
                                 <span
-                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-gray-600 bg-gray-200  last:mr-0 mr-1">
-                                    Belum diverifikasi
+                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
+                                    Sudah Disegel
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                {{ \Carbon\Carbon::parse($item->tgl_daftar)->format('d-m-Y') ?? '-' }}
+                                {{ \Carbon\Carbon::parse($item->tgl_nonaktif)->format('d-m-Y') ?? '-' }}
                             </td>
 
                             <td class="px-6 py-4 ">
@@ -120,7 +89,6 @@
                 </tbody>
             </table>
         </div>
+
     </div>
-
-
 @endsection

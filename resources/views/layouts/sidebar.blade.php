@@ -297,6 +297,32 @@
                     </ul>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
+                            <div href="/list-pengajuan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Pengajuan" icon="fa-solid fa-user-pen" href="/list-pengajuan"
+                                    :isActive="Request::is('list-pengajuan*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/proses" class="flex items-center p-1">
+                                <x-sidebar-menu text="Proses" icon="fa-solid fa-user-clock" href="/proses"
+                                    :isActive="Request::is('proses*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/segel" class="flex items-center p-1">
+                                <x-sidebar-menu text="Segel" icon="fa-solid fa-user-lock" href="/segel"
+                                    :isActive="Request::is('segel*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/riwayat-pengajuan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Riwayat Pengajuan" icon="fa-solid fa-clock-rotate-left"
+                                    href="/riwayat-pengajuan" :isActive="Request::is('riwayat-pengajuan*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
                             <div href="/pegawai" class="flex items-center p-1">
                                 <x-sidebar-menu text="Pegawai" icon="fa-solid fa-user-gear" href="/pegawai"
                                     :isActive="Request::is('pegawai*')" />
@@ -334,6 +360,32 @@
                             <div href="/riwayat-pemasangan" class="flex items-center p-1">
                                 <x-sidebar-menu text="Riwayat Pemasangan" icon="fa-solid fa-user-check"
                                     href="/riwayat-pemasangan" :isActive="Request::is('riwayat-pemasangan*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div href="/list-copot" class="flex items-center p-1">
+                                <x-sidebar-menu text="List Pencopotan" icon="fa-solid fa-user-pen" href="/list-copot"
+                                    :isActive="Request::is('list-copot*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/proses-pencopotan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Proses Penyegelan" icon="fa-solid fa-user-check"
+                                    href="/proses-pencopotan" :isActive="Request::is('proses-pencopotan*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/selesai-copot" class="flex items-center p-1">
+                                <x-sidebar-menu text="Selesai" icon="fa-solid fa-user-clock" href="/selesai-copot"
+                                    :isActive="Request::is('selesai-copot*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div href="/riwayat-pencopotan" class="flex items-center p-1">
+                                <x-sidebar-menu text="Riwayat Pencopotan" icon="fa-solid fa-user-check"
+                                    href="/riwayat-pencopotan" :isActive="Request::is('riwayat-pencopotan*')" />
                             </div>
                         </li>
                     </ul>

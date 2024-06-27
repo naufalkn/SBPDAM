@@ -304,7 +304,7 @@ class AdminController extends Controller
 
     public function detailUser($id)
     {
-        $pelanggan = Pelanggan::all()->where('id', $id);
+        $pelanggan = Pelanggan::find($id);
         // dd($pelanggan);
         return view('admin.detail-user', [
             // 'user' => $user,

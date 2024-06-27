@@ -36,7 +36,7 @@
                 <div class="flex flex-1 p-4 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="hidden lg:flex space-x-6 w-full h-full justify-end items-center">
                         <x-navbar-menu text="Beranda" href="/beranda" :isActive="Request::is('beranda*')" />
-                        <x-navbar-menu text="tagihan" href="/tagihan" :isActive="Request::is('tagihan*')" />
+                        <x-navbar-menu text="Langganan" href="/langganan" :isActive="Request::is('langganan*')" />
                         <x-navbar-menu text="Bantuan" href="/bantuan" :isActive="Request::is('bantuan*')" />
                     </div>
                 </div>

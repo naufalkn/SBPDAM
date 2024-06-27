@@ -18,10 +18,11 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Antre Pemasangan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Pengajuan
+                                Berhenti
                             </h5>
                             <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
-                                {{ $listPasang }}</p>
+                                {{ $listPengajuan }}</p>
                         </div>
                     </div>
                 </div>
@@ -30,14 +31,14 @@
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
-                        <div class="bg-yellow-400 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-yellow-500 dark:text-white">Proses Pemasangan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white">Pemasangan
                             </h5>
-                            <p class="mb-3 text-2xl text-yellow-500 dark:text-gray-400 font-bold">
-                                {{ $listProses }}</p>
+                            <p class="mb-3 text-2xl text-green-500 dark:text-gray-400 font-bold">
+                                {{ $listPasang }}</p>
                         </div>
                     </div>
                 </div>
@@ -46,13 +47,14 @@
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
-                        <div class="bg-green-800 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-blue-800 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-700 dark:text-white"> Selesai Pemasangan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-blue-700 dark:text-white"> Riwayat
+                                Pengerjaan
                             </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">
+                            <p class="mb-3 text-2xl text-blue-700 dark:text-gray-400 font-bold">
                                 {{ $listSelesai }}</p>
                         </div>
                     </div>
@@ -80,7 +82,7 @@
                             Alamat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
+                            Status Pengerjaan
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Tanggal
@@ -111,26 +113,25 @@
                             <td class="px-6 py-4">
                                 @if ($item->status == '1')
                                     <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
-                                        Belum Diproses
-                                    </span>
-                                @elseif($item->status == '2')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
-                                        Proses Pemasangan
-                                    </span>
-                                @elseif($item->status == '3')
-                                    <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
-                                        Selesai
+                                        Pemasangan
+                                    </span>
+                                @elseif($item->status == '6')
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
+                                        Pengajuan Berhenti
                                     </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->created_at->format('d-m-Y') }}
+                                @if ($item->status == '1')
+                                    {{ \Carbon\Carbon::parse($item->tgl_daftar)->format('d-m-Y') ?? '-' }}
+                                @elseif($item->status == '6')
+                                    {{ \Carbon\Carbon::parse($item->tgl_pengajuan)->format('d-m-Y') ?? '-' }}
+                                @endif
                             </td>
                             <td class="px-6 py-4 ">
-                                <a href="{{ url('/detail-user/'. $item->id) }}" type="button"
+                                <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>

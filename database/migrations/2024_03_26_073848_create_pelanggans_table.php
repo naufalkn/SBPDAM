@@ -21,6 +21,10 @@ return new class extends Migration
             $table->bigInteger('no_identitas')->unique();
             $table->string('no_telepon', 15);
             $table->string('foto_identitas')->required();
+            $table->date('tgl_daftar')->required();
+            $table->date('tgl_aktif')->nullable();
+            $table->date('tgl_pengajuan')->nullable();
+            $table->date('tgl_nonaktif')->nullable();
 
             // Detail Alamat
             $table->text('dukuh')->requaired();

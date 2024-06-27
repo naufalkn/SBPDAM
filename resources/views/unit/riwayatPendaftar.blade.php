@@ -65,7 +65,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                {{ $item->created_at->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($item->tgl_aktif)->format('d-m-Y') ?? '-' }}
                             </td>
 
                             <td class="px-6 py-4 ">

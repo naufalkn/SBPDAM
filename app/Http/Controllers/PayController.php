@@ -70,17 +70,6 @@ class PayController extends Controller
         ]));
     }
 
-    public function tagihan(Transaksi $transaksi)
-    {
-        $pelanggan = Pelanggan::where('user_id', auth()->id())->with('transaksi')->first();
-        // dd($pelanggan);
-        // $transaksi = $pelanggan->transaksi()->first();
-        return view('user.tagihan', [
-            // 'transaksi' => $transaksi,
-            'pelanggan' => $pelanggan,
-        ]);
-    }
-
     public function callback(Request $request)
     {
         $serverKey = config('midtrans.server_key');
