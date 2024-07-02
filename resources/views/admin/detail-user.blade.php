@@ -302,7 +302,7 @@
                                                 <button type="submit">Upload</button>
                                             </form>
                                         @endcan
-                                    @elseif($pelanggan->bukti != null)
+                                    @elseif($pelanggan->bukti->bukti_pencabutan != null)
                                         <p>
                                             <img src="{{ asset('buktiCopot/' . $pelanggan->bukti->bukti_pencabutan) }}"
                                                 alt="" class="w-40 h-20 mt-5">

@@ -20,7 +20,7 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-700 dark:text-white"> Jumlah Calon Pelanggan
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-700 dark:text-white"> Pelanggan Disegel
                             </h5>
                             <p class="mb-3 text-2xl text-red-700 dark:text-gray-400 font-bold">{{ $jmlh_selesaiSegel }}</p>
                         </div>

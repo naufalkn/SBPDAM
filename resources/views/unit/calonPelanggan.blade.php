@@ -109,7 +109,7 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                @if ($item->tgl_pemasangan)
+                                @if ($item->bukti)
                                     {{ \Carbon\Carbon::parse($item->bukti->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
                                 @else
                                     Belum Dipasang

@@ -207,8 +207,8 @@ class UserController extends Controller
             'nama_jalan' => 'required',
             'jmlh_penghuni' => 'required',
             'foto_rumah' => 'required',
-            'nm_sambungan' => 'required',
-            'no_sambungan' => 'required',
+            'nm_sambungan' => 'nullable',
+            'no_sambungan' => 'nullable',
             'nm_unit' => 'required',
             'kd_unit' => 'required|exists:munit,kd_unit',
         ]);

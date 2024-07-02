@@ -255,7 +255,7 @@
                                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">Berlangganan</span>
                                             @elseif($pelanggan->status == 5 || $pelanggan->status == 6 || $pelanggan->status == 7 || $pelanggan->status == 8)
                                                 <span
-                                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Pengajuan
+                                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Pengajuan Berhenti
                                                     Berlangganan</span>
                                             @elseif($pelanggan->status == 9)
                                                 <span
@@ -307,7 +307,7 @@
                                                                     Verifikasi
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Pendaftaran anda telah diverifikasi.
                                                                 </p>
                                                             </div>
@@ -322,7 +322,7 @@
                                                                     Verifikasi
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Menunggu Verifikasi
                                                                 </p>
                                                             </div>
@@ -339,7 +339,7 @@
                                                                     Proses Pemasangan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Pegawai akan melalukan pemasangan.
                                                                 </p>
                                                             </div>
@@ -354,7 +354,7 @@
                                                                     Proses Pemasangan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
@@ -371,7 +371,7 @@
                                                                     Aktifasi
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Menunggu Aktifasi
                                                                 </p>
                                                             </div>
@@ -386,7 +386,7 @@
                                                                     Aktifasi
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
@@ -403,7 +403,7 @@
                                                                     Berlangganan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Selamat menikmati layanan kami
                                                                 </p>
                                                             </div>
@@ -418,7 +418,7 @@
                                                                     Berlangganan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
@@ -434,7 +434,7 @@
                                     <div
                                         class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
                                         <div class="">
-                                            <p class="font-semibold text-black">Berhentti Berlangganan</p>
+                                            <p class="font-semibold text-black">Berhenti Berlangganan</p>
                                             <p>Tekan Tombol Berhenti Berlangganan untuk mengajukan proses penyegelan</p>
                                         </div>
                                         <div class="flex items-end">
@@ -485,7 +485,7 @@
                                                                     Persetujuan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Pengajuan Anda Telah Disetujui.
                                                                 </p>
                                                             </div>
@@ -500,7 +500,7 @@
                                                                     Persetujuan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Menunggu Persetujuan
                                                                 </p>
                                                             </div>
@@ -517,7 +517,7 @@
                                                                     Proses Pencopotan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Pegawai akan melalukan pencopotan.
                                                                 </p>
                                                             </div>
@@ -532,7 +532,7 @@
                                                                     Proses Pencopotan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
@@ -549,7 +549,7 @@
                                                                     Penyegelan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Menunggu Penyegelan Akun
                                                                 </p>
                                                             </div>
@@ -564,7 +564,7 @@
                                                                     Penyegelan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
@@ -581,7 +581,7 @@
                                                                     Berhenti Berlangganan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     Akun Anda Telah disegel
                                                                 </p>
                                                             </div>
@@ -596,7 +596,7 @@
                                                                     Berhenti Berlangganan
                                                                 </h6>
                                                                 <p
-                                                                    class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                                                                    class="block font-sans text-sm antialiased font-normal leading-relaxed text-gray-700">
                                                                     -
                                                                 </p>
                                                             </div>
