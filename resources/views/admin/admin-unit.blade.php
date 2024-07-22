@@ -44,55 +44,46 @@
                         @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2">
-                                <label for="kd_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
                                 <input type="text" name="nama" id="nama"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukkan Kode Unit">
+                                    placeholder="Masukkan Nama">
                             </div>
                             <div class="col-span-2">
-                                <label for="nm_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                                 <input type="text" name="username" id="username"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukkan Nama Unit">
+                                    placeholder="Masukkan Username">
                             </div>
                             <div class="col-span-2">
-                                <label for="nm_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                                 <input type="email" name="email" id="email"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukkan Nama Unit">
+                                    placeholder="Masukkan Email">
                             </div>
                             <div class="col-span-2">
-                                <label for="nm_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                                 <input type="password" name="password" id="password"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukkan Nama Unit">
+                                    placeholder="Masukkan Password">
                             </div>
-                            <div class="col-span-2 flex w-full gap-5 justify-between">
-                                <div class="multi-form">
-                                    <label class="fieldlabels">Unit</label>
+                            <div class="col-span-2">
+                                <label for="nm_unit" class="block text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                                <div class="flex gap-4">
                                     <select name="nm_unit" id="nm_unit"
-                                        class="form-control select2">
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Pilih Unit</option>
                                         @foreach ($unitlist as $item)
-                                            <option value="{{ $item->nm_unit }}"
-                                                data-kd-unit="{{ $item->kd_unit }}">
-                                                {{ $item->nm_unit }}</option>
+                                            <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">{{ $item->nm_unit }}</option>
                                         @endforeach
                                     </select>
-                                    <label class="fieldlabels">Kode Unit</label>
-                                    <select name="kd_unit" id="kd_unit"
-                                        class="form-control select2">
-                                        @foreach ($unitlist as $item)
-                                            <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="flex-1">
+                                        <label for="kd_unit" class="block text-sm font-medium text-gray-700 dark:text-white">Kode Unit</label>
+                                        <input type="text" name="kd_unit" id="kd_unit" readonly
+                                            class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    </div>
                                 </div>
                             </div>
-                            
                         </div>
                         <button type="submit"
                             class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -105,6 +96,7 @@
                             Tambah
                         </button>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -164,14 +156,15 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="w-full">
-                                        <form action="{{ url('/status-adminUnit', ['id' => $item->id]) }}" method="POST">
+                                        <form action="{{ url('/status-adminUnit', ['id' => $item->id]) }}"
+                                            method="POST">
                                             @csrf
-                                            @if ($item->status == "nonaktif")
-                                                <button type="submit" name="status" value="aktif"
-                                                    class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Aktifkan</button>
-                                            @elseif($item->status == "aktif")
+                                            @if ($item->status == 'aktif')
                                                 <button type="submit" name="status" value="nonaktif"
-                                                    class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">NonAktif</button>
+                                                    class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">active</button>
+                                            @elseif($item->status == 'nonaktif')
+                                                <button type="submit" name="status" value="aktif"
+                                                    class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">inactive</button>
                                             @endif
                                         </form>
                                     </div>
@@ -199,20 +192,22 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
     <script>
         $(document).ready(function() {
-            // Saat pemilihan unit berubah
+            // Initialize Select2 plugin
+            $('#nm_unit').select2();
+    
+            // Handle unit selection change
             $('#nm_unit').change(function() {
                 var selectedUnit = $(this).find(':selected');
                 var kodeUnit = selectedUnit.data('kd-unit');
-                // Set nilai kode unit sesuai dengan data yang tersimpan pada atribut data-kd-unit
+                // Set the kd_unit input value based on the selected nm_unit
                 $('#kd_unit').val(kodeUnit);
             });
-
-            // Inisialisasi plugin Select2
-            $('.select2').select2();
         });
     </script>
 @endsection
-
-

@@ -39,51 +39,60 @@ class YearUsersChart
         $dataPengajuan = [];
 
         // Periksa jika peran pengguna adalah 'superadmin'
-        if (auth()->user()->role->nama === 'superadmin') {
-            $pelanggans = Pelanggan::orderBy('created_at')->get();
-        } else {
-            $pelanggans = Pelanggan::where("kd_unit", Auth::user()->adminUnit->kd_unit)
-                ->orderBy('created_at')
-                ->get();
-        }
 
-        // Kelompokkan berdasarkan bulan untuk tgl_daftar
-        $dataDaftar = $pelanggans->groupBy(function ($pelanggan) {
-            return Carbon::parse($pelanggan->tgl_daftar)->format('F');
-        })
-            ->map(function ($group) {
-                return $group->count();
-            })
-            ->toArray();
 
-        // Kelompokkan berdasarkan bulan untuk tgl_pengajuan
-        $dataPengajuan = $pelanggans->groupBy(function ($pelanggan) {
-            return Carbon::parse($pelanggan->tgl_pengajuan)->format('F');
-        })
-            ->map(function ($group) {
-                return $group->count();
-            })
-            ->toArray();
+// Mendapatkan data pelanggan berdasarkan role user
+if (auth()->user()->role->nama === 'superadmin') {
+    $pelanggans = Pelanggan::orderBy('created_at')->get();
+} else {
+    $pelanggans = Pelanggan::where("kd_unit", Auth::user()->adminUnit->kd_unit)
+        ->orderBy('created_at')
+        ->get();
+}
 
-        // Mengisi data untuk setiap bulan, jika tidak ada data, nilainya menjadi 0
-        $dataDaftar = $allMonths->map(function ($month) use ($dataDaftar) {
-            return $dataDaftar[$month] ?? 0;
-        });
+// Membuat daftar semua bulan
+$allMonths = collect(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
 
-        $dataPengajuan = $allMonths->map(function ($month) use ($dataPengajuan) {
-            return $dataPengajuan[$month] ?? 0;
-        });
+// Kelompokkan berdasarkan jenis dan bulan untuk tgl_daftar
+$dataDaftar = $pelanggans->where('jenis', 'pendaftaran')->groupBy(function ($pelanggan) {
+    return Carbon::parse($pelanggan->tgl_daftar)->format('F');
+})
+    ->map(function ($group) {
+        return $group->count();
+    })
+    ->toArray();
 
-        // Label bulan
-        $label = $allMonths->toArray();
+// Kelompokkan berdasarkan jenis dan bulan untuk tgl_pengajuan
+$dataPengajuan = $pelanggans->where('jenis', 'pengajuan')->groupBy(function ($pelanggan) {
+    return Carbon::parse($pelanggan->tgl_pengajuan)->format('F');
+})
+    ->map(function ($group) {
+        return $group->count();
+    })
+    ->toArray();
 
-        return $this->chart->barChart()
-            ->setSubtitle(date('Y'))
-            ->setWidth(auth()->user()->role->nama == 'superadmin' ? 1200 : 700)
-            ->setHeight(auth()->user()->role->nama == 'superadmin' ? 400 : 350)
-            ->addData('Jumlah Pendaftar', $dataDaftar->values()->toArray())
-            ->addData('Jumlah Pengajuan', $dataPengajuan->values()->toArray())
-            ->setColors(['#229954', '#CB4335'])
-            ->setXAxis($label);
-    }
+// Mengisi data untuk setiap bulan, jika tidak ada data, nilainya menjadi 0
+$dataDaftar = $allMonths->map(function ($month) use ($dataDaftar) {
+    return $dataDaftar[$month] ?? 0;
+});
+
+$dataPengajuan = $allMonths->map(function ($month) use ($dataPengajuan) {
+    return $dataPengajuan[$month] ?? 0;
+});
+
+// Label bulan
+$label = $allMonths->toArray();
+
+// Menggunakan LarapexChart untuk membuat barchart
+return (new LarapexChart)->barChart()
+->setSubtitle(date('Y'))
+    // ->setWidth( 500)
+    ->setWidth ( Auth::user()->role->nama === 'unit' ? 700 : 500)
+    ->setHeight( Auth::user()->role->nama === 'unit' ? 350 : 350)
+    ->addData('Jumlah Pendaftar', $dataDaftar->values()->toArray())
+    ->addData('Jumlah Pengajuan', $dataPengajuan->values()->toArray())
+    ->setColors(['#229954', '#CB4335']) // Hijau untuk pendaftaran, merah untuk pengajuan
+    ->setXAxis($label);
+
+}
 }

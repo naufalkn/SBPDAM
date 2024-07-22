@@ -29,7 +29,9 @@
                         </div>
                         <div class="">
                             <label class="block mb-2 text-sm font-medium dark:text-white">Alamat</label>
-                            <p class="text-xl text-black ">{{ $user->pelanggan->dukuh }}, Rt.{{ $user->pelanggan->rt }}, Rw.{{ $user->pelanggan->rw }}, {{ $user->pelanggan->kecamatan }}, {{ $user->pelanggan->kelurahan }}</p>
+                            <p class="text-xl text-black ">{{ $user->pelanggan->dukuh }}, Rt.{{ $user->pelanggan->rt }},
+                                Rw.{{ $user->pelanggan->rw }}, {{ $user->pelanggan->kecamatan }},
+                                {{ $user->pelanggan->kelurahan }}</p>
                         </div>
                         <div class="">
                             <label class="block mb-2 text-sm font-medium dark:text-white">Tanggal Daftar</label>
@@ -44,20 +46,26 @@
                         <label for="alasan">Pilih Alasan:</label><br>
                         <input type="radio" id="alasan1" name="alasan" value="Harga terlalu mahal">
                         <label for="alasan1">Harga terlalu mahal</label><br>
-                        
+
                         <input type="radio" id="alasan2" name="alasan" value="Layanan tidak memuaskan">
                         <label for="alasan2">Layanan tidak memuaskan</label><br>
-                        
+
                         <input type="radio" id="alasan3" name="alasan" value="Pindah ke layanan lain">
                         <label for="alasan3">Pindah ke layanan lain</label><br>
-                        
+
                         <input type="radio" id="alasan4" name="alasan" value="lainnya">
                         <label for="alasan4">Lainnya</label><br>
                     </div>
-                    
-                    <div class="form-group" id="alasan_lainnya" style="display: none;">
+
+                    {{-- <div class="form-group" id="alasan_lainnya" style="display: none;">
                         <label for="alasan_text">Tuliskan alasan Anda:</label>
                         <input type="text" id="alasan_text" name="alasan_text" class="form-control">
+                    </div> --}}
+                    <div class="w-full" id="alasan_lainnya" style="display: none;">
+                        <label for="alasan_text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Masukkan Alasan Pengajuan</label>
+                        <textarea type="text" id="alasan_text" name="alasan_text" rows="4"
+                            class="block p-2.5 w-[500px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Leave a comment..."></textarea>
                     </div>
                     <div class="w-full justify-end flex">
                         <button type="submit"
@@ -71,19 +79,19 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    var alasanRadios = document.querySelectorAll('input[name="alasan"]');
-    var alasanLainnyaDiv = document.getElementById('alasan_lainnya');
-    alasanRadios.forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            if (radio.value === 'lainnya') {
-                alasanLainnyaDiv.style.display = 'block';
-                document.getElementById('alasan_text').name = 'alasan';
-            } else {
-                alasanLainnyaDiv.style.display = 'none';
-                document.getElementById('alasan_text').name = 'alasan_text';
-            }
+            var alasanRadios = document.querySelectorAll('input[name="alasan"]');
+            var alasanLainnyaDiv = document.getElementById('alasan_lainnya');
+            alasanRadios.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    if (radio.value === 'lainnya') {
+                        alasanLainnyaDiv.style.display = 'block';
+                        document.getElementById('alasan_text').name = 'alasan';
+                    } else {
+                        alasanLainnyaDiv.style.display = 'none';
+                        document.getElementById('alasan_text').name = 'alasan_text';
+                    }
+                });
+            });
         });
-    });
-});
     </script>
 @endsection

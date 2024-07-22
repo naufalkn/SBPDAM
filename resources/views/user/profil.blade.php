@@ -105,6 +105,19 @@
                                 </p>
                             </button>
                         </li>
+                        @if (auth()->user()->pelanggan != null)
+                            <li role="presentation">
+                                <button id="riwayat-tab" data-tabs-target="#riwayat" type="button" role="tab"
+                                    aria-controls="riwayat" aria-selected="false"
+                                    class="inline-flex space-x-4 items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-100 hover:bg-gray-200  w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                                    aria-current="page">
+                                    <i class="fa-solid fa-print"></i>
+                                    <p class="font-semibold">
+                                        Cetak Bukti
+                                    </p>
+                                </button>
+                            </li>
+                        @endif
                     </ul>
                     <div id="myTabContent" class="w-full h-full">
                         {{-- Profil --}}
@@ -149,12 +162,11 @@
                                         </div>
                                         <div class="col-span-1">
                                             <label
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
-                                                Lahir</label>
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Lahir</label>
                                             <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                                 placeholder="Masukkan Nama Lengkap"
-                                                value="{{ auth()->user()->tanggal_lahir }}">
+                                                value="{{ auth()->user()->tanggal_lahir }}" max="{{ date('Y-m-d') }}">
                                         </div>
                                         <div class="col-span-2 sm:col-span-1">
                                             <label
@@ -225,8 +237,8 @@
                                                 </span>
                                             </p>
                                         @elseif($pelanggan->status == 4)
-                                            <p> Tanggal Aktif :
-                                                <span class="ml-3">
+                                            <p> Mulai Berlangganan sejak
+                                                <span class="font-bold text-black">
                                                     {{ \Carbon\Carbon::parse($pelanggan->tgl_aktif)->format('d-m-Y') ?? '-' }}
                                                 </span>
                                             </p>
@@ -255,7 +267,8 @@
                                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">Berlangganan</span>
                                             @elseif($pelanggan->status == 5 || $pelanggan->status == 6 || $pelanggan->status == 7 || $pelanggan->status == 8)
                                                 <span
-                                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Pengajuan Berhenti
+                                                    class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Pengajuan
+                                                    Berhenti
                                                     Berlangganan</span>
                                             @elseif($pelanggan->status == 9)
                                                 <span
@@ -429,7 +442,7 @@
                                         </div>
                                     </div>
                                 @endif
-
+                                {{-- Button Ajuan Berhenti Langganan --}}
                                 @if ($pelanggan->status == 4)
                                     <div
                                         class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
@@ -604,6 +617,24 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if ($pelanggan->status == 9)
+                                    <div
+                                        class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
+                                        <div class="">
+                                            <p class="font-semibold text-black">Mulai Berlangganan Kembali</p>
+                                            <p>Tekan Tombol Mulai Berlangganan Kembali</p>
+                                        </div>
+                                        <div class="flex items-end">
+                                            <a href="/mulai-langganan/{{ $pelanggan->id }}" type="submit"
+                                                class="text-white bg-blue-600 hover:bg-blue-700 w-40 h-10 border-gray-800 rounded flex items-center justify-between p-2">
+                                                <div class="flex items-center justify-between space-x-2 w-full">
+                                                    <p class="text-center w-full">Mulai Langganan</p>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 @endif
@@ -819,7 +850,7 @@
 
                         </div>
 
-                        {{-- Status --}}
+                        {{-- Tagihan --}}
                         <div class="p-6 bg-gray-100 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
                             id="status" role="tabpanel" aria-labelledby="status-tab">
                             {{-- Belum Langganan --}}
@@ -842,23 +873,97 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- Lunas  --}}
-                            @elseif (App\Models\Transaksi::where('pelanggan_id', auth()->user()->pelanggan->id)->where('status', 'SUCCESS')->exists())
-                                <div class="col-span-2 h-full bg-gray-100">
-                                    <div
-                                        class="h-full w-full p-6 shadow-xl rounded-xl sm:px-12 dark:bg-green-50 dark:text-gray-800">
-                                        <div class="flex w-full h-full justify-center items-center ">
-                                            <div class="space-y-4 h-full p-16">
-                                                <img src="{{ url('img/ops.svg') }}" class="w-72" alt="">
-                                                <p class="font-bold text-xl w-full text-blue-900 text-center">Belum ada
-                                                    tagihan
-                                                </p>
-                                            </div>
-                                        </div>
+                                {{-- Belum Bayar --}}
+                            @elseif(auth()->user()->pelanggan->is_pelanggan == 0 )
+                            <div class="">
+                                <p class="font-semibold text-xl text-blue-600 mb-6">Data Diri Pelanggan</p>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                            Lengkap</label>
+                                        <input type="text" name="nama" id="nama"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Nama Lengkap"
+                                            value="{{ $pelanggan->nama }} "readonly>
+                                    </div>
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                        <input type="text" name="pekerjaan" id="pekerjaan"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Pekerjaan" value="{{ $pelanggan->email }}"readonly>
                                     </div>
                                 </div>
-                                {{-- Belum Bayar --}}
-                            @else
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
+                                            Identitas</label>
+                                        <input type="number" name="no_telepon" id="no_telepon"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Nama Lengkap"
+                                            value="{{ $pelanggan->no_identitas }}" readonly>
+                                    </div>
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                        <input type="text" name="pekerjaan" id="pekerjaan"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Pekerjaan"
+                                            value="{{ $pelanggan->dukuh }}, {{ $pelanggan->rt }}, {{ $pelanggan->rw }} , {{ $pelanggan->kelurahan }},  {{ $pelanggan->kecamatan }}"readonly>
+                                    </div>
+                                </div>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-1">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                            Tanggal Daftar</label>
+                                        <input type="text" name="tgl_daftar" id="tgl_daftar"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->tgl_daftar }}"
+                                            readonly>
+                                    </div>
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                                        <input type="text" name="unit" id="unit"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nm_unit }}"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <p class="font-semibold text-xl text-blue-600 mb-6">Tagihan</p>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                                            Tagihan</label>
+                                        <input type="text" name="nama" id="nama"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Biaya Pendaftaran" readonly>
+                                    </div>
+                                </div>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-1">
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
+                                            Biaya</label>
+                                        <input type="text" name="desa" id="desa"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Rp. 23,000" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full flex">
+                                <div class="flex justify-center items-center">
+                                    <a href="/bayar" class="bg-blue-500 py-2 px-4 rounded-md text-white">Bayar!</a>
+                                </div>
+                            </div>
+                                {{-- Lunas  --}}
+
+                            @elseif ($transaksi->status == "SUCCESS" && $pelanggan->is_pelanggan != 0 )
                                 <div class="">
                                     <p class="font-semibold text-xl text-blue-600 mb-6">Data Diri Pelanggan</p>
                                     <div class="grid gap-4 mb-4 grid-cols-2">
@@ -939,19 +1044,73 @@
                                                 placeholder="Rp. 23,000" readonly>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="w-full flex">
-                                    <div class="flex justify-center items-center">
-                                        <a href="/bayar" class="bg-blue-500 py-2 px-4 rounded-md text-white">Bayar!</a>
+                                    <div class="">
+                                        <p>Status Pembayaran</p>
+                                        <p class="text-blue-500 font-semibold">Lunas</p>
                                     </div>
+                                    {{-- <div class="w-full flex">
+                                        <div class="flex justify-center items-center">
+                                            <a href="/bukti-pembayaran"
+                                                class="bg-blue-500 py-2 px-4 rounded-md text-white">Cetak Bukti
+                                                Pembayaran</a>
+                                        </div>
+                                    </div> --}}
                                 </div>
+                                
                             @endif
                         </div>
+
+                        {{-- Riwayat --}}
+                        @if (auth()->user()->pelanggan != null)
+                            <div class="p-6 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full hidden"
+                                id="riwayat" role="tabpanel" aria-labelledby="riwayat-tab">
+                                @if ($pelanggan->jenis == 'pendaftaran')
+                                    <div
+                                        class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
+                                        <div class="">
+                                            <p class="font-semibold text-blue-600">Pendaftaran</p>
+                                            <p>Tekan Tombol Cetak Untuk Mencetak Bukti Pendaftaran</p>
+                                        </div>
+                                        <div class="flex items-end">
+                                            <a href="/bukti-pendaftaran"
+                                                class="bg-blue-500 py-2 px-4 rounded-md text-white">Cetak
+                                                Bukti</a>
+                                        </div>
+                                    </div>
+                                @elseif($pelanggan->jenis == 'pendaftaran' || $pelanggan->jenis == 'pengajuan')
+                                    <div class="space-y-3">
+                                        <div
+                                            class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
+                                            <div class="">
+                                                <p class="font-semibold text-blue-600">Pendaftaran</p>
+                                                <p>Tekan Tombol Cetak Untuk Mencetak Bukti Pendaftaran</p>
+                                            </div>
+                                            <div class="flex items-end">
+                                                <a href="/bukti-pendaftaran"
+                                                    class="bg-blue-500 py-2 px-4 rounded-md text-white">Cetak
+                                                    Bukti</a>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex h-full w-full p-4 justify-between rounded-lg border-[1px] border-gray-300 ">
+                                            <div class="">
+                                                <p class="font-semibold text-red-600">Pengajuan</p>
+                                                <p>Tekan Tombol Cetak Untuk Mencetak Bukti Pendaftaran</p>
+                                            </div>
+                                            <div class="flex items-end">
+                                                <a href="/bukti-pengajuan"
+                                                    class="bg-blue-500 py-2 px-4 rounded-md text-white">Cetak
+                                                    Bukti</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script>
@@ -964,4 +1123,5 @@
             }
         }
     </script>
+
 @endsection

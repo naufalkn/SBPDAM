@@ -139,7 +139,7 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="password"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Lahir</label>
-                                    <input type="date" name="tenggal_lahir" id="tenggal_lahir"
+                                    <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                     >
                             </div>
@@ -197,9 +197,9 @@
                         <th scope="col" class="px-6 py-3 ">
                             Detail
                         </th>
-                        <th scope="col" class="px-6 py-3 ">
+                        {{-- <th scope="col" class="px-6 py-3 ">
                             Delete
-                        </th>
+                        </th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -229,28 +229,28 @@
                                 <div class="w-full">
                                     <form action="{{ url('/status-pegawai', ['id' => $item->id]) }}" method="POST">
                                         @csrf
-                                        @if ($item->status == 'nonaktif')
-                                            <button type="submit" name="status" value="aktif"
-                                                class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Enable</button>
-                                        @elseif($item->status == 'aktif')
+                                        @if ($item->status == 'aktif')
                                             <button type="submit" name="status" value="nonaktif"
-                                                class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Disable</button>
+                                                class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Active</button>
+                                        @elseif($item->status == 'nonaktif')
+                                            <button type="submit" name="status" value="aktif"
+                                                class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">inactive</button>
                                         @endif
                                     </form>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ url('/detail-pegawai/  ' . $item->id) }}" type="button"
+                                <a href="{{ url('/detail-pegawai/'.$item->id) }}" type="button"
                                     class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
                             </td>
-                            <td class="px-6 py-4">
+                            {{-- <td class="px-6 py-4">
                                 <a href="{{ url('/hapus-pegawai/' . $item->id) }}" type="button"
                                     class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-red-900">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
-                            </td>
+                            </td> --}}
                         </tr>
                     @empty
                         <tr>

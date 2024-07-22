@@ -42,7 +42,9 @@ return new class extends Migration
             $table->string('foto_rumah')->nullable();
             $table->string('nm_sambungan')->nullable();
             $table->bigInteger('no_sambungan')->nullable();
+            $table->enum('jenis', ['pendaftaran', 'pengajuan']);
             $table->tinyInteger('status')->default(0);
+            $table->integer('is_pelanggan')->default(0);
             $table->timestamps();
         });
     }

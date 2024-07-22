@@ -4,71 +4,60 @@
     <div class="p-8">
         <div class="">
             <p class="font-semibold text-xl text-blue-600 mb-6">Data Diri Pelanggan</p>
-            <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                        Lengkap</label>
-                    <input type="text" name="nama" id="nama"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nama }} "readonly>
+            <div class="ml-5">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                            Lengkap</label>
+                       <p class="ml-2 font-semibold">{{ $pelanggan->nama }}</p>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No KTP / SIM</label>
+                        <p class="ml-2 font-semibold">{{ $pelanggan->no_identitas }}</p>
+                        
+                    </div>
                 </div>
-                <div class="col-span-2 sm:col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                    <input type="text" name="pekerjaan" id="pekerjaan"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Pekerjaan"
-                        value="{{ $pelanggan->dukuh }}, {{ $pelanggan->rt }}, {{ $pelanggan->rw }} , {{ $pelanggan->kelurahan }},  {{ $pelanggan->kecamatan }}"readonly>
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
+                            Telepon</label>
+                            <p class="ml-2 font-semibold">{{ $pelanggan->no_telepon }}</p>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                        <p class="ml-2 font-semibold">{{ $pelanggan->nm_unit }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Telepon</label>
-                    <input type="number" name="no_telepon" id="no_telepon"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->no_telepon }}" readonly>
-                </div>
-                <div class="col-span-2 sm:col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
-                    <input type="text" name="unit" id="unit"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->no_identitas }}" readonly>
-                </div>
-            </div>
-            <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Telepon</label>
-                    <input type="text" name="no_telepon" id="no_telepon"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->email }}" readonly>
-                </div>
-                <div class="col-span-2 sm:col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
-                    <input type="text" name="unit" id="unit"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Masukkan Nama Lengkap" value="{{ $pelanggan->nm_unit }}" readonly>
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                        <p class="ml-2 font-semibold">{{ $pelanggan->dukuh }}, {{ $pelanggan->rt }}, {{ $pelanggan->rw }} , {{ $pelanggan->kelurahan }},  {{ $pelanggan->kecamatan }}</p>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Daftar</label>
+                        <p class="ml-2 font-semibold">{{ $pelanggan->tgl_daftar }}</p>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="">
             <p class="font-semibold text-xl text-blue-600 mb-6">Tagihan</p>
-            <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
-                        Tagihan</label>
-                    <input type="text" name="nama" id="nama"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Biaya Pendaftaran" readonly>
+            <div class="ml-5">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                            Tagihan</label>
+                        <p class="ml-2 font-semibold">Biaya Pendaftaran</p>
+                    </div>
                 </div>
-            </div>
-            <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
-                        Biaya</label>
-                    <input type="text" name="desa" id="desa"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Rp. 23,000" readonly>
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
+                            Biaya</label>
+                        <input type="text" name="desa" id="desa"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                            placeholder="Rp. 23,000" readonly>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,19 +74,31 @@
       document.getElementById('pay-button').onclick = function(){
         // SnapToken acquired from previous step
         snap.pay('{{ $bayar->snap_token }}', {
-          // Optional
-          // onSuccess: function(result){
-          //   alert('success')
-          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          // },
-          // // Optional
-          // onPending: function(result){
-          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          // },
-          // // Optional
-          // onError: function(result){
-          //   /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          // }
+            onSuccess: function(result){
+            // Redirect to the profile page after successful payment
+            window.location.href = "{{ url('beranda') }}";
+        },
+        onPending: function(result){
+            // Optional: Handle the pending status
+            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        },
+        onError: function(result){
+            // Optional: Handle the error status
+            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        }
+        //   Optional
+        //   onSuccess: function(result){
+        //     alert('success')
+        //     /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //   },
+        //   // Optional
+        //   onPending: function(result){
+        //     /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //   },
+        //   // Optional
+        //   onError: function(result){
+        //     /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //   }
         });
       };
     </script>

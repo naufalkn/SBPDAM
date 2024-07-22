@@ -75,13 +75,13 @@
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
                             <td class="px-6 py-4">
-                                {{ $item->dukuh }}, Rt. {{ $item->rt }}, Rw. {{ $item->rw }}, Desa {{ $item->desa }}, Kecamatan {{ $item->kecamatan }}
+                                {{ $item->dukuh }}, Rt.{{ $item->rt }}, Rw.{{ $item->rw }}, {{ $item->kelurahan }}, {{ $item->kecamatan }}
                             </td>
                             </td>
                             <td class="px-6 py-4">
                                 <span
                                 class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
-                                Belum diverifikasi
+                                Menunggu Verifikasi
                             </span>
                             </td>
                             

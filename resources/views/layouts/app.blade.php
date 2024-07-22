@@ -35,6 +35,26 @@
     @yield('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: "Berhasil",
+                icon: "success",
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @elseif (session('error'))
+        <script>
+            Swal.fire({
+                title: "Gagal",
+                icon: "error",
+                text: "{{ session('error') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 </body>
 </html>

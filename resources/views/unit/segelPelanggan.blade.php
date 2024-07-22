@@ -80,7 +80,7 @@
                             </td>
                             <td class="px-6 py-4">
                                     <span
-                                        class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Sudah Disegel</span>
+                                        class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Disegel</span>
                             </td>
                             
                             <td class="px-6 py-4">

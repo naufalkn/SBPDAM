@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="container">
@@ -52,6 +52,13 @@
                                         </h2>
                                     </div>
                                 </div>
+                                <p>1. Calon Pelanggan Menginputkan data diri sesuai dengan KTP atau KK</p>
+                                <p>2. Calon Pelanggan Menginputkan Alamat tempat yang akan dipasang alat dengan Jelas</p>
+                                <p>3. Calon Pelanggan Memilih Unit terdekat dengan tempat yang akan dipasang alat</p>
+                                <p>4. Calon Pelanggan Melakukan pengecekan data yang telah diinputkan apakah sudah sesuai atau belum</p>
+                                <p>5. Setelah Melakukan Pendaftaran, Calon Pelanggan akan dikenakan biaya sebesar Rp. 23,000.00</p>
+                                <p>6. Petugas akan melakukan pengecekan data dan akan melakukan pemasangan, Calon Pelanggan dapat memonitoring memelalui website ini.</p>
+                                <p>7. Setelah petugas selesai memasang alat, Calon pelanggan menunggu layanan diaktifkan oleh Unit.</p>
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
                         </fieldset>
@@ -65,7 +72,8 @@
                                     </div>
                                 </div>
                                 <label class="fieldlabels">Nama Lengkap*</label>
-                                <input type="text" placeholder="Masukkan Nama Lengkap Anda" name="nama" />
+                                <input type="text" placeholder="Masukkan Nama Lengkap Anda" name="nama"
+                                    value="{{ auth()->user()->nama }}" readonly />
 
                                 <label class="fieldlabels">Email Anda*</label>
                                 <input type="email" placeholder="Masukkan Email Anda" name="email"
@@ -75,11 +83,11 @@
                                 <input type="text" name="pekerjaan" placeholder="Masukkan Pekerjaan Anda" />
 
                                 <label class="fieldlabels">No KTP / No SIM*</label>
-                                <input type="number" name="no_identitas" placeholder="Masukkan No KTP / No SIM Anda" />
+                                <input type="number" name="no_identitas" placeholder="Masukkan No KTP / No SIM Anda"  />
 
                                 <label class="fieldlabels">Nomor Telepon *</label>
                                 <input type="number" name="no_telepon" placeholder="Masukkan Nomor Telepon Anda" />
-                                <label class="fieldlabels">Foto KTP / KK</label>
+                                <label class="fieldlabels">Foto KTP / KK*</label>
                                 <input type="file" name="foto_identitas" />
 
                             </div>
@@ -98,7 +106,7 @@
                                 </div>
                                 <label class="fieldlabels" for="dukuh">Dukuh / Kampung*</label>
                                 {{-- <input type="text" placeholder="Masukkan Dukuh / Kampung Anda" name="dukuh" class="form-control" /> --}}
-                                <select name="dukuh" id="dukuh">
+                                <select name="dukuh" id="dukuh" >
                                     @foreach ($dukuhList as $item)
                                         <option value="{{ $item->nmdukuh }}">{{ $item->nmdukuh }}</option>
                                     @endforeach
@@ -106,28 +114,28 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fieldlabels">RT</label>
-                                            <input type="number" class="form-control" placeholder="Masukkan No RT Anda"
+                                            <label class="fieldlabels">RT*</label>
+                                            <input type="number" class="form-control" placeholder="Masukkan No RT Anda" 
                                                 name="rt">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fieldlabels">RW</label>
+                                            <label class="fieldlabels">RW*</label>
                                             <input type="number" class="form-control"
-                                                placeholder="Masukkan No RW Anda" name="rw">
+                                                placeholder="Masukkan No RW Anda" name="rw" >
                                         </div>
                                     </div>
                                 </div>
                                 <label class="fieldlabels">Desa / Kelurahan*</label>
-                                <select name="kelurahan" id="desa" onchange="updateKecamatan(this.value)">
+                                <select name="kelurahan" id="desa" onchange="updateKecamatan(this.value)" >
                                     @foreach ($deskec as $item)
                                         <option value="{{ $item->nmdesa }}">{{ $item->nmdesa }}</option>
                                     @endforeach
                                 </select>
 
                                 <label class="fieldlabels">Kecamatan*</label>
-                                <select name="kecamatan" id="kecamatan" readonly>
+                                <select name="kecamatan" id="kecamatan" readonly >
                                     @foreach ($deskec as $item)
                                         <option value="{{ $item->nmkec }}">{{ $item->nmkec }}</option>
                                     @endforeach
@@ -136,14 +144,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fieldlabels">Kode Pos</label>
+                                            <label class="fieldlabels">Kode Pos*</label>
                                             <input type="number" class="form-control"
-                                                placeholder="Masukkan No Kode Pos Anda" name="kode_pos">
+                                                placeholder="Masukkan No Kode Pos Anda" name="kode_pos" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fieldlabels">Jumlah Penghuni</label>
+                                            <label class="fieldlabels">Jumlah Penghuni*</label>
                                             <input type="number" class="form-control"
                                                 placeholder="Masukkan Jumlah Penghuni " name="jmlh_penghuni">
                                         </div>
@@ -154,16 +162,16 @@
                                         <label class="fieldlabels">Nama Perumahan / Jalan*</label>
                                         <input type="text" name="nama_jalan"
                                             placeholder="Masukkan Nama Perumahan / Jalan Anda" name="nama_jalan"
-                                            class="form-control" />
+                                            class="form-control"  />
                                     </div>
                                     <div class="col-md-6 d-flex">
                                         <!-- Isi dengan input fields atau elemen form lainnya -->
                                         <div class="form-group">
                                             <div class="multi-form">
                                                 <div class="w-50">
-                                                    <label class="fieldlabels">Unit</label>
+                                                    <label class="fieldlabels">Unit*</label>
                                                     <select name="nm_unit" id="nm_unit"
-                                                        class="form-control select2">
+                                                        class="form-control select2" >
                                                         @foreach ($unitList as $item)
                                                             <option value="{{ $item->nm_unit }}"
                                                                 data-kd-unit="{{ $item->kd_unit }}">
@@ -172,9 +180,9 @@
                                                     </select>
                                                 </div>
                                                 <div class="w-50">
-                                                    <label class="fieldlabels">Kode Unit</label>
+                                                    <label class="fieldlabels">Kode Unit*</label>
                                                     <select name="kd_unit" id="kd_unit"
-                                                        class="form-control select2" readonly>
+                                                        class="form-control select2" readonly >
                                                         @foreach ($unitList as $item)
                                                             <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}
                                                             </option>
@@ -223,8 +231,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <label class="fieldlabels">Foto Rumah</label>
-                                <input type="file" name="foto_rumah" />
+                                <label class="fieldlabels">Foto Rumah Anda*</label>
+                                <input type="file" name="foto_rumah"  />
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
                             <input type="button" name="previous" class="previous action-button-previous"
@@ -236,7 +244,7 @@
                             <div class="form-card">
                                 <div class="row">
                                     <div class="col-7">
-                                        <h2 class="fs-title">Validasi</h2>
+                                        <h2 class="fs-title">Finalisasi</h2>
                                     </div>
                                 </div>
                                 <div class="">
@@ -404,6 +412,48 @@
             toggleFormFields(); // Initialize the form fields visibility on page load
         }
     </script>
+
+@if ($errors->any())
+<script>
+
+    $erros = [];
+
+    @foreach ($errors->all() as $error)
+        $erros.push("{{ $error }}");
+    @endforeach
+
+    Swal.fire({
+        title: "Gagal",
+        icon: "error",
+        text: "Mohon Maaf, Pendaftaran Gagal. Periksa Kembali Data\n" + $erros.join("\n"),
+        timer: 3000,
+        showConfirmButton: false
+    });
+</script>
+@endif
+
+
+@if (session('success'))
+<script>
+    Swal.fire({
+        title: "Berhasil",
+        icon: "success",
+        text: "{{ session('success') }}",
+        timer: 3000,
+        showConfirmButton: false
+    });
+</script>
+@elseif (session('error'))
+<script>
+    Swal.fire({
+        title: "Gagal",
+        icon: "error",
+        text: "Mohon Maaf, Pendaftaran Gagal. Periksa Kembali Data Anda",
+        timer: 3000,
+        showConfirmButton: false
+    });
+</script>
+@endif
 </body>
 
 </html>

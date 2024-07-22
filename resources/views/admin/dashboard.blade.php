@@ -10,7 +10,22 @@
         <div class="overflow-hidden bg-gradient-to-r from-blue-900 to-blue-600 -z-10 h-56 absolute top-0 left-0 w-full">
         </div>
         <div class="flex w-full mt-12">
-            <div class="w-1/3">
+            <div class="w-1/4">
+                <div
+                    class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                    <div class="flex w-full gap-10 items-center p-5">
+                        <div class="bg-green-700 w-16 h-16 rounded-lg flex justify-center items-center">
+                            <i class="fa-solid fa-users text-white text-2xl"></i>
+                        </div>
+                        <div class="flex flex-col justify-between leading-normal">
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-600 dark:text-white">Jumlah User
+                            </h5>
+                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_user }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/4">
                 <div
                     class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
@@ -26,7 +41,22 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3">
+            <div class="w-1/4">
+                <div
+                    class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                    <div class="flex w-full gap-10 items-center p-5">
+                        <div class="bg-red-600 w-16 h-16 rounded-lg flex justify-center items-center">
+                            <i class="fa-solid fa-user-lock text-white text-2xl"></i>
+                        </div>
+                        <div class="flex flex-col justify-between leading-normal">
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Jumlah Segel
+                            </h5>
+                            <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">{{ $jmlh_segel }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/4">
                 <div
                     class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
@@ -41,26 +71,117 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3">
-                <div
-                    class="flex  flex-col h-24  w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
-                    <div class="flex w-full gap-10 items-center p-5">
-                        <div class="bg-green-700 w-16 h-16 rounded-lg flex justify-center items-center">
-                            <i class="fa-solid fa-users text-white text-2xl"></i>
-                        </div>
-                        <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-green-600 dark:text-white">Jumlah User
-                            </h5>
-                            <p class="mb-3 text-2xl text-green-700 dark:text-gray-400 font-bold">{{ $jmlh_user }}</p>
-                        </div>
-                    </div>
+        </div>
+    </div>
+
+    <div class="flex space-x-6  justify-between px-5 lg:ml-64 mb-16">
+        <div class="w-full space-y-16">
+            <div class="">
+                <p class="font-semibold mb-5 text-gray-600">Riwayat</p>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Unit
+                                </th>
+                                <th scope="col" class="px-6 py-3 ">
+                                    Jenis
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Tanggal
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($riwayat as $item)
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                                    <td class="px-6 py-4">
+                                        {{ $item->nama }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->nm_unit }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($item->jenis == 'pendaftaran')
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
+                                                Pendaftaran
+                                            </span>
+                                        @elseif($item->jenis == 'pengajuan')
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
+                                                Pengajuan
+                                            </span>
+                                        @endif
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        {{ \Carbon\Carbon::parse($item->tgl_daftar)->format('d-m-Y') ?? '-' }}
+                                    </td>
+                                    <td scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        @if ($item->status == 0)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
+                                                Belum Diverifikasi
+                                            </span>
+                                        @elseif($item->status == 1 || $item->status == 2 || $item->status == 3)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
+                                                Sedang Diproses
+                                            </span>
+                                        @elseif($item->status == 4)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
+                                                Berlangganan
+                                            </span>
+                                        @elseif($item->status == 5)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
+                                                Belum Disetujui
+                                            </span>
+                                        @elseif($item->status == 6 || $item->status == 7 || $item->status == 8)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
+                                                Sedang Diproses
+                                            </span>
+                                        @elseif($item->status == 9)
+                                            <span
+                                                class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
+                                                Pelanggan Disegel
+                                            </span>
+                                        @endif
+                                    </td>
+                                    {{-- <td class="px-6 py-4 ">
+                                        <a href="{{ url('/detail-user/' . $item->id) }}" type="button"
+                                            class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                    </td> --}}
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>Belum ada Pendaftar</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="w-[1500px] ">
-        <div class=" h-full ml-72 rounded-xl bg-gray-200">
+        <div class="w-full h-96">
+            <p class="font-semibold mb-5 text-gray-600">Statistik perBulan</p>
+           <div class="flex items-end h-full w-full">
             {!! $chart->container() !!}
+           </div>
         </div>
     </div>
     <script src="{{ $chart->cdn() }}"></script>

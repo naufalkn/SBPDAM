@@ -18,8 +18,7 @@
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Pengajuan
-                                Berhenti
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Pencopotan
                             </h5>
                             <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
                                 {{ $listPengajuan }}</p>
@@ -82,7 +81,7 @@
                             Alamat
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status Pengerjaan
+                            Jenis Pengerjaan
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Tanggal

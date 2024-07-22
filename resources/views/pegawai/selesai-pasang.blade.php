@@ -84,8 +84,11 @@
                                     </span>
                             </td>
                             <td class="px-6 py-4">
-                                {{ \Carbon\Carbon::parse($item->bukti->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
-
+                                @if ($item->bukti->isNotEmpty())
+                                    {{ \Carbon\Carbon::parse($item->bukti->first()->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
+                                @else
+                                    -
+                                @endif
                             </td>
                             <td class="px-6 py-4 ">
                                 <a href="{{ url('/detail-user/'.$item->id) }}" type="button"

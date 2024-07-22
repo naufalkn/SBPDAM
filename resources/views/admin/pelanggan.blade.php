@@ -58,32 +58,10 @@
                                 {{ $item->nm_unit }}
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == '0')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-gray-600 bg-gray-200  last:mr-0 mr-1">
-                                        Belum diverifikasi
-                                    </span>
-                                @elseif($item->status == '1')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
-                                        Sudah diverifikasi
-                                    </span>
-                                @elseif($item->status == '2')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
-                                        Proses Pemasangan
-                                    </span>
-                                @elseif($item->status == '3')
-                                    <span
-                                        class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
-                                        Pemasangan Selesai
-                                    </span>
-                                @elseif($item->status == '4')
-                                    <span
+                                <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
                                         Aktif
                                     </span>
-                                @endif
                             </td>
 
                             <td class="px-6 py-4 ">

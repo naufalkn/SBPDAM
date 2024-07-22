@@ -16,6 +16,7 @@ class Bukti extends Model
         'pegawai_id',
         'bukti_pemasangan',
         'bukti_pencabutan',
+        'bukti_pembayaran',
     ];
 
     public function pelanggan()

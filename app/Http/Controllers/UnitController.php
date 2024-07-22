@@ -22,12 +22,15 @@ class UnitController extends Controller
     {
         // Mendapatkan id dari user yang sedang login
         $nama = Auth::user()->username;
+        // table
         $pendaftar = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->where('status', 0) // Menambahkan kondisi untuk status 0
+            ->where('status', 0)
             ->get();
         $pengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->where('status', 5) // Menambahkan kondisi untuk status 0
+            ->where('status', 5)
             ->get();
+
+        // card
         $jmlh_pelanggan_aktif = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 4)
             ->count();
@@ -35,7 +38,10 @@ class UnitController extends Controller
             ->where('status', 0)
             ->count();
         $jmlh_pengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->where('status',5)
+            ->where('status', 5)
+            ->count();
+        $jmlh_segel = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->where('status', 9)
             ->count();
 
         // dd($pelanggan);
@@ -47,6 +53,7 @@ class UnitController extends Controller
             'jmlh_pelanggan_aktif' => $jmlh_pelanggan_aktif,
             'jmlh_pengajuan' => $jmlh_pengajuan,
             'jmlh_pendaftar' => $jmlh_pendaftar,
+            'jmlh_segel' => $jmlh_segel,
             'nama' => $nama,
             'chart' => $yearUsersChart->build()
         ]);
@@ -144,7 +151,7 @@ class UnitController extends Controller
         // Jika status = 4 (aktif), tambahkan tanggal aktif
         if ($request->status == 4) {
             $pelanggan->tgl_aktif = now(); // Tambahkan tanggal aktif (sekarang)
-        } elseif($request->status == 9) {
+        } elseif ($request->status == 9) {
             $pelanggan->tgl_nonaktif = now(); // Tambahkan tanggal nonaktif (sekarang)
         }
         // Simpan perubahan pada pelanggan
@@ -158,9 +165,14 @@ class UnitController extends Controller
     public function pendaftar()
     {
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->where('status', 0) // Menambahkan kondisi untuk status 0
-            ->with('transaksi') // Eager loading transaksi
-            ->get();
+        ->where('status', 0)
+        ->with(['transaksi' => function($query) {
+            $query->latest(); // Mengambil transaksi terbaru
+        }, 'bukti' => function($query) {
+            $query->latest(); // Mengambil bukti terbaru
+        }])
+        ->get();
+        // dd($pelanggan);
         $nama = Auth::user()->username;
         $jmlh_pelanggan_nonVerif = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 0)
@@ -176,9 +188,14 @@ class UnitController extends Controller
     public function calonPelanggan()
     {
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->whereIn('status', [1, 2, 3]) // Menambahkan kondisi untuk status 0
-            ->with('transaksi') // Eager loading transaksi
-            ->get();
+        ->whereIn('status', [1, 2, 3])
+        ->with(['transaksi' => function($query) {
+            $query->latest(); // Mengambil transaksi terbaru
+        }, 'bukti' => function($query) {
+            $query->latest(); // Mengambil bukti terbaru
+        }])
+        ->get();
+            // dd($pelanggan);
         $nama = Auth::user()->username;
         $jmlh_pelanggan_proses = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->whereIn('status', [1, 2, 3])
@@ -200,7 +217,11 @@ class UnitController extends Controller
             ->count();
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 4) // Menambahkan kondisi untuk status 0
-            ->with('transaksi') // Eager loading transaksi
+            ->with(['transaksi' => function($query) {
+                $query->latest(); // Mengambil transaksi terbaru
+            }, 'bukti' => function($query) {
+                $query->latest(); // Mengambil bukti terbaru
+            }])
             ->get();
 
         return view('unit.pelanggan', [
@@ -262,9 +283,15 @@ class UnitController extends Controller
     public function prosesPengajuan()
     {
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
-            ->whereIn('status', [6, 7, 8]) // Menambahkan kondisi untuk status 0
-            ->with('transaksi') // Eager loading transaksi
+            ->whereIn('status', [6, 7, 8])
+            ->with(['transaksi' => function($query) {
+                $query->orderBy('id', 'desc')->first();
+            }, 'bukti' => function($query) {
+                $query->orderBy('id', 'desc')->first();
+            }])
+            ->orderBy('id', 'desc')
             ->get();
+// dd($pelanggan);
         $nama = Auth::user()->username;
         $jmlh_prosesPengajuan = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->whereIn('status', [6, 7, 8])
@@ -288,7 +315,7 @@ class UnitController extends Controller
         $jmlh_selesaiSegel = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
             ->where('status', 9)
             ->count();
-        
+
         return view('unit.segelPelanggan', [
             'pelanggan' => $pelanggan,
             'nama' => $nama,
@@ -311,6 +338,52 @@ class UnitController extends Controller
         ]);
     }
 
+    public function riwayat(Request $request)
+    {
+        $nama = Auth::user()->username;
+        $sortby = $request->input('sortby', 'semua'); // Default sortby is 'semua'
+
+        $query = Pelanggan::where('kd_unit', Auth::user()->adminUnit->kd_unit)
+            ->whereIn('status', [4, 9]);
+
+        if ($sortby == 'pendaftaran') {
+            $query->where('jenis', 'pendaftaran');
+        } elseif ($sortby == 'pengajuan') {
+            $query->where('jenis', 'pengajuan');
+        }
+
+        $pelanggan = $query->get();
+
+        return view('unit.riwayat', [
+            'nama' => $nama,
+            'pelanggan' => $pelanggan,
+            'sortby' => $sortby
+        ]);
+    }
+
+
+
+
+    public function pencarian(Request $request)
+    {
+        $nama = Auth::user()->username;
+        $request->validate([
+            'nama' => 'required|max:50',
+        ]);
+
+        $sortby = $request->input('sortby', 'semua'); // Default sortby is 'semua'
+
+        $pelanggan = Pelanggan::where('nama', 'like', '%' . $request->nama . '%')
+            ->orWhere('no_identitas', 'like', '%' . $request->nama . '%')
+            ->get();
+
+        return view('unit.riwayat', [
+            'nama' => $nama,
+            'pelanggan' => $pelanggan,
+            'sortby' => $sortby
+        ]);
+    }
+
     public function tambahPegawai(Request $request)
     {
         $request->validate([
@@ -323,7 +396,7 @@ class UnitController extends Controller
             'no_identitas' => 'required',
             'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jenis_kelamin' => 'required',
-            'tenggal_lahir' => 'required',
+            'tanggal_lahir' => 'required',
         ]);
 
         try {
@@ -368,15 +441,19 @@ class UnitController extends Controller
 
     public function statusPegawai(Request $request)
     {
-        $pegawai = Pegawai::find($request->id);
-        $pegawai->status = $request->status;
-        $pegawai->save();
-        return redirect()->back()->with('success', 'Data berhasil diubah.');
+        try {
+            $pegawai = Pegawai::find($request->id);
+            $pegawai->status = $request->status;
+            $pegawai->save();
+            return redirect()->back()->with('success', 'Status berhasil diubah.');
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', 'Gagal mengubah status. Silakan coba lagi.')->withErrors($exception->getMessage());
+        }
     }
 
     public function detailPegawai($id)
     {
-        $pegawai = Pegawai::all()->where('id', $id);
+        $pegawai = Pegawai::find($id);
         // dd($pegawai);
         return view('unit.detailPegawai', [
             'pegawai' => $pegawai

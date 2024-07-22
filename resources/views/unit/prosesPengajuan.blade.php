@@ -75,13 +75,13 @@
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
                             <td class="px-6 py-4">
-                                {{ $item->dukuh }}, Rt. {{ $item->rt }}, Rw. {{ $item->rw }}, Desa {{ $item->desa }}, Kecamatan {{ $item->kecamatan }}
+                                {{ $item->dukuh }}, Rt. {{ $item->rt }}, Rw. {{ $item->rw }}, {{ $item->kelurahan }}, {{ $item->kecamatan }}
                             </td>
                             </td>
                             <td class="px-6 py-4">
                                 @if($item->status == '6' )
                                     <span
-                                        class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">sudah diverifikasi</span>
+                                        class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">sudah disetujui</span>
                                 @elseif($item->status == '7')
                                     <span
                                         class="bg-yellow-400 text-white px-2 py-1 rounded-full text-xs font-semibold">Proses Pencopotan</span>
@@ -92,7 +92,11 @@
                             </td>
                             
                             <td class="px-6 py-4">
-                                {{ \Carbon\Carbon::parse($item->bukti->tgl_pencabutan)->format('d-m-Y') ?? '-' }}
+                                @if ($item->bukti->isNotEmpty())
+                                    {{ \Carbon\Carbon::parse($item->bukti->first()->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
+                                @else
+                                    -
+                                @endif
                             </td>
                             
                             <td class="px-6 py-4 ">

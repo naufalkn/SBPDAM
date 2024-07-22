@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DesKec;
+use App\Models\Transaksi;
 use App\Models\User;
 use App\Models\Desa;
 use App\Models\Dukuh;
@@ -14,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class UserController extends Controller
 {
@@ -70,22 +73,24 @@ class UserController extends Controller
     //     // }
     // }
 
-    public function profil()
+    public function profil($id)
     {
-        // ini lebih mudah dipahami harusnya
         $pelanggan = Pelanggan::where('user_id', auth()->user()->id)->first();
-
+        if($pelanggan){
+            $transaksi = $pelanggan->transaksi()->latest()->first();
+        }
+        // dd($transaksi);
+        // dd($pelanggan);
         if ($pelanggan) {
             return view('user.profil', [
                 'nama' => auth()->user()->username,
                 'pelanggan' => $pelanggan,
+                'transaksi' => $transaksi,
             ]);
         } elseif (!$pelanggan) {
             return view('user.profil', [
                 'nama' => auth()->user()->username,
             ]);
-
-            // return back()->with('error', "Tidak ada relasi antara pengguna dan pelanggan");
         }
     }
 
@@ -109,7 +114,7 @@ class UserController extends Controller
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
                 'username' => 'required|string|max:255|unique:users,username,' . $user->id,
                 'nama' => 'required|string|max:255',
-                'tanggal_lahir' => 'nullable|date',
+                'tanggal_lahir' => 'nullable|date|before_or_equal:today',
                 'jenis_kelamin' => 'nullable|in:L,P',
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ];
@@ -197,7 +202,6 @@ class UserController extends Controller
             'no_identitas' => 'required|unique:pelanggans,no_identitas',
             'no_telepon' => 'required|string|max:15',
             'foto_identitas' => 'required',
-
             'dukuh' => 'required',
             'rt' => 'required',
             'rw' => 'required',
@@ -213,10 +217,12 @@ class UserController extends Controller
             'kd_unit' => 'required|exists:munit,kd_unit',
         ]);
 
+        // dd($validatedData);
+
+
         $validatedData['tgl_daftar'] = now();
 
         if ($request->hasFile('foto_identitas')) { // Periksa apakah file telah diunggah
-            // $fotoPath = $request->file('foto_rumah')->store('public/foto');
             $file = $request->file('foto_identitas');
             $name = $file->getClientOriginalName();
             $file->move('foto_Identitas/', $name);
@@ -224,7 +230,6 @@ class UserController extends Controller
             $validatedData['foto_identitas'] = $name;
         }
         if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
-            // $fotoPath = $request->file('foto_rumah')->store('public/foto');
             $file = $request->file('foto_rumah');
             $name = $file->getClientOriginalName();
             $file->move('foto/', $name);
@@ -232,6 +237,7 @@ class UserController extends Controller
         }
 
         $validatedData['user_id'] = $user->id;
+        $validatedData['jenis'] = 'pendaftaran';
 
         // Menambahkan data ke tabel Pelanggan
         $storePelanggan = Pelanggan::create($validatedData);
@@ -239,17 +245,28 @@ class UserController extends Controller
         if ($storePelanggan) {
             // Kalau berhasil, update role pengguna menjadi 'pelanggan'
             $user = User::find($user->id);
-
             $updateUserRole = $user->update([
                 'role_id' => '4',
             ]);
-
         }
-
         // dd($storePelanggan);
         return view('user.succes', [
             'nama' => auth::user()->username,
-        ]);
+        ])->with('success', 'Pendaftaran berhasil.');
+    }
+
+    public function cetakPendaftaran(Request $request)
+    {
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        $transaksi = $pelanggan->transaksi()->latest()->first();
+        $imagePath = public_path("img/pdam.png");
+        // dd($transaksi);
+
+        $gambar = "data:image/png;base64," . base64_encode(file_get_contents($imagePath));
+
+        // Load view and optimize settings
+        $pdf = Pdf::loadview('user.cetak-pendaftaran', ['pelanggan' => $pelanggan, 'transaksi' => $transaksi, 'gambar' => $gambar]);
+        return $pdf->stream();
     }
 
     public function updateLangganan($id, Request $request)
@@ -301,18 +318,118 @@ class UserController extends Controller
         ]);
     }
 
-    public function mulaiPengajuan(Request $request, $id )
+
+    public function mulaiPengajuan(Request $request, $id)
     {
         $user = Auth::user();
         $pelanggan = $user->pelanggan;
-        $bukti = $pelanggan->bukti;
-        $pelanggan->tgl_pengajuan = now(); 
+        $bukti = $pelanggan->bukti()->latest()->first();
+        $pelanggan->tgl_pengajuan = now();
         $pelanggan->status = '5';
+        $pelanggan->is_pelanggan = '3';
+        $pelanggan->jenis = 'pengajuan';
         $bukti->alasan = $request->alasan;
         $pelanggan->save();
         $bukti->save();
 
-        return redirect()->route('profil', $user->id);
+        return redirect()->route('profil', ['id' => $user->id])->with('success', 'Pengajuan berhasil diajukan.');
     }
+
+    public function cetakPengajuan(Request $request)
+    {
+        $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+        $transaksi = $pelanggan->transaksi->first();
+        $bukti = $pelanggan->bukti->first();
+        $imagePath = public_path("img/pdam.png");
+        // dd($transaksi);
+
+        $gambar = "data:image/png;base64," . base64_encode(file_get_contents($imagePath));
+
+        // Load view and optimize settings
+        $pdf = Pdf::loadview('user.cetak-pengajuan', ['pelanggan' => $pelanggan, 'transaksi' => $transaksi, 'gambar' => $gambar, 'bukti' => $bukti]);
+        return $pdf->stream();
+    }
+
+    public function mulaiLangganan($id)
+    {
+        $user = Auth::user();
+        $pelanggan = Pelanggan::findOrFail($id); // Mengambil data pelanggan berdasarkan $id
+        $dukuhList = Dukuh::all();
+        $unitList = Units::all();
+        $deskec = DesKec::all();
+
+        return view('user.form-langganan', [
+            'user' => $user,
+            'nama' => auth()->user()->username,
+            'dukuhList' => $dukuhList,
+            'deskec' => $deskec,
+            'unitList' => $unitList,
+            'pelanggan' => $pelanggan,
+        ]);
+    }
+
+
+    public function prosesLangganan(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'email' => 'required|email|unique:pelanggans,email,' . $id,
+            'pekerjaan' => 'required',
+            'no_identitas' => 'required|unique:pelanggans,no_identitas,' . $id,
+            'no_telepon' => 'required|string|max:15',
+            'foto_identitas' => 'nullable|image',
+            'dukuh' => 'required',
+            'rt' => 'required',
+            'rw' => 'required',
+            'kelurahan' => 'required',
+            'kecamatan' => 'required',
+            'kode_pos' => 'required',
+            'nama_jalan' => 'required',
+            'jmlh_penghuni' => 'required',
+            'foto_rumah' => 'nullable|image',
+            'nm_sambungan' => 'nullable',
+            'no_sambungan' => 'nullable',
+            'nm_unit' => 'required',
+            'kd_unit' => 'required|exists:munit,kd_unit',
+        ]);
+
+        $validatedData['tgl_daftar'] = now();
+        $validatedData['tgl_pengajuan'] = null;
+        $validatedData['tgl_aktif'] = null;
+        $validatedData['tgl_nonaktif'] = null;
+        $validatedData['status'] = 0;
+        $validatedData['is_pelanggan'] = 0;
+
+        if ($request->hasFile('foto_identitas')) {
+            $file = $request->file('foto_identitas');
+            $name = $file->getClientOriginalName();
+            $file->move('foto_Identitas/', $name);
+            $validatedData['foto_identitas'] = $name;
+        }
+        if ($request->hasFile('foto_rumah')) {
+            $file = $request->file('foto_rumah');
+            $name = $file->getClientOriginalName();
+            $file->move('foto/', $name);
+            $validatedData['foto_rumah'] = $name;
+        }
+
+        $validatedData['user_id'] = $user->id;
+        $validatedData['jenis'] = 'pendaftaran';
+
+        // Update pelanggan yang ada
+        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan->update($validatedData);
+
+        // Hapus data dari tabel bukti dan transaksi
+        // $pelanggan->bukti()->delete();
+        // $pelanggan->transaksi()->delete();
+
+        return view('user.succes', [
+            'nama' => $user->username,
+        ]);
+    }
+
 
 }

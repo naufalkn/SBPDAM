@@ -54,7 +54,7 @@
                             Status
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Tanggal
+                            Tanggal Pemasangan
                         </th>
                         <th scope="col" class="px-6 py-3 ">
                             Detail
@@ -78,10 +78,10 @@
                                 {{ $item->no_telepon }}
                             <td class="px-6 py-4">
                                 @if ($item->transaksi->isNotEmpty())
-                                    @foreach ($item->transaksi as $transaksi)
-                                        {{ $transaksi->status ?? 'Belum bayar' }}
-                                        <br>
-                                    @endforeach
+                                    @php
+                                        $latestTransaksi = $item->transaksi->first();
+                                    @endphp
+                                    {{ $latestTransaksi->status ?? 'Belum bayar' }}
                                 @else
                                     Belum Membayar
                                 @endif
@@ -107,12 +107,11 @@
                                 @endif
 
                             </td>
-
                             <td class="px-6 py-4">
-                                @if ($item->bukti)
-                                    {{ \Carbon\Carbon::parse($item->bukti->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
+                                @if ($item->bukti->isNotEmpty())
+                                    {{ \Carbon\Carbon::parse($item->bukti->first()->tgl_pemasangan)->format('d-m-Y') ?? '-' }}
                                 @else
-                                    Belum Dipasang
+                                    -
                                 @endif
                             </td>
 

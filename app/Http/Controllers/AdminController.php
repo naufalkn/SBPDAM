@@ -7,6 +7,7 @@ use App\Models\AdminUnit;
 use App\Models\Desa;
 use App\Models\Dukuh;
 use App\Models\Kecamatan;
+use App\Models\Pegawai;
 use App\Models\Units;
 use App\Models\User;
 use App\Models\Pelanggan;
@@ -20,16 +21,17 @@ class AdminController extends Controller
     public function dashboard(YearUsersChart $yearUsersChart)
     {
         $jmlh_user = User::where('role_id', 5)->count();
-        $jmlh_pelanggan = Pelanggan::all()->count();
+        $jmlh_pelanggan = Pelanggan::where('status', 4)->count();
+        $jmlh_segel = Pelanggan::where('status', 9)->count();
         $jmlh_unit = Units::all()->count();
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::all();
-
-        // dd($jmlh_unit);
+        $riwayat = Pelanggan::orderBy('id', 'desc')->take(4)->get();
+        // dd($riwayat);
         return view('admin.dashboard', [
             'nama' => $nama,
+            'jmlh_segel' => $jmlh_segel,
             'jmlh_pelanggan' => $jmlh_pelanggan,
-            'pelanggan' => $pelanggan,
+            'riwayat' => $riwayat,
             'jmlh_unit' => $jmlh_unit,
             'jmlh_user' => $jmlh_user,
             'chart' => $yearUsersChart->build()
@@ -303,14 +305,18 @@ class AdminController extends Controller
     }
 
     public function detailUser($id)
-    {
-        $pelanggan = Pelanggan::find($id);
-        // dd($pelanggan);
-        return view('admin.detail-user', [
-            // 'user' => $user,
-            'pelanggan' => $pelanggan,
-        ]);
-    }
+{
+    $pelanggan = Pelanggan::with(['transaksi', 'bukti' => function($query) {
+        $query->latest()->first();
+    }])->find($id);
+    $bukti = $pelanggan->bukti->first();
+    // dd($bukti);
+
+    return view('admin.detail-user', [
+        'pelanggan' => $pelanggan,
+        'bukti' => $bukti,
+    ]);
+}
 
     public function pelanggan()
     {
@@ -331,6 +337,74 @@ class AdminController extends Controller
             'pendaftar' => $pendaftar,
             'nama' => $user->username,
         ]);
+    }
+
+    public function pengajuan()
+    {
+        $user = auth::user();
+        $pengajuan = Pelanggan::whereIn('status', [5, 6, 7, 8])->get();
+        // dd($pengajuan);
+        return view('admin.pengajuan', [
+            'pengajuan' => $pengajuan,
+            'nama' => $user->username,
+        ]);
+    }
+
+    public function segel()
+    {
+        $user = auth::user();
+        $segel = Pelanggan::where('status', 9)->get();
+        // dd($segel);
+        return view('admin.segel', [
+            'segel' => $segel,
+            'nama' => $user->username,
+        ]);
+    }
+
+    public function pegawai()
+    {
+        $user = auth::user();
+        $pegawai = Pegawai::all();
+        // dd($pegawai);
+        return view('admin.pegawai', [
+            'pegawai' => $pegawai,
+            'nama' => $user->username,
+        ]);
+    }
+
+    public function hapusPegawai($id)
+    {
+        $pegawai = Pegawai::find($id);
+        $pegawai->delete();
+        $user = User::find($pegawai->user_id);
+        $user->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function detailPegawai($id)
+    {
+        $pegawai = Pegawai::find($id);
+        // dd($pegawai);
+        return view('admin.info-pegawai', [
+            'pegawai' => $pegawai,
+        ]);
+    }
+    public function user()
+    {
+        $admin = auth::user();
+        $user = User::where('role_id', 5)->get();
+        // dd($pegawai);
+        return view('admin.list-user', [
+            'user' => $user,
+            'nama' => $admin->username,
+        ]);
+    }
+
+    public function hapusUser($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
 
     public function logout()

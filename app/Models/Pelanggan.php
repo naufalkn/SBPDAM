@@ -28,7 +28,7 @@ class Pelanggan extends Model
 
     public function bukti()
     {
-        return $this->hasOne(Bukti::class);
+        return $this->hasMany(Bukti::class);
     }
 
     public function pegawai()

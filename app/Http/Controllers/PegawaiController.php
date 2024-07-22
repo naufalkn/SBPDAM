@@ -17,7 +17,7 @@ class PegawaiController extends Controller
     {
         $nama = Auth::user()->username;
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [1, 6]) 
+            ->whereIn('status', [1, 6])
             ->get();
         $listPasang = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
             ->whereIn('status', [1])
@@ -136,11 +136,11 @@ class PegawaiController extends Controller
     {
         $pelanggan = Pelanggan::find($id);
         $pelanggan->status = $request->status;
-        $bukti = $pelanggan->bukti;
+        $bukti = $pelanggan->bukti->first();
         $bukti->tgl_pencabutan = now();
         $pelanggan->save();
         $bukti->save();
-        
+
         return redirect()->back()->with('success', 'Data berhasil diverifikasi.');
     }
 
@@ -235,14 +235,18 @@ class PegawaiController extends Controller
 
         $storeBukti = Bukti::create($validatedData);
 
-         // Cari bukti yang terkait dengan pelanggan ini
-         $bukti = Bukti::where('pelanggan_id', $id)->first();
+        // Cari bukti yang terkait dengan pelanggan ini
+        $bukti = Bukti::where('pelanggan_id', $id)->latest()->first();
 
-         // Jika bukti ditemukan, perbarui tgl_pemasangan
-         if ($bukti) {
-             $bukti->tgl_pemasangan = now();
-             $bukti->save();
-         }
+        // Jika bukti ditemukan, perbarui tgl_pemasangan
+        if ($bukti) {
+            $bukti->tgl_pemasangan = now();
+            $bukti->save();
+        }
+
+        // Merubah is_pelanggan menjadi 2
+        $pelanggan->is_pelanggan = 2;
+        $pelanggan->save();
 
         if ($storeBukti) {
             return redirect()->back()->with('success', 'Bukti pemasangan berhasil diunggah.');
@@ -255,7 +259,7 @@ class PegawaiController extends Controller
     {
         $nama = Auth::user()->username;
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->where('status', 6) 
+            ->where('status', 6)
             ->get();
         $listCopot = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
             ->where('status', 6)
@@ -269,6 +273,7 @@ class PegawaiController extends Controller
 
     public function buktiPencopotan(Request $request, $id)
     {
+        $bukti = Bukti::where('pelanggan_id', $id)->latest()->first();
         $user = Auth::user()->pegawai;
         $pelanggan = Pelanggan::find($id);
         // Validasi file yang diupload
@@ -281,10 +286,16 @@ class PegawaiController extends Controller
             $file->move('buktiCopot/', $name);
             $validatedData['bukti_pencabutan'] = $name;
         }
-
+        if ($bukti) {
+            $bukti->tgl_pencabutan = now();
+            $bukti->save();
+        }
         Bukti::where('pelanggan_id', $id)->update([
             'bukti_pencabutan' => $validatedData['bukti_pencabutan'],
         ]);
+
+        $pelanggan->is_pelanggan = 4;
+        $pelanggan->save();
 
         return redirect()->back()->with('success', 'Bukti pencopotan berhasil diunggah.');
     }
@@ -293,10 +304,10 @@ class PegawaiController extends Controller
     {
         $nama = Auth::user()->username;
         $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [7]) 
+            ->whereIn('status', [7])
             ->get();
         $listCopot = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [7]) 
+            ->whereIn('status', [7])
             ->count();
 
         return view('pegawai.proses-pencopotan', [
@@ -322,20 +333,53 @@ class PegawaiController extends Controller
         ]);
     }
 
-    public function riwayatPencopotan()
+    public function riwayatPengerjaan(Request $request)
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [9])
-            ->get();
+        $sortby = $request->input('sortby', 'semua'); // Default sortby is 'semua'
+
+        $query = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
+            ->whereIn('status', [3, 4, 8, 9]);
+
+        if ($sortby == 'pendaftaran') {
+            $query->where('jenis', 'pendaftaran');
+        } elseif ($sortby == 'pengajuan') {
+            $query->where('jenis', 'pengajuan');
+        }
+
+        $pelanggan = $query->get();
         $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [9])
+            ->whereIn('status', [3, 4, 8, 9])
             ->count();
-        return view('pegawai.riwayat-copot', [
+        return view('pegawai.riwayat-pengerjaan', [
             'nama' => $nama,
             'pelanggan' => $pelanggan,
-            'riwayat' => $riwayat
+            'riwayat' => $riwayat,
+            'sortby' => $sortby
+        ]);
+    }
+
+    public function pencarian(Request $request)
+    {
+        $nama = Auth::user()->username;
+        $request->validate([
+            'nama' => 'required|max:50',
         ]);
 
+        $sortby = $request->input('sortby', 'semua'); // Default sortby is 'semua'
+
+        $pelanggan = Pelanggan::where('nama', 'like', '%' . $request->nama . '%')
+            ->orWhere('no_identitas', 'like', '%' . $request->nama . '%')
+            ->get();
+        $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
+            ->whereIn('status', [3, 4, 8, 9])
+            ->count();
+
+        return view('pegawai.riwayat-pengerjaan', [
+            'nama' => $nama,
+            'riwayat' => $riwayat,
+            'pelanggan' => $pelanggan,
+            'sortby' => $sortby
+        ]);
     }
 }

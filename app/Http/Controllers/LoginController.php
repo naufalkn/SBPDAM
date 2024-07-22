@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller ;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 
 
@@ -72,34 +71,33 @@ class LoginController extends Controller
 
     public function prosesDaftar(Request $request)
     {
-        $request->validate([
-            'username' => 'required',
-            'nama' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        try{
+            $request->validate([
+                'username' => 'required',
+                'nama' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+            
+            User::create([
+                'username' => $request->username,
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                // 'token' => $token
+            ]);
+            
+            Mail::to($request->email)->send(new SendEmail([
+                'nama' => $request->nama,
+                // 'token' => $token
+            ]));
+            
+            return redirect('/login')->with('success', 'Registrasi Berhasil, Silahkan Login');
+        }
+        catch(\Exception $e){
+            return redirect('/daftar')->with('error', 'Registrasi Gagal, Usernama atau Email Sudah Terdaftar');
+        }
 
-        // $user = new User;
-        // $user->username = $request->username;
-        // $user->nama = $request->nama;
-        // $user->email = $request->email;
-        // $user->password = bcrypt($request->password);
-        // $user->save();
-        // $token = str::random(32);
-        User::create([
-            'username' => $request->username,
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            // 'token' => $token
-        ]);
-        
-        Mail::to($request->email)->send(new SendEmail([
-            'nama' => $request->nama,
-            // 'token' => $token
-        ]));
-        
-        return redirect('/login')->with('success', 'Registrasi Berhasil, Silahkan Login');
     }
 
     public function logout()

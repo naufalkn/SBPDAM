@@ -74,14 +74,15 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
-                                <td class="px-6 py-4">@if($item->transaksi->isNotEmpty())
-                                    @foreach ($item->transaksi as $transaksi)
-                                        {{ $transaksi->status ?? 'Belum bayar' }}<br>
-                                    @endforeach
+                                <td class="px-6 py-4">
+                                    @if ($item->transaksi->isNotEmpty())
+                                    @php
+                                        $latestTransaksi = $item->transaksi->first();
+                                    @endphp
+                                    {{ $latestTransaksi->status ?? 'Belum bayar' }}
                                 @else
                                     Belum Membayar
                                 @endif
-                                
                                 </td>
                             </td>
                             <td class="px-6 py-4">

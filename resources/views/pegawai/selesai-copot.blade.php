@@ -80,11 +80,15 @@
                             <td class="px-6 py-4">
                                
                                     <span
-                                        class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">Proses Selesai</span>
+                                        class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">Selesai</span>
                             </td>
                             
                             <td class="px-6 py-4">
-                                {{ \Carbon\Carbon::parse($item->bukti->tgl_pencabutan)->format('d-m-Y') ?? '-' }}
+                                @if ($item->bukti->isNotEmpty())
+                                {{ \Carbon\Carbon::parse($item->bukti->first()->tgl_pencopotan)->format('d-m-Y') ?? '-' }}
+                            @else
+                                -
+                            @endif
                             </td>
                             
                             <td class="px-6 py-4 ">

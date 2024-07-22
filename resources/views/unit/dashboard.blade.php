@@ -12,24 +12,24 @@
         </div>
 
         <div class="flex w-full mt-12">
-            <div class="w-1/3">
+            <div class="w-1/4">
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full gap-10 items-center p-5">
-                        <div class="bg-red-700 w-16 h-16 rounded-lg flex justify-center items-center">
+                        <div class="bg-yellow-400 w-16 h-16 rounded-lg flex justify-center items-center">
                             <i class="fa-solid fa-users text-white text-2xl"></i>
                         </div>
                         <div class="flex flex-col justify-between leading-normal">
-                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-600 dark:text-white">Jumlah
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-yellow-600 dark:text-white">Jumlah
                                 Pengajuan
                             </h5>
-                            <p class="mb-3 text-2xl text-red-600 dark:text-gray-400 font-bold">
+                            <p class="mb-3 text-2xl text-yellow-600 dark:text-gray-400 font-bold">
                                 {{ $jmlh_pengajuan }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="w-1/3">
+            <div class="w-1/4">
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3">
+            <div class="w-1/4">
                 <div
                     class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
                     <div class="flex w-full justify-between items-center p-5">
@@ -57,6 +57,23 @@
                                 Pelanggan Aktif
                             </h5>
                             <p class="mb-3 text-2xl text-blue-700 dark:text-gray-400 font-bold">{{ $jmlh_pelanggan_aktif }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/4">
+                <div
+                    class="flex  flex-col h-24 l w-72 items-center justify-center bg-white rounded-lg shadow md:flex-row   dark:border-gray-700 dark:bg-gray-800 ">
+                    <div class="flex w-full justify-between items-center p-5">
+                        <div class="bg-red-800 w-16 h-16 rounded-lg flex justify-center items-center">
+                            <i class="fa-solid fa-users text-white text-2xl"></i>
+                        </div>
+                        <div class="flex flex-col justify-between leading-normal">
+                            <h5 class="mb-2 text-base font-bold tracking-tight text-red-700 dark:text-white">Jumlah
+                                Pelanggan Disegel
+                            </h5>
+                            <p class="mb-3 text-2xl text-red-700 dark:text-gray-400 font-bold">{{ $jmlh_segel }}
                             </p>
                         </div>
                     </div>
@@ -177,7 +194,7 @@
             </div>
         </div>
         <div class="w-full h-full">
-            <p class="font-semibold mb-5 text-gray-600">Statistik perBulan</p>
+            <p class="font-semibold text-gray-600">Statistik perBulan</p>
             {!! $chart->container() !!}
         </div>
     </div>

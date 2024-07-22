@@ -220,110 +220,131 @@
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-40 w-60 h-screen pt-8 mt-8 transition-transform border-r-2 border-gray-200 lg:translate-x-0 bg-white "
     aria-label="Sidebar">
-    <div class="h-screen w-full p-4 pb-24 overflow-y-auto  dark:bg-gray-800">
+    <div class="h-screen w-full p-4 pb-24 overflow-y-auto dark:bg-gray-800">
         <div class="h-5/6 ">
             <ul class="space-y-2 font-medium">
                 @can('superadmin')
-                    <div class="">
                         <li>
-                            <div href="/dashboard" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Dashboard" icon="fa-brands fa-slack" href="/dashboard"
                                     :isActive="Request::is('dashboard*')" />
                             </div>
                         </li>
-                    </div>
-                    <p class="font-medium tracking-wide text-gray-400">Manajemen Unit</p>
-                    <div class="pl-2">
+                    <ul class="space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/manage-unit" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Unit" icon="fa-brands fa-slack" href="/manage-unit"
                                     :isActive="Request::is('manage-unit*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/admin-unit" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Admin Unit" icon="fa-brands fa-slack" href="/admin-unit"
                                     :isActive="Request::is('admin-unit*')" />
                             </div>
                         </li>
-                    </div>
-                    <div class="">
+                    </ul>
+                    <ul class="space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/semua-pendaftar" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pendaftar" icon="fa-brands fa-slack" href="/semua-pendaftar"
                                     :isActive="Request::is('semua-pendaftar*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/semua-pelanggan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pelanggan" icon="fa-brands fa-slack" href="/semua-pelanggan"
                                     :isActive="Request::is('semua-pelanggan*')" />
                             </div>
                         </li>
-                    </div>
+                        <li>
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="Pengajuan" icon="fa-brands fa-slack" href="/semua-pengajuan"
+                                    :isActive="Request::is('semua-pengajuan*')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="Segel" icon="fa-brands fa-slack" href="/semua-segel"
+                                    :isActive="Request::is('semua-segel*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="Pegawai" icon="fa-brands fa-slack" href="/semua-pegawai"
+                                    :isActive="Request::is('semua-pegawai*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="User" icon="fa-brands fa-slack" href="/semua-user"
+                                    :isActive="Request::is('semua-user*')" />
+                            </div>
+                        </li>
+                    </ul>
                 @endcan
                 @can('unit')
                     <li>
-                        <div href="/unit" class="flex items-center p-1">
+                        <div class="flex items-center p-1">
                             <x-sidebar-menu text="Dashboard" icon="fa-solid fa-chart-line" href="/unit"
-                                :isActive="Request::is('unit*')" />
+                                :isActive="Request::is('unit') && !Request::is('unit/*')" />
                         </div>
                     </li>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/pendaftar" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pendaftar" icon="fa-solid fa-user-pen" href="/pendaftar"
                                     :isActive="Request::is('pendaftar*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/calon-pelanggan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Calon Pelanggan" icon="fa-solid fa-user-clock" href="/calon-pelanggan"
                                     :isActive="Request::is('calon-pelanggan*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/pelanggan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pelanggan" icon="fa-solid fa-user-check" href="/pelanggan"
                                     :isActive="Request::is('pelanggan*')" />
-                            </div>
-                        </li>
-                        <li>
-                            <div href="/riwayat-pendaftar" class="flex items-center p-1">
-                                <x-sidebar-menu text="Riwayat Pendaftar" icon="fa-solid fa-clock-rotate-left"
-                                    href="/riwayat-pendaftar" :isActive="Request::is('riwayat-pendaftar*')" />
                             </div>
                         </li>
                     </ul>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/list-pengajuan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pengajuan" icon="fa-solid fa-user-pen" href="/list-pengajuan"
                                     :isActive="Request::is('list-pengajuan*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/proses" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Proses" icon="fa-solid fa-user-clock" href="/proses"
                                     :isActive="Request::is('proses*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/segel" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Segel" icon="fa-solid fa-user-lock" href="/segel"
                                     :isActive="Request::is('segel*')" />
-                            </div>
-                        </li>
-                        <li>
-                            <div href="/riwayat-pengajuan" class="flex items-center p-1">
-                                <x-sidebar-menu text="Riwayat Pengajuan" icon="fa-solid fa-clock-rotate-left"
-                                    href="/riwayat-pengajuan" :isActive="Request::is('riwayat-pengajuan*')" />
                             </div>
                         </li>
                     </ul>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/pegawai" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="Riwayat" icon="fa-solid fa-clock-rotate-left" href="/unit/riwayat"
+                                    :isActive="Request::is('unit/riwayat*')" />
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
+                        <li>
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Pegawai" icon="fa-solid fa-user-gear" href="/pegawai"
                                     :isActive="Request::is('pegawai*')" />
                             </div>
@@ -332,60 +353,62 @@
                 @endcan
                 @can('pegawai')
                     <li>
-                        <div href="/dashboard-pegawai" class="flex items-center p-1">
+                        <div class="flex items-center p-1">
                             <x-sidebar-menu text="Dashboard" icon="fa-solid fa-chart-line" href="/dashboard-pegawai"
                                 :isActive="Request::is('dashboard-pegawai*')" />
                         </div>
                     </li>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/list-pasang" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="List Pemasangan" icon="fa-solid fa-user-pen" href="/list-pasang"
                                     :isActive="Request::is('list-pasang*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/proses-pemasangan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Proses Pemasangan" icon="fa-solid fa-user-check"
                                     href="/proses-pemasangan" :isActive="Request::is('proses-pemasangan*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/selesai-pasang" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Selesai" icon="fa-solid fa-user-clock" href="/selesai-pasang"
                                     :isActive="Request::is('selesai-pasang*')" />
                             </div>
                         </li>
-                        <li>
-                            <div href="/riwayat-pemasangan" class="flex items-center p-1">
+                        {{-- <li>
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Riwayat Pemasangan" icon="fa-solid fa-user-check"
                                     href="/riwayat-pemasangan" :isActive="Request::is('riwayat-pemasangan*')" />
                             </div>
-                        </li>
+                        </li> --}}
                     </ul>
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/list-copot" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="List Pencopotan" icon="fa-solid fa-user-pen" href="/list-copot"
                                     :isActive="Request::is('list-copot*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/proses-pencopotan" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Proses Penyegelan" icon="fa-solid fa-user-check"
                                     href="/proses-pencopotan" :isActive="Request::is('proses-pencopotan*')" />
                             </div>
                         </li>
                         <li>
-                            <div href="/selesai-copot" class="flex items-center p-1">
+                            <div class="flex items-center p-1">
                                 <x-sidebar-menu text="Selesai" icon="fa-solid fa-user-clock" href="/selesai-copot"
                                     :isActive="Request::is('selesai-copot*')" />
                             </div>
                         </li>
+                    </ul>
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-400 dark:border-gray-700">
                         <li>
-                            <div href="/riwayat-pencopotan" class="flex items-center p-1">
-                                <x-sidebar-menu text="Riwayat Pencopotan" icon="fa-solid fa-user-check"
-                                    href="/riwayat-pencopotan" :isActive="Request::is('riwayat-pencopotan*')" />
+                            <div class="flex items-center p-1">
+                                <x-sidebar-menu text="Riwayat Pengerjaan" icon="fa-solid fa-user-check"
+                                    href="/riwayat-pengerjaan" :isActive="Request::is('riwayat-pengerjaan*')" />
                             </div>
                         </li>
                     </ul>
@@ -395,6 +418,7 @@
 
     </div>
 </aside>
+
 
 <div id="shadow-sidebar"
     class="hidden fixed justify-center items-center top-0 left-0 right-0 z-10 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen max-h-full"
