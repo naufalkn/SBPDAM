@@ -9,6 +9,6 @@
     <h1>SELAMAT BERGABUNG DI WEBSITE SBPDAM</h1>
     <p>Hello, {{ $name }}!</p>
     <p>Selamat Pendaftaran akun berhasil, anda bisa memulai untuk melakukan pendaftaran berlangganan.</p>
-    {{-- <a href="{{ url('/verifikasi/' . $token) }}">Verify Email</a> --}}
+    <a href="{{ url('/verifikasi/' . $token) }}">Verify Email</a>
 </body>
 </html>

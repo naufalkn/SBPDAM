@@ -13,13 +13,13 @@
                 <div class="flex space-x-2">
                     @if ($pelanggan->jenis == 'pendaftaran')
                         <p>Hallo <b>{{ $pelanggan->nama }} </b> , Pelanggan PERUMDA AIR MINUM TIRTO NEGORO Kabupaten Sragen.
-                            @if($pelanggan->status == 4)
+                            @if($pelanggan->status_id == 6)
                             Terimakasih telah menjadi pelanggan kami sejak
                             <b>{{ \Carbon\Carbon::parse($pelanggan->tgl_aktif)->format('d-m-Y') }}</b></p>
                             @endif
                     @elseif($pelanggan->jenis == 'pengajuan')
                         <p>Hallo <b>{{ $pelanggan->nama }} </b> , Pelanggan PERUMDA AIR MINUM TIRTO NEGORO Kabupaten Sragen.
-                           @if($pelanggan->status == 9)
+                           @if($pelanggan->status_id == 12)
                            Mohon maaf, Langganan Anda telah disegel mulai
                            <b>{{ \Carbon\Carbon::parse($pelanggan->tgl_nonaktif)->format('d-m-Y') }}</b></p>
                            @endif
@@ -34,25 +34,25 @@
                         <div class="">
                             <p class="font-semibold text-black">{{ $pelanggan->nama }}</p>
                             <p> Unit {{ $pelanggan->nm_unit }}</p>
-                            @if ($pelanggan->status == 0 || $pelanggan->status == 1 || $pelanggan->status == 2 || $pelanggan->status == 3)
+                            @if (in_array($pelanggan->status_id, [1, 2, 3, 4, 5]))
                                 <p> Tanggal Daftar :
                                     <span class="ml-3">
                                         {{ \Carbon\Carbon::parse($pelanggan->tgl_daftar)->format('d-m-Y') ?? '-' }}
                                     </span>
                                 </p>
-                            @elseif($pelanggan->status == 4)
+                            @elseif($pelanggan->status_id == 6)
                                 <p> Tanggal Aktif :
                                     <span class="ml-3">
                                         {{ \Carbon\Carbon::parse($pelanggan->tgl_aktif)->format('d-m-Y') ?? '-' }}
                                     </span>
                                 </p>
-                            @elseif($pelanggan->status == 5 || $pelanggan->status == 6 || $pelanggan->status == 7 || $pelanggan->status == 8)
+                            @elseif(in_array($pelanggan->status_id, [7, 8, 9, 10, 11]))
                                 <p> Tanggal Pengajuan :
                                     <span class="ml-3">
                                         {{ \Carbon\Carbon::parse($pelanggan->tgl_aktif)->format('d-m-Y') ?? '-' }}
                                     </span>
                                 </p>
-                            @elseif($pelanggan->status == 9)
+                            @elseif($pelanggan->status_id == 12)
                                 <p> Tanggal Segel :
                                     <span class="ml-3">
                                         {{ \Carbon\Carbon::parse($pelanggan->tgl_aktif)->format('d-m-Y') ?? '-' }}
@@ -63,18 +63,18 @@
                     </div>
                     <div class="mr-4">
                         <div class="font-semibold text-lg">
-                            @if ($pelanggan->status == 0 || $pelanggan->status == 1 || $pelanggan->status == 2 || $pelanggan->status == 3)
+                            @if (in_array($pelanggan->status_id, [1, 2, 3, 4, 5]))
                                 <span
                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Belum
                                     Berlangganan</span>
-                            @elseif($pelanggan->status == 4)
+                            @elseif($pelanggan->status_id == 6)
                                 <span
                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">Berlangganan</span>
-                            @elseif($pelanggan->status == 5 || $pelanggan->status == 6 || $pelanggan->status == 7 || $pelanggan->status == 8)
+                            @elseif(in_array($pelanggan->status_id, [7, 8, 10, 11]))
                                 <span
                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">Pengajuan
                                     Berlangganan</span>
-                            @elseif($pelanggan->status == 9)
+                            @elseif($pelanggan->status_id == 12)
                                 <span
                                     class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">Segel
                                     Berlangganan</span>

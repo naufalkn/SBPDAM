@@ -58,27 +58,27 @@
                                 {{ $item->nm_unit }}
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == '5')
+                                @if ($item->status_id == '7')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-gray-600 bg-gray-200  last:mr-0 mr-1">
                                         Belum diverifikasi
                                     </span>
-                                @elseif($item->status == '6')
+                                @elseif($item->status_id == '8')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
                                         Sudah diverifikasi
                                     </span>
-                                @elseif($item->status == '7')
+                                @elseif($item->status_id == '9' || $item->status_id == '10')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
                                         Proses Pencopotan
                                     </span>
-                                @elseif($item->status == '8')
+                                @elseif($item->status_id == '11')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                         Pencopotan Selesai
                                     </span>
-                                @elseif($item->status == '9')
+                                @elseif($item->status_id == '12')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
                                         Disegel

@@ -18,6 +18,8 @@ Route::post('/login', [LoginController::class, 'prosesLogin']);
 // REGISTER
 Route::get('/daftar', [LoginController::class, 'daftar']);
 Route::post('/daftar', [LoginController::class, 'prosesDaftar']);
+Route::get('/verifikasi/{token}', [LoginController::class, 'verifikasi'])->name('verifikasi');
+
 
 // Email
 
@@ -39,6 +41,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/bayar' , [PayController::class, 'bayar']);
 
     Route::get('/berhasil/{id}' , [PayController::class, 'berhasil'])->name('berhasil');
+    
 
     Route::get('/bantuan', [UserController::class, 'bantuan']);
 
@@ -118,6 +121,11 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/hapus-pegawai/{id}', [AdminController::class, 'hapusPegawai']);
 
     Route::get('/hapus-user/{id}', [AdminController::class, 'hapusUser']);
+
+    Route::get('/export-pelanggan', [AdminController::class, 'exportPelanggan']);
+    
+    Route::get('/chart', [AdminController::class, 'dashboard'])->name('select.chart');
+
 
 });
 

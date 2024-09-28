@@ -12,6 +12,7 @@
         </div>
 
     </div>
+
     {{-- Tabel --}}
     <div class="px-5 lg:ml-64 mb-16">
         <div class="relative h-full overflow-x-auto shadow-md sm:rounded-lg">

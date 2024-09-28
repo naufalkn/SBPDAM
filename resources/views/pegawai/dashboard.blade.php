@@ -110,12 +110,12 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                @if ($item->status == '1')
+                                @if ($item->jenis == 'pendaftaran')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                         Pemasangan
                                     </span>
-                                @elseif($item->status == '6')
+                                @elseif($item->jenis == 'pencabutan')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
                                         Pengajuan Berhenti
@@ -123,9 +123,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == '1')
+                                @if ($item->status_id == '3')
                                     {{ \Carbon\Carbon::parse($item->tgl_daftar)->format('d-m-Y') ?? '-' }}
-                                @elseif($item->status == '6')
+                                @elseif($item->status_id == '9')
                                     {{ \Carbon\Carbon::parse($item->tgl_pengajuan)->format('d-m-Y') ?? '-' }}
                                 @endif
                             </td>

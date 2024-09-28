@@ -35,4 +35,21 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(Pegawai::class);
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function riwayat()
+    {
+        return $this->hasMany(Riwayat::class);
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'desa');
+    }
+
+    
 }

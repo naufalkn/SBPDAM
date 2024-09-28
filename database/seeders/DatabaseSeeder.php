@@ -18,5 +18,11 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(AdminUnitSeeder::class);
         $this->call(PegawaiSeeder::class);
+        $this->call(StatusSeeder::class);
+        $this->call(IndoRegionSeeder::class);
+        $this->call(IndoRegionVillageSeeder::class);
+        $this->call(IndoRegionDistrictSeeder::class);
+        $this->call(IndoRegionProvinceSeeder::class);
+        $this->call(IndoRegionRegencySeeder::class);
     }
 }

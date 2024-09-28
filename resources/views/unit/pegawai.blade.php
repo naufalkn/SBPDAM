@@ -91,7 +91,7 @@
                                     Identitas</label>
                                 <input type="number" name="no_identitas" id="no_identitas" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukkan Nama Pegawai">
+                                    placeholder="Masukkan Nomor KTP">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="password"
@@ -101,40 +101,36 @@
                                     placeholder="Masukkan Password Pegawai">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
-                                <label for="password"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
-                                    Kelamin</label>
-                                <select
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-3/4 p-2.5"
-                                    name="jenis_kelamin" id="jenis_kelamin">
-                                    <option value="L" {{ auth()->user()->jenis_kelamin == 'L' ? 'selected' : '' }}>
-                                        Laki-Laki
-                                    </option>
-                                    <option value="P" {{ auth()->user()->jenis_kelamin == 'P' ? 'selected' : '' }}>
-                                        Perempuan
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="nm_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Unit</label>
-                                <select id="nm_unit" name="nm_unit" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    @foreach ($unitlist as $item)
-                                        <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">
-                                            {{ $item->nm_unit }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="kd_unit"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Unit</label>
-                                <select id="kd_unit" name="kd_unit" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    @foreach ($unitlist as $item)
-                                        <option value="{{ $item->kd_unit }}">{{ $item->kd_unit }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Kelamin</label>
+                                <div class="flex items-center space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" class="form-radio" name="jenis_kelamin" value="L" 
+                                            {{ auth()->user()->jenis_kelamin == 'L' ? 'checked' : '' }}>
+                                        <span class="ml-2 text-gray-900 dark:text-white">Laki-Laki</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" class="form-radio" name="jenis_kelamin" value="P" 
+                                            {{ auth()->user()->jenis_kelamin == 'P' ? 'checked' : '' }}>
+                                        <span class="ml-2 text-gray-900 dark:text-white">Perempuan</span>
+                                    </label>
+                                </div>
+                            </div>                            
+                            <div class="col-span-2">
+                                <label for="nm_unit" class="block text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                                <div class="flex gap-4">
+                                    <select name="nm_unit" id="nm_unit"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Pilih Unit</option>
+                                        @foreach ($unitlist as $item)
+                                            <option value="{{ $item->nm_unit }}" data-kd-unit="{{ $item->kd_unit }}">{{ $item->nm_unit }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="flex-1">
+                                        <label for="kd_unit" class="block text-sm font-medium text-gray-700 dark:text-white">Kode Unit</label>
+                                        <input type="text" name="kd_unit" id="kd_unit" readonly
+                                            class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="password"
@@ -149,6 +145,7 @@
                                 <input
                                     class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                     aria-describedby="user_avatar_help" id="foto_ktp" name="foto_ktp" type="file">
+                                    <p class="mt-1 text-sm text-gray-500" id="file_input_help">max: 2 MB, JPEG, JPG, PNG</p>
                             </div>
                         </div>
                         <button type="submit"
@@ -229,10 +226,10 @@
                                 <div class="w-full">
                                     <form action="{{ url('/status-pegawai', ['id' => $item->id]) }}" method="POST">
                                         @csrf
-                                        @if ($item->status == 'aktif')
+                                        @if ($item->user->status == 'aktif')
                                             <button type="submit" name="status" value="nonaktif"
                                                 class="px-4 w-full py-2 bg-green-500 text-white rounded-lg">Active</button>
-                                        @elseif($item->status == 'nonaktif')
+                                        @elseif($item->user->status == 'nonaktif')
                                             <button type="submit" name="status" value="aktif"
                                                 class="px-4 w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">inactive</button>
                                         @endif
@@ -245,12 +242,6 @@
                                     <i class="fa-regular fa-eye"></i>
                                 </a>
                             </td>
-                            {{-- <td class="px-6 py-4">
-                                <a href="{{ url('/hapus-pegawai/' . $item->id) }}" type="button"
-                                    class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-red-900">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </td> --}}
                         </tr>
                     @empty
                         <tr>
@@ -260,6 +251,24 @@
                 </tbody>
             </table>
         </div>
-
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 plugin
+            $('#nm_unit').select2();
+    
+            // Handle unit selection change
+            $('#nm_unit').change(function() {
+                var selectedUnit = $(this).find(':selected');
+                var kodeUnit = selectedUnit.data('kd-unit');
+                // Set the kd_unit input value based on the selected nm_unit
+                $('#kd_unit').val(kodeUnit);
+            });
+        });
+    </script>    
 @endsection

@@ -9,6 +9,7 @@ class Dukuh extends Model
 {
     use HasFactory;
     protected $table = 'dukuh';
+    protected $fillable = ['nmdukuh'];
 
     public function user()
     {

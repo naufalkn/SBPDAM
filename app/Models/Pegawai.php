@@ -29,6 +29,11 @@ class Pegawai extends Model
     {
         return $this->hasMany(Bukti::class);
     }
+
+    public function riwayat()
+    {
+        return $this->hasMany(Riwayat::class);
+    }
     
     
 }

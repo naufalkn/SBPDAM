@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        // 'token'
+        'token',
+        'status',
         // 'unit_id',
     ];
 
@@ -71,6 +72,11 @@ class User extends Authenticatable
     public function pegawai()
     {
         return $this->hasOne(Pegawai::class);
+    }
+
+    public function riwayat()
+    {
+        return $this->hasMany(Riwayat::class);
     }
 
     

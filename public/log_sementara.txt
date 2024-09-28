@@ -3,14 +3,14 @@ Accept-Encoding:   gzip, br
 Cdn-Loop:          cloudflare
 Cf-Connecting-Ip:  34.101.92.69
 Cf-Ipcountry:      ID
-Cf-Ray:            8a7105328f1d46c7-SIN
+Cf-Ray:            8aeca69ef8ae5ff7-SIN
 Cf-Visitor:        {"scheme":"https"}
 Connection:        upgrade
-Content-Length:    684
+Content-Length:    683
 Content-Type:      application/json
 Host:              naufal.radityafirmansyaputra.com
 User-Agent:        Veritrans
 X-Forwarded-For:   34.101.92.69
 X-Forwarded-Proto: https
 
-{"transaction_type":"on-us","transaction_time":"2024-07-22 12:26:59","transaction_status":"settlement","transaction_id":"6ef5b28e-2464-4b67-bab7-855c694ca919","status_message":"midtrans payment notification","status_code":"200","signature_key":"e917b82c804919ce8349ddb8b2b6949d18522c59ef832a37f76d9418f8ab3acc7a10baa51ba4c79c33321797203f583aa85b391e80a94e393f1acde2dd260b0e","settlement_time":"2024-07-22 12:27:12","reference_id":"05c69ac3-f28f-428f-986a-fd83ed287bb4","payment_type":"qris","order_id":"17-1721626015","merchant_id":"G687288709","issuer":"gopay","gross_amount":"23000.00","fraud_status":"accept","expiry_time":"2024-07-22 12:41:59","currency":"IDR","acquirer":"gopay"}
+{"transaction_type":"on-us","transaction_time":"2024-08-06 12:32:31","transaction_status":"settlement","transaction_id":"874374ea-8679-4618-ae1b-6f77a7490a95","status_message":"midtrans payment notification","status_code":"200","signature_key":"356e81d3361f7f159855c18ec7fac12a579f02c2e5d63c79f03fbaec8b9a3fca255c9888cd3dda242c6e1e3e4da6f5cc05dd2654ee26793b4c5b8c13e8d13637","settlement_time":"2024-08-06 12:32:45","reference_id":"0c2a57fb-bbe0-4009-93a1-4edcde7ad7fc","payment_type":"qris","order_id":"2-1722922343","merchant_id":"G687288709","issuer":"gopay","gross_amount":"23000.00","fraud_status":"accept","expiry_time":"2024-08-06 12:47:31","currency":"IDR","acquirer":"gopay"}

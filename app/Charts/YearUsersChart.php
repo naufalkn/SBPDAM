@@ -9,16 +9,27 @@ use Carbon\Carbon;
 
 class YearUsersChart
 {
-    protected $chart;
+    protected $Yearchart;
 
-    public function __construct(LarapexChart $chart)
+    public function __construct(LarapexChart $Yearchart)
     {
-        $this->chart = $chart;
+        $this->Yearchart = $Yearchart;
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\BarChart
+    public function build($kd_unit = null, $year = null): \ArielMejiaDev\LarapexCharts\BarChart
     {
-        // Mendapatkan daftar bulan dalam satu tahun penuh
+        $query = Pelanggan::orderBy('created_at');
+
+        if ($kd_unit && $kd_unit !== 'all') {
+            $query->where("kd_unit", $kd_unit);
+        }
+
+        if ($year) {
+            $query->whereYear('created_at', $year);
+        }
+
+        $pelanggans = $query->get();
+
         $allMonths = collect([
             'January',
             'February',
@@ -34,65 +45,42 @@ class YearUsersChart
             'December'
         ]);
 
-        // Inisialisasi data
-        $dataDaftar = [];
-        $dataPengajuan = [];
+        $dataDaftar = $pelanggans->where('jenis', 'pendaftaran')->groupBy(function ($pelanggan) {
+            return Carbon::parse($pelanggan->tgl_daftar)->format('F');
+        })
+            ->map(function ($group) {
+                return $group->count();
+            })
+            ->toArray();
 
-        // Periksa jika peran pengguna adalah 'superadmin'
+        $dataPengajuan = $pelanggans->where('jenis', 'pengajuan')->groupBy(function ($pelanggan) {
+            return Carbon::parse($pelanggan->tgl_pengajuan)->format('F');
+        })
+            ->map(function ($group) {
+                return $group->count();
+            })
+            ->toArray();
 
+        $dataDaftar = $allMonths->map(function ($month) use ($dataDaftar) {
+            return $dataDaftar[$month] ?? 0;
+        });
 
-// Mendapatkan data pelanggan berdasarkan role user
-if (auth()->user()->role->nama === 'superadmin') {
-    $pelanggans = Pelanggan::orderBy('created_at')->get();
-} else {
-    $pelanggans = Pelanggan::where("kd_unit", Auth::user()->adminUnit->kd_unit)
-        ->orderBy('created_at')
-        ->get();
-}
+        $dataPengajuan = $allMonths->map(function ($month) use ($dataPengajuan) {
+            return $dataPengajuan[$month] ?? 0;
+        });
 
-// Membuat daftar semua bulan
-$allMonths = collect(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
+        $label = $allMonths->toArray();
 
-// Kelompokkan berdasarkan jenis dan bulan untuk tgl_daftar
-$dataDaftar = $pelanggans->where('jenis', 'pendaftaran')->groupBy(function ($pelanggan) {
-    return Carbon::parse($pelanggan->tgl_daftar)->format('F');
-})
-    ->map(function ($group) {
-        return $group->count();
-    })
-    ->toArray();
-
-// Kelompokkan berdasarkan jenis dan bulan untuk tgl_pengajuan
-$dataPengajuan = $pelanggans->where('jenis', 'pengajuan')->groupBy(function ($pelanggan) {
-    return Carbon::parse($pelanggan->tgl_pengajuan)->format('F');
-})
-    ->map(function ($group) {
-        return $group->count();
-    })
-    ->toArray();
-
-// Mengisi data untuk setiap bulan, jika tidak ada data, nilainya menjadi 0
-$dataDaftar = $allMonths->map(function ($month) use ($dataDaftar) {
-    return $dataDaftar[$month] ?? 0;
-});
-
-$dataPengajuan = $allMonths->map(function ($month) use ($dataPengajuan) {
-    return $dataPengajuan[$month] ?? 0;
-});
-
-// Label bulan
-$label = $allMonths->toArray();
-
-// Menggunakan LarapexChart untuk membuat barchart
-return (new LarapexChart)->barChart()
-->setSubtitle(date('Y'))
-    // ->setWidth( 500)
-    ->setWidth ( Auth::user()->role->nama === 'unit' ? 700 : 500)
-    ->setHeight( Auth::user()->role->nama === 'unit' ? 350 : 350)
-    ->addData('Jumlah Pendaftar', $dataDaftar->values()->toArray())
-    ->addData('Jumlah Pengajuan', $dataPengajuan->values()->toArray())
-    ->setColors(['#229954', '#CB4335']) // Hijau untuk pendaftaran, merah untuk pengajuan
-    ->setXAxis($label);
+        return $this->Yearchart->barChart()
+            ->setTitle('Data Statistik perBulan')
+            ->setSubtitle((string) ($year ?? date('Y')))
+            ->setWidth(Auth::user()->role->nama === 'unit' ? 700 : 500)
+            ->setHeight(350)
+            ->addData('Jumlah Pendaftar', $dataDaftar->values()->toArray())
+            ->addData('Jumlah Pengajuan', $dataPengajuan->values()->toArray())
+            ->setColors(['#229954', '#CB4335'])
+            ->setXAxis($label);
+    }
 
 }
-}
+

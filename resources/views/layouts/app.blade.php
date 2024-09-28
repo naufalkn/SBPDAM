@@ -21,6 +21,7 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>{{ $title ?? 'Tanpa Judul' }} | SBPDAM</title>
+
 </head>
 
 <body class="antialiased bg-white overflow-auto">

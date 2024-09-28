@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\StatusUsersChart;
 use App\Charts\YearUsersChart;
+use App\Exports\pelangganExport;
 use App\Models\AdminUnit;
 use App\Models\Desa;
 use App\Models\Dukuh;
 use App\Models\Kecamatan;
 use App\Models\Pegawai;
+use App\Models\riwayat;
 use App\Models\Units;
 use App\Models\User;
 use App\Models\Pelanggan;
@@ -15,18 +18,25 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
-    public function dashboard(YearUsersChart $yearUsersChart)
+    public function dashboard(YearUsersChart $yearUsersChart, StatusUsersChart $statusUsersChart, Request $request)
     {
         $jmlh_user = User::where('role_id', 5)->count();
-        $jmlh_pelanggan = Pelanggan::where('status', 4)->count();
-        $jmlh_segel = Pelanggan::where('status', 9)->count();
+        $jmlh_pelanggan = Pelanggan::where('status_id', 6)->count();
+        $jmlh_segel = Pelanggan::where('status_id', 12)->count();
         $jmlh_unit = Units::all()->count();
         $nama = Auth::user()->username;
         $riwayat = Pelanggan::orderBy('id', 'desc')->take(4)->get();
         // dd($riwayat);
+        $unitlist = Units::all();
+
+        $kd_unit = $request->get('kd_unit', 'all');
+        $year = $request->get('year', date('Y'));
+        $month = $request->get('month', null);
+
         return view('admin.dashboard', [
             'nama' => $nama,
             'jmlh_segel' => $jmlh_segel,
@@ -34,8 +44,10 @@ class AdminController extends Controller
             'riwayat' => $riwayat,
             'jmlh_unit' => $jmlh_unit,
             'jmlh_user' => $jmlh_user,
-            'chart' => $yearUsersChart->build()
-
+            'unitlist' => $unitlist,
+            'selectedYear' => $year,
+            'Yearchart' => $yearUsersChart->build($kd_unit, $year),
+            'Statuschart' => $statusUsersChart->build($kd_unit, $year, $month),
         ]);
     }
 
@@ -45,7 +57,7 @@ class AdminController extends Controller
         return view('admin.profil', [
             'admin' => $admin,
         ]);
-        
+
     }
 
     public function updateProfil(Request $request, $id)
@@ -81,31 +93,31 @@ class AdminController extends Controller
                 $user->password = \Hash::make($request->new_password);
             }
 
-           // Perbarui foto pengguna jika ada
-           if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            // Pastikan file foto telah berhasil diunggah
-            if ($file->isValid()) {
-                // Pindahkan file ke direktori yang diinginkan
-                $fileName = $file->getClientOriginalName();
-                $file->move(public_path('img'), $fileName);
-                // Simpan nama file foto ke atribut $foto pada model pengguna
-                $user->foto = $fileName;
-            } else {
-                // Jika file foto tidak valid, kembalikan dengan pesan error
-                return redirect()->back()->with('error', 'File foto tidak valid.');
+            // Perbarui foto pengguna jika ada
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                // Pastikan file foto telah berhasil diunggah
+                if ($file->isValid()) {
+                    // Pindahkan file ke direktori yang diinginkan
+                    $fileName = $file->getClientOriginalName();
+                    $file->move(public_path('img'), $fileName);
+                    // Simpan nama file foto ke atribut $foto pada model pengguna
+                    $user->foto = $fileName;
+                } else {
+                    // Jika file foto tidak valid, kembalikan dengan pesan error
+                    return redirect()->back()->with('error', 'File foto tidak valid.');
+                }
             }
-        }
 
-        $user->save();
+            $user->save();
 
             return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
-        
 
+
+        }
     }
-}
 
     public function detailAdminUnit($id)
     {
@@ -116,14 +128,14 @@ class AdminController extends Controller
         ]);
     }
 
-    public function statusAdminUnit (Request $request)
+    public function statusAdminUnit(Request $request)
     {
         $adminUnit = AdminUnit::find($request->id);
         $adminUnit->status = $request->status;
         $adminUnit->save();
         return redirect()->back()->with('success', 'Status berhasil diperbarui.');
     }
-    
+
 
     public function unit()
     {
@@ -135,15 +147,29 @@ class AdminController extends Controller
 
     public function tambahUnit(Request $request)
     {
-        $validatedData = $request->validate([
-            'kd_unit' => 'required',
-            'nm_unit' => 'required',
-        ]);
+        try {
+            // Validasi data yang dikirim oleh request
+            $validatedData = $request->validate([
+                'kd_unit' => 'required',
+                'nm_unit' => 'required',
+            ]);
 
-        // Menggunakan metode insert() untuk menghindari pembuatan kolom updated_at
-        Units::insert($validatedData);
+            // Menggunakan metode insert() untuk menghindari pembuatan kolom updated_at
+            $unit = Units::insert($validatedData);
 
-        return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+            if (!$unit) {
+                return redirect()->back()->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Tangkap kesalahan terkait query database
+            return redirect()->back()->with('error', 'Mohon maaf, kode unit sudah ada.');
+        } catch (\Exception $e) {
+            // Tangkap kesalahan lainnya
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+
     }
 
     public function hapusUnit($kd_unit)
@@ -240,14 +266,14 @@ class AdminController extends Controller
     {
         $nama = User::all()->first()->username;
         $dukuhList = Dukuh::all();
-        $desaList = Desa::all();
-        $kecamatanList = Kecamatan::all();
+        // $desaList = Desa::all();
+        // $kecamatanList = Kecamatan::all();
         // $unitList = UnitCoba::all();
         return view('admin.form-daftar', [
             'nama' => $nama,
             'dukuhList' => $dukuhList,
-            'desaList' => $desaList,
-            'kecamatanList' => $kecamatanList,
+            // 'desaList' => $desaList,
+            // 'kecamatanList' => $kecamatanList,
             // 'unitList' => $unitList,
         ]);
     }
@@ -305,23 +331,47 @@ class AdminController extends Controller
     }
 
     public function detailUser($id)
-{
-    $pelanggan = Pelanggan::with(['transaksi', 'bukti' => function($query) {
-        $query->latest()->first();
-    }])->find($id);
-    $bukti = $pelanggan->bukti->first();
-    // dd($bukti);
+    {
+        $logriwayat = riwayat::where('pelanggan_id', $id)
+            ->with(['user', 'status', 'pelanggan'])
+            ->get();
+        // dd($logriwayat);
+        $pelanggan = Pelanggan::find($id);
+        if (Auth::user()->role_id == 2) {
+            $adminUnit = Auth::user()->adminUnit->kd_unit;
+            $pegawai = User::where('role_id', 3)
+                ->whereHas('pegawai', function ($query) use ($adminUnit) {
+                    $query->where('kd_unit', $adminUnit);
+                })
+                ->with('pegawai')
+                ->get();
+        } elseif (Auth::user()->role_id == 3) {
+            $user = Auth::user()->pegawai->kd_unit;
+            $pegawai = User::where('role_id', 3)
+                ->whereHas('pegawai', function ($query) use ($user) {
+                    $query->where('kd_unit', $user);
+                })
+                ->with('pegawai')
+                ->get();
+        }
+        // dd($pegawai);
+        // $riwayat = riwayat::where('pelanggan_id', $pelanggan->id)->get();
+        $riwayat = $pelanggan->riwayat()->orderBy('created_at', 'desc')->first();
+        // dd($riwayat);
+        // dd($riwayat);
 
-    return view('admin.detail-user', [
-        'pelanggan' => $pelanggan,
-        'bukti' => $bukti,
-    ]);
-}
+        return view('admin.detail-user', [
+            'pelanggan' => $pelanggan,
+            'riwayat' => $riwayat,
+            'pegawai' => $pegawai,
+            'logriwayat' => $logriwayat,
+        ]);
+    }
 
     public function pelanggan()
     {
         $user = auth::user();
-        $pelanggan = Pelanggan::where('status', 4)->get();
+        $pelanggan = Pelanggan::where('status_id', 6)->get();
         return view('admin.pelanggan', [
             'pelanggan' => $pelanggan,
             'nama' => $user->username,
@@ -331,7 +381,7 @@ class AdminController extends Controller
     public function pendaftar()
     {
         $user = auth::user();
-        $pendaftar = Pelanggan::whereIn('status', [0, 1, 2, 3])->get();
+        $pendaftar = Pelanggan::whereIn('status_id', [1, 2, 3, 4, 5])->get();
         // dd($pendaftar);
         return view('admin.pendaftar', [
             'pendaftar' => $pendaftar,
@@ -342,7 +392,7 @@ class AdminController extends Controller
     public function pengajuan()
     {
         $user = auth::user();
-        $pengajuan = Pelanggan::whereIn('status', [5, 6, 7, 8])->get();
+        $pengajuan = Pelanggan::whereIn('status_id', [7, 8, 9, 10, 11])->get();
         // dd($pengajuan);
         return view('admin.pengajuan', [
             'pengajuan' => $pengajuan,
@@ -353,7 +403,7 @@ class AdminController extends Controller
     public function segel()
     {
         $user = auth::user();
-        $segel = Pelanggan::where('status', 9)->get();
+        $segel = Pelanggan::where('status_id', 12)->get();
         // dd($segel);
         return view('admin.segel', [
             'segel' => $segel,
@@ -411,5 +461,10 @@ class AdminController extends Controller
     {
         auth()->logout();
         return redirect()->route('login');
+    }
+
+    public function exportPelanggan()
+    {
+        return Excel::download(new pelangganExport, 'pelanggan.xlsx');
     }
 }

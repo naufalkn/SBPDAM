@@ -21,7 +21,7 @@ class SendEmail extends Mailable
      */
     public function __construct($informasi)
     {
-        // $this->token = $informasi['token'];
+        $this->token = $informasi['token'];
         $this->nama = $informasi['nama'];
     }
 
@@ -43,7 +43,7 @@ class SendEmail extends Mailable
         return new Content(
             view: 'auth.sendEmail',
             with: [
-                // 'token' => $this->token,
+                'token' => $this->token,
                 'name' => $this->nama,
             ],
         );

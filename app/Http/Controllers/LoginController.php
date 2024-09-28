@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller ;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 
 
@@ -40,20 +41,24 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             if (Auth::user()->role->nama == "user" || Auth::user()->role->nama == "pelanggan") {
-                return redirect('/beranda');
+                if (Auth::user()->status == "aktif") {
+                    return redirect('/beranda');
+                } else {
+                    return back()->with('error', 'Silahkan Verfikasi Email Anda Terlebih Dahulu');
+                }
             } else if (Auth::user()->role->nama == "superadmin") {
                 return redirect('/dashboard');
             } elseif (Auth::user()->role->nama == "unit") {
-                if (Auth::user()->adminUnit->status == "aktif") {
+                if (Auth::user()->status == "aktif") {
                     return redirect('/unit');
                 } else {
-                    return back()->with('error', 'Login gagal, silahkan coba lagi!');
+                    return back()->with('error', 'Account anda belum di verifikasi');
                 }
             } else if (Auth::user()->role->nama == "pegawai") {
-                if (Auth::user()->pegawai->status == "aktif") {
+                if (Auth::user()->status == "aktif") {
                     return redirect('/dashboard-pegawai');
                 } else {
-                    return back()->with('error', 'Login gagal, silahkan coba lagi!');
+                    return back()->with('error', 'Account anda belum di verifikasi');
                 }
             }
         } else {
@@ -79,17 +84,20 @@ class LoginController extends Controller
                 'password' => 'required',
             ]);
             
+            $token = Str::random(32);
+            // dd($token);
             User::create([
                 'username' => $request->username,
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                // 'token' => $token
+                'token' => $token,
+                'status' => 'nonaktif',
             ]);
             
             Mail::to($request->email)->send(new SendEmail([
                 'nama' => $request->nama,
-                // 'token' => $token
+                'token' => $token
             ]));
             
             return redirect('/login')->with('success', 'Registrasi Berhasil, Silahkan Login');
@@ -98,6 +106,19 @@ class LoginController extends Controller
             return redirect('/daftar')->with('error', 'Registrasi Gagal, Usernama atau Email Sudah Terdaftar');
         }
 
+    }
+
+    public function verifikasi($token)
+    {
+        $user = User::where('token', $token)->first();
+        if ($user) {
+            $user->update([
+                'token' => null,
+                'status' => 'aktif',
+            ]);
+            return redirect()->route('login')->with('success', 'Akun berhasil diverifikasi');
+        }
+        return redirect()->route('login')->with('error', 'Token verifikasi tidak valid');
     }
 
     public function logout()

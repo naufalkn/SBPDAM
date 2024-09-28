@@ -36,8 +36,13 @@
                         <div class="text-gray-600 space-y-2">
                             <p class="font-medium text-lg">Registrasi</p>
                             <p>Website Sambungan Baru</p>
+                            <div class="inline-flex items-end">
+                                <button
+                                    class="border-blue-400 border-2 text-blue-500 font-bold py-2 px-4 rounded ">
+                                    <a href="/login">Sudah Punya Akun</a>
+                                </button>
+                            </div>
                         </div>
-
                         <form action="/daftar" method="POST">
                             @csrf
                             <div class="lg:col-span-2">
@@ -70,12 +75,6 @@
                                     </div>
 
                                     <div class="md:col-span-5 text-right">
-                                        <div class="inline-flex items-end">
-                                            <button
-                                                class="border-blue-400 border-2 text-blue-500 font-bold py-2 px-4 rounded ">
-                                                <a href="/login">Login</a>
-                                            </button>
-                                        </div>
                                         <div class="inline-flex items-end">
                                             <button
                                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Daftar</button>

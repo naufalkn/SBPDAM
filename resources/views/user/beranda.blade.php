@@ -14,13 +14,14 @@
                             <div class="">
                                 <h1 class="text-gray-500 font-bold">Halo, Selamat datang </h1>
                                 <h1 class="text-black font-semibold text-xl">{{ auth()->user()->nama }}</h1>
+                                {{-- <p>{{ auth()->user()->pelanggan->kelurahan }}</p> --}}
                             </div>
                         </div>
                     </div>
                 </div>
-                @if (auth()->user()->pelanggan && auth()->user()->pelanggan->status == 9)
+                @if (auth()->user()->pelanggan && auth()->user()->pelanggan->status_id == 12)
                     <p class="p-2 w-full text-2xl dark:text-gray-400">Sambungan Anda Telah Tersegel</p>
-                @elseif (auth()->user()->pelanggan && auth()->user()->pelanggan->status == 4)
+                @elseif (auth()->user()->pelanggan && auth()->user()->pelanggan->status_id == 6)
                     <p class="p-2 w-full text-2xl dark:text-gray-400">Anda sudah Berlangganan Air Bersih di PDAM Sragen</p>
                 @elseif (auth()->user()->pelanggan && auth()->user()->pelanggan->tgl_pengajuan != null)
                     <p class="p-2 w-full text-2xl dark:text-gray-400">Sambungan Anda Dalam Proses Penyegelan</p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bukti;
 use App\Models\Pegawai;
 use App\Models\Pelanggan;
+use App\Models\riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,17 +17,22 @@ class PegawaiController extends Controller
     public function index()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [1, 6])
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->whereIn('status_id', [3,4,5,9,10,11])
+            ->where('pegawai_id', Auth::user()->id)
             ->get();
-        $listPasang = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [1])
+        $listPasang = Pelanggan::where('kd_unit', $pegawai)
+            ->whereIn('status_id', [3,4,5])
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
-        $listPengajuan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [6])
+        $listPengajuan = Pelanggan::where('kd_unit', $pegawai)
+            ->whereIn('status_id', [9,10,11])
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
-        $listSelesai = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3, 4, 8, 9])
+        $listSelesai = Pelanggan::where('kd_unit', $pegawai)
+            ->whereIn('status_id', [3, 4, 8, 9])
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
         return view('pegawai.dashboard', [
             'title' => 'Dashboard Pegawai',
@@ -127,31 +133,72 @@ class PegawaiController extends Controller
     public function mulaiPasang(Request $request, $id)
     {
         $pelanggan = Pelanggan::find($id);
-        $pelanggan->status = $request->status;
+        
+
+        if($pelanggan->status_id == 3){
+            riwayat::create([
+                'user_id' => Auth::user()->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => $request->status,
+                'tanggal' => now(),
+                'keterangan' => 'Pemasangan sedang diproses Oleh' . Auth::user()->nama,
+    
+            ]);
+        }
+        elseif($pelanggan->status_id == 4){
+            riwayat::create([
+                'user_id' => Auth::user()->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => $request->status,
+                'tanggal' => now(),
+                'keterangan' => 'Pengerjaan selesai oleh ' . Auth::user()->nama,
+    
+            ]);
+        }
+        $pelanggan->status_id = $request->status;
         $pelanggan->save();
-        return redirect()->back()->with('success', 'Data berhasil diverifikasi.');
+        return redirect()->back()->with('success', 'Memulai Pengerjaan.');
     }
 
     public function mulaiCopot(Request $request, $id)
     {
         $pelanggan = Pelanggan::find($id);
-        $pelanggan->status = $request->status;
-        $bukti = $pelanggan->bukti->first();
-        $bukti->tgl_pencabutan = now();
-        $pelanggan->save();
-        $bukti->save();
 
-        return redirect()->back()->with('success', 'Data berhasil diverifikasi.');
+        if($pelanggan->status_id == 9){
+            riwayat::create([
+                'user_id' => Auth::user()->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => $request->status,
+                'tanggal' => now(),
+                'keterangan' => 'Pencopotan sedang diproses Oleh ' . Auth::user()->nama,
+    
+            ]);
+        }
+        elseif($pelanggan->status_id == 10){
+            riwayat::create([
+                'user_id' => Auth::user()->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => $request->status,
+                'tanggal' => now(),
+                'keterangan' => 'Pencopotan selesai oleh ' . Auth::user()->nama,
+    
+            ]);
+        }
+        $pelanggan->status_id = $request->status;
+        $pelanggan->save();
+        return redirect()->back()->with('success', 'Memulai Pengerjaan.');
     }
 
     public function listPasang()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [1]) // Menambahkan kondisi untuk status 0
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        // dd($pegawai);
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 3) // Menambahkan kondisi untuk status 0
             ->get();
-        $listPasang = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [1]) // Menambahkan kondisi untuk status 0
+        $listPasang = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 3) // Menambahkan kondisi untuk status 0
             ->count();
         return view('pegawai.list-pasang', [
             'nama' => $nama,
@@ -163,11 +210,12 @@ class PegawaiController extends Controller
     public function prosesPemasangan()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [2]) // Menambahkan kondisi untuk status 0
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 4) 
             ->get();
-        $listProses = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [2]) // Menambahkan kondisi untuk status 0
+        $listProses = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 4) 
             ->count();
 
         return view('pegawai.proses-pemasangan', [
@@ -180,11 +228,12 @@ class PegawaiController extends Controller
     public function listSelesaiPemasangan()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3]) // Menambahkan kondisi untuk status 0
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', [5]) 
             ->get();
-        $listSelesai = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3]) // Menambahkan kondisi untuk status 0
+        $listSelesai = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', [5]) 
             ->count();
         return view('pegawai.selesai-pasang', [
             'nama' => $nama,
@@ -193,22 +242,22 @@ class PegawaiController extends Controller
         ]);
     }
 
-    public function riwayatPemasangan()
-    {
-        $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [4])
-            ->get();
-        $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [4])
-            ->count();
-        return view('pegawai.riwayat-pasang', [
-            'nama' => $nama,
-            'pelanggan' => $pelanggan,
-            'riwayat' => $riwayat
-        ]);
+    // public function riwayatPemasangan()
+    // {
+    //     $nama = Auth::user()->username;
+    //     $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
+    //         ->whereIn('status', [4])
+    //         ->get();
+    //     $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
+    //         ->whereIn('status', [4])
+    //         ->count();
+    //     return view('pegawai.riwayat-pasang', [
+    //         'nama' => $nama,
+    //         'pelanggan' => $pelanggan,
+    //         'riwayat' => $riwayat
+    //     ]);
 
-    }
+    // }
 
     public function buktiPemasangan(Request $request, $id)
     {
@@ -217,36 +266,25 @@ class PegawaiController extends Controller
         $pelanggan = Pelanggan::find($id);
         // Validasi file yang diupload
         $validatedData = $request->validate([
-            // 'pelanggan_id' => 'required|exists:pelanggans,id', // Validasi pelanggan_id
-            // 'kd_unit' => 'required|exists:munit,kd_unit', // Validasi kd_unit
-            'bukti_pemasangan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_pemasangan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
         ]);
 
-        if ($request->hasFile('bukti_pemasangan')) {
-            $file = $request->file('bukti_pemasangan');
+        if ($request->hasFile('foto_pemasangan')) {
+            $file = $request->file('foto_pemasangan');
             $name = $file->getClientOriginalName();
             $file->move('buktiPasang/', $name);
-            $validatedData['bukti_pemasangan'] = $name;
+            $validatedData['foto_pemasangan'] = $name;
         }
 
-        $validatedData['pegawai_id'] = $user->id;
+        $validatedData['user_id'] = $user->id;
         $validatedData['pelanggan_id'] = $pelanggan->id;
+        $validatedData['status_id'] = 4;
+        $validatedData['tanggal'] = now();
+        $validatedData['keterangan'] = 'Pemasangan selesai oleh ' . $user->nama;
 
 
-        $storeBukti = Bukti::create($validatedData);
-
-        // Cari bukti yang terkait dengan pelanggan ini
-        $bukti = Bukti::where('pelanggan_id', $id)->latest()->first();
-
-        // Jika bukti ditemukan, perbarui tgl_pemasangan
-        if ($bukti) {
-            $bukti->tgl_pemasangan = now();
-            $bukti->save();
-        }
-
-        // Merubah is_pelanggan menjadi 2
-        $pelanggan->is_pelanggan = 2;
-        $pelanggan->save();
+        $storeBukti = riwayat::create($validatedData);
 
         if ($storeBukti) {
             return redirect()->back()->with('success', 'Bukti pemasangan berhasil diunggah.');
@@ -258,11 +296,14 @@ class PegawaiController extends Controller
     public function listCopot()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->where('status', 6)
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 9)
+            ->where('pegawai_id', Auth::user()->id)
             ->get();
-        $listCopot = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->where('status', 6)
+        $listCopot = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', 9)
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
         return view('pegawai.list-copot', [
             'nama' => $nama,
@@ -273,41 +314,49 @@ class PegawaiController extends Controller
 
     public function buktiPencopotan(Request $request, $id)
     {
-        $bukti = Bukti::where('pelanggan_id', $id)->latest()->first();
         $user = Auth::user()->pegawai;
+        // dd($user); 
         $pelanggan = Pelanggan::find($id);
         // Validasi file yang diupload
         $validatedData = $request->validate([
-            'bukti_pencabutan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_pencabutan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
         ]);
-        if ($request->hasFile('bukti_pencabutan')) {
-            $file = $request->file('bukti_pencabutan');
+
+        if ($request->hasFile('foto_pencabutan')) {
+            $file = $request->file('foto_pencabutan');
             $name = $file->getClientOriginalName();
-            $file->move('buktiCopot/', $name);
-            $validatedData['bukti_pencabutan'] = $name;
+            $file->move('buktiPasang/', $name);
+            $validatedData['foto_pencabutan'] = $name;
         }
-        if ($bukti) {
-            $bukti->tgl_pencabutan = now();
-            $bukti->save();
+
+        $validatedData['user_id'] = $user->id;
+        $validatedData['pelanggan_id'] = $pelanggan->id;
+        $validatedData['status_id'] = 10;
+        $validatedData['tanggal'] = now();
+        $validatedData['keterangan'] = 'Pencopotan selesai oleh ' . Auth::user()->nama;
+
+
+        $storeBukti = riwayat::create($validatedData);
+
+        if ($storeBukti) {
+            return redirect()->back()->with('success', 'Bukti pemasangan berhasil diunggah.');
         }
-        Bukti::where('pelanggan_id', $id)->update([
-            'bukti_pencabutan' => $validatedData['bukti_pencabutan'],
-        ]);
 
-        $pelanggan->is_pelanggan = 4;
-        $pelanggan->save();
-
-        return redirect()->back()->with('success', 'Bukti pencopotan berhasil diunggah.');
+        return redirect()->back()->with('error', 'Gagal mengunggah bukti pemasangan.');
     }
 
     public function prosesPencopotan()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [7])
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', [10])
+            ->where('pegawai_id', Auth::user()->id)
             ->get();
         $listCopot = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [7])
+            ->whereIn('status_id', [10])
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
 
         return view('pegawai.proses-pencopotan', [
@@ -320,11 +369,14 @@ class PegawaiController extends Controller
     public function listSelesaiPencopotan()
     {
         $nama = Auth::user()->username;
-        $pelanggan = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [8]) // Menambahkan kondisi untuk status 0
+        $pegawai = Auth::user()->pegawai->kd_unit;
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+            ->where('status_id', [11])
+            ->where('pegawai_id', Auth::user()->id)
             ->get();
         $listCopot = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [8]) // Menambahkan kondisi untuk status 0
+            ->whereIn('status_id', [11]) // Menambahkan kondisi untuk status 0
+            ->where('pegawai_id', Auth::user()->id)
             ->count();
         return view('pegawai.selesai-copot', [
             'nama' => $nama,
@@ -336,21 +388,15 @@ class PegawaiController extends Controller
     public function riwayatPengerjaan(Request $request)
     {
         $nama = Auth::user()->username;
+        $pegawai = Auth::user()->pegawai->kd_unit;
         $sortby = $request->input('sortby', 'semua'); // Default sortby is 'semua'
 
-        $query = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3, 4, 8, 9]);
-
-        if ($sortby == 'pendaftaran') {
-            $query->where('jenis', 'pendaftaran');
-        } elseif ($sortby == 'pengajuan') {
-            $query->where('jenis', 'pengajuan');
-        }
-
-        $pelanggan = $query->get();
-        $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3, 4, 8, 9])
-            ->count();
+        $pelanggan = Pelanggan::where('kd_unit', $pegawai)
+        ->with('village')
+        ->where('pegawai_id', Auth::user()->id)
+        ->get();
+        
+        $riwayat = Pelanggan::where('kd_unit',$pegawai)->count();
         return view('pegawai.riwayat-pengerjaan', [
             'nama' => $nama,
             'pelanggan' => $pelanggan,
@@ -362,6 +408,7 @@ class PegawaiController extends Controller
     public function pencarian(Request $request)
     {
         $nama = Auth::user()->username;
+
         $request->validate([
             'nama' => 'required|max:50',
         ]);
@@ -372,7 +419,7 @@ class PegawaiController extends Controller
             ->orWhere('no_identitas', 'like', '%' . $request->nama . '%')
             ->get();
         $riwayat = Pelanggan::where('kd_unit', Auth::user()->pegawai->kd_unit)
-            ->whereIn('status', [3, 4, 8, 9])
+            ->whereIn('status_id', [5, 6, 11, 13])
             ->count();
 
         return view('pegawai.riwayat-pengerjaan', [

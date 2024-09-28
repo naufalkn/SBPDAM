@@ -79,13 +79,13 @@
                             </td>
                             </td>
                             <td class="px-6 py-4">
-                                @if($item->status == '6' )
+                                @if($item->status_id == '8' )
                                     <span
                                         class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">sudah disetujui</span>
-                                @elseif($item->status == '7')
+                                @elseif($item->status_id == '9' || $item->status_id == '10')
                                     <span
                                         class="bg-yellow-400 text-white px-2 py-1 rounded-full text-xs font-semibold">Proses Pencopotan</span>
-                                @elseif($item->status == '8')
+                                @elseif($item->status_id == '11')
                                     <span
                                         class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">Proses Selesai</span>
                                 @endif

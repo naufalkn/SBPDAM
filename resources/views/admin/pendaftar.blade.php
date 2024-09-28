@@ -12,6 +12,11 @@
         </div>
 
     </div>
+    <div class="flex w-full justify-end p-3">
+        <a href="/export-pelanggan" class="text-white font-medium bg-blue-600 p-2 rounded-md"> 
+            Export Pelanggan
+        </a>
+    </div>
     {{-- Tabel --}}
     <div class="px-5 lg:ml-64 mb-16">
         <div class="relative h-full overflow-x-auto shadow-md sm:rounded-lg">
@@ -61,27 +66,27 @@
                                 {{ $item->nm_unit }}
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == '0')
+                                @if ($item->status_id == '1')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-gray-600 bg-gray-200  last:mr-0 mr-1">
                                         Belum diverifikasi
                                     </span>
-                                @elseif($item->status == '1')
+                                @elseif($item->status_id == '2')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-red-600 bg-red-200  last:mr-0 mr-1">
                                         Sudah diverifikasi
                                     </span>
-                                @elseif($item->status == '2')
+                                @elseif($item->status_id == '3' || $item->status_id == '4' )
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-yellow-600 bg-yellow-200  last:mr-0 mr-1">
                                         Proses Pemasangan
                                     </span>
-                                @elseif($item->status == '3')
+                                @elseif($item->status_id == '5')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                         Pemasangan Selesai
                                     </span>
-                                @elseif($item->status == '4')
+                                @elseif($item->status_id == '6')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
                                         Aktif

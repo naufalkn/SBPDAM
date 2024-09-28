@@ -71,10 +71,7 @@
                             Nama
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Alamat
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Jenis
+                            No Telp
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status Pengerejaan
@@ -82,9 +79,7 @@
                         <th scope="col" class="px-6 py-3">
                             Tanggal
                         </th>
-                        <th scope="col" class="px-6 py-3 ">
-                            Detail
-                        </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -99,21 +94,20 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->no_telepon }}
+                                {{-- @if ($item->village)
+                                    {{ $item->village->name }}
+                                @else
+                                -
+                                @endif --}}
                             </td>
+                            
                             <td class="px-6 py-4">
-                                @if ($item->jenis == 'pendaftaran')
-                                <span class="bg-green-500 text-white px-2 py-1 rounded-full">Pendaftaran</span>
-                            @elseif($item->jenis == 'pengajuan')
-                                <span class="bg-red-500 text-white px-2 py-1 rounded-full">Pengajuan</span>
-                            @endif
-                            </td>
-                            <td class="px-6 py-4">
-                                @if($item->status == '3' || $item->status == '8')
+                                @if($item->status_id == '5' || $item->status_id == '11')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-green-600 bg-green-200  last:mr-0 mr-1">
                                         Selesai
                                     </span>
-                                @elseif($item->status == '9' || $item->status == '4')
+                                @elseif($item->status_id == '6' || $item->status_id == '12')
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2  rounded-full text-blue-600 bg-blue-200  last:mr-0 mr-1">
                                         Sudah Disejutui Admin
@@ -122,12 +116,6 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ \Carbon\Carbon::parse($item->tgl_nonaktif)->format('d-m-Y') ?? '-' }}
-                            </td>
-                            <td class="px-6 py-4 ">
-                                <a href="{{ url('/detail-user/'.$item->id) }}" type="button"
-                                    class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900">
-                                    <i class="fa-regular fa-eye"></i>
-                                </a>
                             </td>
                         </tr>
                     @empty

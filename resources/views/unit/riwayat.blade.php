@@ -98,9 +98,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                @if ($item->status == 4)
+                                @if ($item->status_id == 6)
                                     {{ $item->tgl_aktif ? \Carbon\Carbon::parse($item->tgl_aktif)->format('d-m-Y') : '-' }}
-                                @elseif($item->status == 9)
+                                @elseif($item->status_id == 12)
                                     {{ $item->tgl_nonaktif ? \Carbon\Carbon::parse($item->tgl_nonaktif)->format('d-m-Y') : '-' }}
                                 @endif
                             </td>

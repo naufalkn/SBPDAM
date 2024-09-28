@@ -87,7 +87,7 @@
         <div class="w-full space-y-16">
             {{-- Pelanggan Baru --}}
             <div class="">
-                <p class="font-semibold mb-5 text-gray-600">Daftar Pendaftar Baru</p>
+                <p class="font-semibold mb-5 text-gray-600">Daftar Pendaftar Sambungan Baru</p>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">
@@ -141,7 +141,7 @@
             {{-- Pengajuan Baru --}}
 
             <div class="">
-                <p class="font-semibold mb-5 text-gray-600">Daftar Pengajuan Baru</p>
+                <p class="font-semibold mb-5 text-gray-600">Daftar Berhenti Langganan</p>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-white uppercase bg-blue-800 dark:bg-gray-700 dark:text-gray-400 ">

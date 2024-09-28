@@ -15,18 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['L', 'P'])->default('L');
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('foto')->default('default.png');
             $table->unsignedBigInteger('role_id')->default(5);
-            // $table->string('kd_unit')->nullable();
             
             $table->foreign('role_id')->references('id')->on('roles');
-            // $table->foreign('kd_unit')->references('kd_unit')->on('munit');
-
+            $table->enum('status', ['aktif', 'nonaktif'])->default('nonaktif');
+            $table->string('token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

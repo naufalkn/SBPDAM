@@ -21,7 +21,6 @@ class UnitSeeder extends Seeder
         Units::insert(['kd_unit' => "05" , 'nm_unit' => 'Sidoharjo']);  
         Units::insert(['kd_unit' => "06" , 'nm_unit' => 'Sumberlawang']); 
         Units::insert(['kd_unit' => "07" , 'nm_unit' => 'Mojokerto']); 
-        // Units::insert(['kd_unit' => 08 , 'nm_unit' => 'Sambirejo']);
         Units::insert(['kd_unit' => "08" , 'nm_unit' => 'Sambirejo']);
  
         Units::insert(['kd_unit' => "09" , 'nm_unit' => 'Gondang']);

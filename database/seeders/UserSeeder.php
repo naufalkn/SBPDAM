@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 1,
+            'status' => 'aktif',
         ]);
         // Admin Unit
         User::create([
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             'email' => 'sragen@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 2,
+            'status' => 'aktif',
         ]);
 
         // Pegawai Unit
@@ -37,6 +39,7 @@ class UserSeeder extends Seeder
             'email' => 'asep@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 3,
+            'status' => 'aktif',
         ]);
         // Pelanggan
         User::create([
@@ -45,6 +48,7 @@ class UserSeeder extends Seeder
             'email' => 'budi@gmail.com',
             'password' => bcrypt('123'),
             'role_id' => 5,
+            'status' => 'aktif',
         ]);
     }
 }

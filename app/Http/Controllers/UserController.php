@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DesKec;
+use App\Models\District;
+use App\Models\riwayat;
+use App\Models\Status;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Models\Desa;
@@ -10,6 +13,7 @@ use App\Models\Dukuh;
 use App\Models\Kecamatan;
 use App\Models\Units;
 use App\Models\Pelanggan;
+use App\Models\Village;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -79,13 +83,17 @@ class UserController extends Controller
         if($pelanggan){
             $transaksi = $pelanggan->transaksi()->latest()->first();
         }
-        // dd($transaksi);
-        // dd($pelanggan);
+        $ditolak  = riwayat::where('pelanggan_id', auth()->user()->pelanggan->id)
+        ->where('status_id', 13)
+        ->latest()
+        ->first();
+
         if ($pelanggan) {
             return view('user.profil', [
                 'nama' => auth()->user()->username,
                 'pelanggan' => $pelanggan,
                 'transaksi' => $transaksi,
+                'ditolak' => $ditolak,
             ]);
         } elseif (!$pelanggan) {
             return view('user.profil', [
@@ -175,18 +183,15 @@ class UserController extends Controller
         $user = Auth::user();
         $dukuhList = Dukuh::all();
         $unitList = Units::all();
-        // $desaList = Desa::all();
-        // $kecamatanList = Kecamatan::all();
-        $deskec = DesKec::all();
-        // dd($deskec->all());
+        $kecamatan = District::where('regency_id', 3314)->get();
+        $desa = Village::all();
         return view('user.form-sambungan', [
             'user' => $user,
             'nama' => auth::user()->username,
             'dukuhList' => $dukuhList,
-            'deskec' => $deskec,
             'unitList' => $unitList,
-            // 'desaList' => $desaList,
-            // 'kecamatanList' => $kecamatanList,
+            'desa' => $desa,
+            'kecamatan' => $kecamatan,
         ]);
 
     }
@@ -197,7 +202,7 @@ class UserController extends Controller
 
         $validatedData = $request->validate([
             'nama' => 'required',
-            'email' => 'required|email|unique:pelanggans,email',
+            'email' => 'required',
             'pekerjaan' => 'required',
             'no_identitas' => 'required|unique:pelanggans,no_identitas',
             'no_telepon' => 'required|string|max:15',
@@ -205,8 +210,8 @@ class UserController extends Controller
             'dukuh' => 'required',
             'rt' => 'required',
             'rw' => 'required',
-            'kelurahan' => 'required',
-            'kecamatan' => 'required',
+            'desa' => 'required',
+            // 'kecamatan' => 'required',
             'kode_pos' => 'required',
             'nama_jalan' => 'required',
             'jmlh_penghuni' => 'required',
@@ -215,6 +220,8 @@ class UserController extends Controller
             'no_sambungan' => 'nullable',
             'nm_unit' => 'required',
             'kd_unit' => 'required|exists:munit,kd_unit',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         // dd($validatedData);
@@ -238,6 +245,7 @@ class UserController extends Controller
 
         $validatedData['user_id'] = $user->id;
         $validatedData['jenis'] = 'pendaftaran';
+        $validatedData['status_id'] = 1;
 
         // Menambahkan data ke tabel Pelanggan
         $storePelanggan = Pelanggan::create($validatedData);
@@ -247,6 +255,14 @@ class UserController extends Controller
             $user = User::find($user->id);
             $updateUserRole = $user->update([
                 'role_id' => '4',
+            ]);
+
+            riwayat::create([
+                'user_id' => $user->id,
+                'pelanggan_id' => $storePelanggan->id,
+                'status_id' => 1,
+                'tanggal' => now(),
+                'keterangan' => 'Mendaftar sebagai calon pelanggan',
             ]);
         }
         // dd($storePelanggan);
@@ -274,40 +290,67 @@ class UserController extends Controller
         try {
             // Menggunakan $id yang diterima dari rute untuk menemukan dan memperbarui pelanggan
             $pelanggan = Pelanggan::findOrFail($id);
-
+        
             $rules = [
-                'nama' => 'required|string|max:255',
                 'pekerjaan' => 'required|string|max:255',
                 'no_telepon' => 'required|string|max:15',
                 'jmlh_penghuni' => 'required|integer',
-                'keterangan' => 'required|string',
                 'foto_rumah' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'foto_identitas' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ];
-
+        
             $validatedData = $request->validate($rules);
-
+            $validatedData['status_id'] = 1;
+        
             // Jika ada file foto yang diunggah
             if ($request->hasFile('foto_rumah')) {
                 $file = $request->file('foto_rumah');
                 // Pastikan file foto telah berhasil diunggah
                 if ($file->isValid()) {
                     // Pindahkan file ke direktori yang diinginkan
-                    $fileName = $file->getClientOriginalName();
+                    $fileName =$file->getClientOriginalName();
                     $file->move(public_path('foto'), $fileName);
-                    // Simpan nama file foto ke atribut $foto pada model pengguna
-                    $pelanggan->foto_rumah = $fileName;
+                    // Simpan nama file foto ke atribut $foto_rumah pada model pelanggan
+                    $validatedData['foto_rumah'] = $fileName;
                 } else {
                     // Jika file foto tidak valid, kembalikan dengan pesan error
                     return redirect()->back()->with('error', 'File foto tidak valid.');
                 }
             }
+        
+            // Jika ada file foto identitas yang diunggah
+            if ($request->hasFile('foto_identitas')) {
+                $file = $request->file('foto_identitas');
+                // Pastikan file foto telah berhasil diunggah
+                if ($file->isValid()) {
+                    // Pindahkan file ke direktori yang diinginkan
+                    $fileName = $file->getClientOriginalName();
+                    $file->move(public_path('foto'), $fileName);
+                    // Simpan nama file foto ke atribut $foto_identitas pada model pelanggan
+                    $validatedData['foto_identitas'] = $fileName;
+                } else {
+                    // Jika file foto tidak valid, kembalikan dengan pesan error
+                    return redirect()->back()->with('error', 'File foto identitas tidak valid.');
+                }
+            }
+        
             // Memperbarui atribut pelanggan dengan data yang valid
-            $pelanggan->save($validatedData);
+            $pelanggan->update($validatedData);
 
+            // Menambahkan data ke tabel riwayat
+            riwayat::create([
+                'user_id' => auth()->user()->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => 1,
+                'tanggal' => now(),
+                'keterangan' => 'Data Telah Diperbarui',
+            ]);
+        
             return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui profil. Silakan coba lagi.');
         }
+        
     }
 
     public function pengajuan()
@@ -323,14 +366,17 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $pelanggan = $user->pelanggan;
-        $bukti = $pelanggan->bukti()->latest()->first();
         $pelanggan->tgl_pengajuan = now();
-        $pelanggan->status = '5';
-        $pelanggan->is_pelanggan = '3';
+        $pelanggan->status_id = '7';
         $pelanggan->jenis = 'pengajuan';
-        $bukti->alasan = $request->alasan;
+        riwayat::create([
+            'user_id' => $user->id,
+            'pelanggan_id' => $pelanggan->id,
+            'status_id' => 7,
+            'tanggal' => now(),
+            'keterangan' => 'Pengajuan Berhenti Langganan karena' . $request->alasan,
+        ]);
         $pelanggan->save();
-        $bukti->save();
 
         return redirect()->route('profil', ['id' => $user->id])->with('success', 'Pengajuan berhasil diajukan.');
     }
@@ -353,17 +399,18 @@ class UserController extends Controller
     public function mulaiLangganan($id)
     {
         $user = Auth::user();
-        $pelanggan = Pelanggan::findOrFail($id); // Mengambil data pelanggan berdasarkan $id
         $dukuhList = Dukuh::all();
         $unitList = Units::all();
-        $deskec = DesKec::all();
-
+        $kecamatan = District::where('regency_id', 3314)->get();
+        $desa = Village::all();
+        $pelanggan = Pelanggan::findOrFail($id);
         return view('user.form-langganan', [
             'user' => $user,
-            'nama' => auth()->user()->username,
+            'nama' => auth::user()->username,
             'dukuhList' => $dukuhList,
-            'deskec' => $deskec,
             'unitList' => $unitList,
+            'desa' => $desa,
+            'kecamatan' => $kecamatan,
             'pelanggan' => $pelanggan,
         ]);
     }
@@ -375,40 +422,38 @@ class UserController extends Controller
 
         $validatedData = $request->validate([
             'nama' => 'required',
-            'email' => 'required|email|unique:pelanggans,email,' . $id,
+            'email' => 'required',
             'pekerjaan' => 'required',
-            'no_identitas' => 'required|unique:pelanggans,no_identitas,' . $id,
+            'no_identitas' => 'required|unique:pelanggans,no_identitas',
             'no_telepon' => 'required|string|max:15',
-            'foto_identitas' => 'nullable|image',
+            'foto_identitas' => 'required',
             'dukuh' => 'required',
             'rt' => 'required',
             'rw' => 'required',
-            'kelurahan' => 'required',
-            'kecamatan' => 'required',
+            'desa' => 'required',
+            // 'kecamatan' => 'required',
             'kode_pos' => 'required',
             'nama_jalan' => 'required',
             'jmlh_penghuni' => 'required',
-            'foto_rumah' => 'nullable|image',
+            'foto_rumah' => 'required',
             'nm_sambungan' => 'nullable',
             'no_sambungan' => 'nullable',
             'nm_unit' => 'required',
             'kd_unit' => 'required|exists:munit,kd_unit',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         $validatedData['tgl_daftar'] = now();
-        $validatedData['tgl_pengajuan'] = null;
-        $validatedData['tgl_aktif'] = null;
-        $validatedData['tgl_nonaktif'] = null;
-        $validatedData['status'] = 0;
-        $validatedData['is_pelanggan'] = 0;
 
-        if ($request->hasFile('foto_identitas')) {
+        if ($request->hasFile('foto_identitas')) { // Periksa apakah file telah diunggah
             $file = $request->file('foto_identitas');
             $name = $file->getClientOriginalName();
             $file->move('foto_Identitas/', $name);
+
             $validatedData['foto_identitas'] = $name;
         }
-        if ($request->hasFile('foto_rumah')) {
+        if ($request->hasFile('foto_rumah')) { // Periksa apakah file telah diunggah
             $file = $request->file('foto_rumah');
             $name = $file->getClientOriginalName();
             $file->move('foto/', $name);
@@ -417,10 +462,31 @@ class UserController extends Controller
 
         $validatedData['user_id'] = $user->id;
         $validatedData['jenis'] = 'pendaftaran';
+        $validatedData['status_id'] = 1;
+
+        // Menambahkan data ke tabel Pelanggan
+        // $storePelanggan = Pelanggan::create($validatedData);
 
         // Update pelanggan yang ada
         $pelanggan = Pelanggan::findOrFail($id);
+        // dd($pelanggan);
         $pelanggan->update($validatedData);
+
+        if ($pelanggan) {
+            // Kalau berhasil, update role pengguna menjadi 'pelanggan'
+            $user = User::find($user->id);
+            $updateUserRole = $user->update([
+                'role_id' => '4',
+            ]);
+
+            riwayat::create([
+                'user_id' => $user->id,
+                'pelanggan_id' => $pelanggan->id,
+                'status_id' => 1,
+                'tanggal' => now(),
+                'keterangan' => 'Mendaftar sebagai calon pelanggan',
+            ]);
+        }
 
         // Hapus data dari tabel bukti dan transaksi
         // $pelanggan->bukti()->delete();
